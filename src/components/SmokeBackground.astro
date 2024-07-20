@@ -1,0 +1,124 @@
+<div id="smoke-bkg" class="fixed top-0 h-full w-full -z-10"></div>
+<script>
+    import * as THREE from "three";
+
+    const bkg = document.getElementById("smoke-bkg");
+
+    let widthScreen = window.innerWidth;
+    let heightScreen = window.innerHeight;
+
+    // Inicializar three.js
+    // Se necesitan 3 cosas: la escena, la cámara y el renderizador
+
+    // Escena
+    const scene = new THREE.Scene();
+    // Cámara
+    // PerspectiveCamera(ángulo de visión, relación de aspecto, profundidad mínima del objeto renderizado, profundidad máxima del objeto renderizado)
+    const camera = new THREE.PerspectiveCamera(
+        75,
+        widthScreen / heightScreen,
+        1,
+        1000
+    );
+    camera.position.z = 10;
+    scene.add(camera);
+
+    const THEME = {
+        dark: {
+            background: 0x666666,
+            light: 0xffffff,
+            opacity: 0.3,
+        },
+        light: {
+            background: 0xeeeeee,
+            light: 0xffffff,
+            opacity: 0.3,
+        },
+    } as const;
+
+    const themePreference = window.getThemePreference();
+    let currentTheme = THEME[themePreference];
+
+    // Renderizador
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(widthScreen, heightScreen);
+    // Establecemos un color de fondo
+    renderer.setClearColor(currentTheme.background, 0);
+
+    bkg?.appendChild(renderer.domElement);
+
+    // Añadimos una luz direccional
+    const light = new THREE.DirectionalLight(currentTheme.light, 0.5);
+    light.position.set(-1, 3, 1);
+    scene.add(light);
+    // Con este helper vemos en pantalla el tema de la luz
+    // const helperLight = new THREE.DirectionalLightHelper(light, 2);
+    // scene.add(helperLight);
+
+    const smokeParticles: THREE.Mesh[] = [];
+    const loader = new THREE.TextureLoader();
+    loader.crossOrigin = ""; // En localhost no pasa nada pero cuando se sube a un servidor puede ser necesario
+
+    loader.load("/images/background/smoke.webp", (texture) => {
+        // 1. Geometría Crear un plano geométrico 300x300
+        const smokeGeo = new THREE.PlaneGeometry(300, 300);
+        // 2. Material:
+        const smokeMaterial = new THREE.MeshLambertMaterial({
+            map: texture,
+            transparent: true,
+            opacity: currentTheme.opacity,
+        });
+        // 3. Creamos la malla con el material y la geometría que hemos creado
+        const NUM_OF_PARTICLES = 300;
+        for (let i = 0; i < NUM_OF_PARTICLES; i++) {
+            const particle = new THREE.Mesh(smokeGeo, smokeMaterial);
+            // Luego posicionamos esa partíicula de forma aleatoria en los ejes x, y, z
+            particle.position.set(
+                Math.random() * 500 - 250,
+                Math.random() * 500 - 250,
+                Math.random() * 1000 - 100
+            );
+            // aleatoriamente la z
+            particle.rotation.z = Math.random() * 360;
+            // añadimos la partícula a la z
+            scene.add(particle);
+            // Añadimos la particula al array
+            smokeParticles.push(particle);
+        }
+    });
+    // Función que se debe ejecutar cada que haya un resize en la pantalla
+    function resize() {
+        widthScreen = window.innerWidth;
+        heightScreen = window.innerHeight;
+        camera.aspect = widthScreen / heightScreen;
+        // La sgte función siempre se debe ejecutar cada que se cambia los parámetros de la cámara
+        camera.updateProjectionMatrix();
+        renderer.setSize(widthScreen, heightScreen);
+    }
+    window.addEventListener("resize", resize);
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        smokeParticles.forEach((particle) => {
+            particle.rotation.z += 0.0019;
+        });
+
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener("theme-changed", () => {
+        const themePreference = window.getThemePreference();
+        console.log({ themePreference });
+        currentTheme = THEME[themePreference];
+        console.log(currentTheme);
+        light.color.setHex(currentTheme.light);
+
+        smokeParticles.forEach((particle) => {
+            const smokeMaterial =
+                particle.material as THREE.MeshLambertMaterial;
+            smokeMaterial.opacity = currentTheme.opacity;
+        });
+    });
+</script>

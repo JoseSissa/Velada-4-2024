@@ -1,0 +1,19 @@
+---
+import Layout from '@/layouts/Layout.astro';
+
+import CountDown from '@/sections/CountDown.astro';
+import Footer from '@/sections/Footer.astro';
+import Hero from '@/sections/Hero.astro';
+import Info from '@/sections/Info.astro';
+import PrincipalDate from '@/sections/PrincipalDate.astro';
+---
+
+<Layout title="La Velada 4 - Proyecto Académico">
+	<Hero />
+	<main class="w-full mx-auto">
+		<PrincipalDate />
+		<Info />
+		<CountDown />
+	</main>
+	<Footer />
+</Layout>

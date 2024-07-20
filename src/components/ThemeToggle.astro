@@ -1,0 +1,48 @@
+---
+import MoonIcon from "@/icons/moonIcon.astro";
+import SunIcon from "@/icons/sunIcon.astro";
+---
+
+<button
+    id="themeToggle"
+    class="hover:scale-125 hover:opacity-70 transition inline-block size-12 text-primary/80"
+>
+    <MoonIcon dataType={{ "data-moon": "" }} class={"hidden"} />
+    <SunIcon dataType={{ "data-sun": "" }} class={"hidden"} />
+    <span class="sr-only">Toggle theme</span>
+</button>
+
+<script is:inline>
+    const moonComponent = document.querySelector("[data-moon]");
+    const sunComponent = document.querySelector("[data-sun]");
+    // Define cuál de los íconos se debe mostrar
+    window.getThemePreference() === "dark"
+        ? sunComponent.classList.replace("hidden", "block")
+        : moonComponent.classList.replace("hidden", "block");
+
+    const handleToggleClick = (e) => {
+        window.dispatchEvent(new Event("theme-changed"));
+        const isDark = window.getThemePreference() === "dark";
+
+        localStorage.setItem("theme", isDark ? "light" : "dark");
+
+        if (!isDark) {
+            moonComponent.classList.replace("block", "hidden");
+            sunComponent.classList.replace("hidden", "block");
+        } else {
+            moonComponent.classList.replace("hidden", "block");
+            sunComponent.classList.replace("block", "hidden");
+        }
+
+        document.documentElement.classList.toggle("dark", !isDark)
+    };
+    function createEvent() {
+        window.dispatchEvent(new Event("theme-changed"));
+    }
+
+    document
+        .getElementById("themeToggle")
+        .addEventListener("click", handleToggleClick);
+
+    createEvent();
+</script>

@@ -1,0 +1,95 @@
+---
+// Supports weights 100-900
+import "@fontsource-variable/jost";
+import BackgroundNoise from "@/components/BackgroundNoise.astro";
+import SmokeBackground from "@/components/SmokeBackground.astro";
+
+interface Props {
+    title: string;
+}
+
+const { title } = Astro.props;
+const descriptioPage = "Proyecto Académico de La Velada Del Año 2024";
+---
+
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content={descriptioPage} />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta
+            name="keywords"
+            content="velada, streamers, creadores, Ibai, boxeo, midudev"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta property="og:url" content="https://lavelada.es" />
+        <meta property="og:image" content="" />
+        <meta property="og:description" content={descriptioPage} />
+        <title>{title}</title>
+
+        <script is:inline>
+            window.getThemePreference = () => {
+                const localItem = typeof localStorage !== "undefined" && localStorage.getItem("theme");
+                if (localItem) return localItem;
+                return window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "dark"
+                    : "light";
+            };
+
+            const isDark = window.getThemePreference() === "dark"
+            document.documentElement.classList.toggle("dark", isDark)
+        </script>
+    </head>
+    <body>
+        <!-- <BackgroundNoise /> -->
+        <SmokeBackground />
+        <div class="max-w-6xl mx-auto px-2 lg:px-10 pt-20 md:pt-32">
+            <slot />
+        </div>
+    </body>
+</html>
+<style is:global>
+    :root {
+        --color-primary: rgba(221, 221, 221);
+        --color-secondary: rgba(12, 12, 12);
+    }
+
+    .dark {
+        --color-primary: rgba(12, 12, 12);
+        --color-secondary: rgba(221, 221, 221);
+    }
+    html {
+        font-family: "Jost Variable", system-ui, sans-serif;
+        background: var(--color-primary);
+        color: var(--color-secondary);
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+    }
+
+    body {
+        overscroll-behavior: none;
+    }
+
+    ::-webkit-scrollbar {
+        width: 10px;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: var(--color-secondary);
+    }
+
+    ::-webkit-scrollbar-track {
+        background: url("/images/background/noise.png");
+        background-repeat: repeat;
+    }
+
+    ::-webkit-scrollbar-corner {
+        background: url("/images/background/noise.png");
+        background-repeat: repeat;
+    }
+</style>

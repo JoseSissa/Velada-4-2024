@@ -1,0 +1,47 @@
+<section class="w-full flex-col place-items-center text-center text-primary mb-32 animate-fade-in animate-delay-500">
+    <h2 class="mb-6 uppercase text-5xl font-semibold">
+        <time class="date">
+            19 de Octubre 
+        </time>
+        <span aria-hidden="true" class="hidden md:inline md:mb-2 mx-1">·</span>
+        <br aria-hidden="true" class="block md:hidden" /> 
+        <time id="hour"></time>
+    </h2>
+    <h3 class="flex flex-col max-w-sm mx-auto mb-8 text-2xl font-medium uppercase">
+        <span>
+            Evento de Presentación
+        </span>
+        <span>
+            Teatro Victoria (Barcelona)
+        </span>
+    </h3>
+    <a 
+        href="#" 
+        target="_blank" 
+        rel="noopener"
+        class={`inline-block
+            px-4 py-1 border-primary border-2 font-medium text-lg 
+            hover:bg-slate-100 hover:scale-125 transition
+        `}
+    >
+        ENTRADAS AGOTADAS
+    </a>
+</section>
+
+<script>
+    import { END_DATE } from "@/const/const"
+    const d = new Date(END_DATE)
+    const date = d.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: 'numeric'
+    })
+
+    // get current timezone
+    const tzOffSet = d.getTimezoneOffset() / 60
+    const dif = tzOffSet * -1
+    const gmt = dif > 0 ? `GMT+${dif}` : `GMT${dif}`
+    const selfScript = document.getElementById("hour")
+    if(selfScript != null) {
+        selfScript.innerHTML = `${date} ${gmt}` 
+    }
+</script>

@@ -1,0 +1,11 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  // La sgte opción nos genera un alias para las rutas
+  // cuando coloquemos el @/ hará referencia a la ruta ./src/lo-que-sea
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}

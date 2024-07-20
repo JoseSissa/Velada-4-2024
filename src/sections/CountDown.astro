@@ -1,0 +1,48 @@
+---
+import laVeladaIcon from "@/icons/laVeladaIcon.astro"
+import Date from "@/components/Date.astro";
+---
+<section class="flex flex-col place-items-center my-36">
+    <laVeladaIcon class="text-primary" />
+
+    <div class="flex gap-x-1 text-primary uppercase font-semibold">
+        <Date dataType={{'data-days':''}} type="Días" />
+        <span aria-hidden="true" class="mt-1 text-xl">:</span>
+        <Date dataType={{'data-hours':''}} type="Horas" />
+        <span aria-hidden="true" class="mt-1 text-xl">:</span>
+        <Date dataType={{'data-minutes':''}} type="Minutos" />
+        <span aria-hidden="true" class="mt-1 text-xl">:</span>
+        <Date dataType={{'data-seconds':''}} type="Segundos" />
+    </div>
+</section>
+
+<script>
+    // Fecha final del contador, transformada en milisegundos
+    const END_DATE = new Date('Sat Oct 19 2024 18:00:00').getTime();
+    // CONTANTES
+    const SECOND = 1000
+    const MINUTE = SECOND * 60
+    const HOUR = MINUTE * 60
+    const DAY = HOUR * 24
+
+    const days = document.querySelector('[data-days]')
+    const hours = document.querySelector('[data-hours]')
+    const minutes = document.querySelector('[data-minutes]')
+    const seconds = document.querySelector('[data-seconds]')
+
+    const formatNumber = (num: number) => {
+        return Math.floor(num).toString().padStart(2, '0')
+    }
+
+    const updateCountDown = () => {
+        if(days instanceof HTMLElement) days.innerText = formatNumber((END_DATE - Date.now()) / DAY)
+        if(hours instanceof HTMLElement) hours.innerText = formatNumber(((END_DATE - Date.now()) % DAY) / HOUR)
+        if(minutes instanceof HTMLElement) minutes.innerText = formatNumber(((END_DATE - Date.now()) % HOUR) / MINUTE)
+        if(seconds instanceof HTMLElement) seconds.innerText = formatNumber(((END_DATE - Date.now()) % MINUTE) / SECOND)
+    }
+
+    updateCountDown()
+    setInterval(updateCountDown, SECOND)
+
+    
+</script>
