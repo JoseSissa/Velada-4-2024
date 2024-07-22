@@ -29,19 +29,6 @@ const descriptioPage = "Proyecto Académico de La Velada Del Año 2024";
         <meta property="og:image" content="" />
         <meta property="og:description" content={descriptioPage} />
         <title>{title}</title>
-
-        <script is:inline>
-            window.getThemePreference = () => {
-                const localItem = typeof localStorage !== "undefined" && localStorage.getItem("theme");
-                if (localItem) return localItem;
-                return window.matchMedia("(prefers-color-scheme: dark)").matches
-                    ? "dark"
-                    : "light";
-            };
-
-            const isDark = window.getThemePreference() === "dark"
-            document.documentElement.classList.toggle("dark", isDark)
-        </script>
     </head>
     <body>
         <!-- <BackgroundNoise /> -->
@@ -53,18 +40,19 @@ const descriptioPage = "Proyecto Académico de La Velada Del Año 2024";
 </html>
 <style is:global>
     :root {
-        --color-primary: rgba(221, 221, 221);
-        --color-secondary: rgba(12, 12, 12);
+        --color-primary: #ddd;
+        --color-secondary: #333;
+
+        --background-color: #222;
+        --background-twitch: var(--background-twitch-ice);
+
+        --color-twitch: #9146ff;
+        --color-twitch-ice: #f0f0ff;
     }
 
-    .dark {
-        --color-primary: rgba(12, 12, 12);
-        --color-secondary: rgba(221, 221, 221);
-    }
     html {
         font-family: "Jost Variable", system-ui, sans-serif;
-        background: var(--color-primary);
-        color: var(--color-secondary);
+        background: var(--background-color);
         scroll-behavior: smooth;
         overflow-x: hidden;
     }

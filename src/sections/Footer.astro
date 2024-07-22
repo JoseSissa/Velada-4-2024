@@ -1,21 +1,24 @@
 ---
-import ThemeToggle from "@/components/ThemeToggle.astro"
-import Instagram from "@/icons/instagramIcon.astro"
-import XIcon from "@/icons/twitterIcon.astro"
+import Instagram from "@/icons/instagramIcon.astro";
+import XIcon from "@/icons/twitterIcon.astro";
 ---
 
-
-<footer class="flex flex-col md:flex-row place-items-center md:justify-between w-full pt-6 pb-20 border-primary border-t-2 ">
+<footer
+    class="flex flex-col md:flex-row place-items-center md:justify-between w-full pt-6 pb-20 border-primary border-t-2"
+>
     <span class="text-center text-primary">
-        © 2024 La Velada del año <span aria-hidden="true" class="hidden md:inline">|</span><br aria-hidden="true" class="block md:hidden" /> Todos los derechos reservados
+        © 2024 La Velada del año <span
+            aria-hidden="true"
+            class="hidden md:inline">|</span
+        ><br aria-hidden="true" class="block md:hidden" /> Todos los derechos reservados
     </span>
 
     <nav>
         <ul class="flex gap-x-6 items-center">
             <li>
-                <a 
-                    href="#" 
-                    target="_blank" 
+                <a
+                    href="#"
+                    target="_blank"
                     rel="noopener noreferrer"
                     class="hover:scale-125 hover:opacity-70 transition inline-block"
                 >
@@ -23,17 +26,14 @@ import XIcon from "@/icons/twitterIcon.astro"
                 </a>
             </li>
             <li>
-                <a 
-                    href="#" 
-                    target="_blank" 
+                <a
+                    href="#"
+                    target="_blank"
                     rel="noopener noreferrer"
                     class="hover:scale-125 hover:opacity-70 transition inline-block"
                 >
                     <XIcon />
                 </a>
-            </li>
-            <li>
-                <ThemeToggle />
             </li>
         </ul>
     </nav>
