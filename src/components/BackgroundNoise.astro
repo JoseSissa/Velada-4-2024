@@ -1,7 +1,6 @@
 <div
     class={`
-    fixed -top-1/2 -left-1/2 -bottom-1/2 -right-1/2
-    w-[200%] h-[200vh] z-[99999]
+    fixed -inset-1/2 w-[200%] h-[200vh] z-[99999]
     pointer-events-none contrast-125 brightness-150
 `}
 >
@@ -11,11 +10,13 @@
     div {
         background: url("/images/background/noise.png");
         background-repeat: repeat;
-        background-color: transparent;
-        animation: noise 0.5s infinite;
         mix-blend-mode: multiply;
+        background-color: transparent;
+
+        animation: noise 0.5s infinite;
     }
 
+    /* Este media query sirve por si un usuario se marea con las animaciones, y las quiere desactivar desde el navegador, pues el media query entiende y las desactiva */
     @media (prefers-reduced-motion: reduce) {
         div {
             animation: none;
@@ -23,49 +24,50 @@
         }
     }
 
+    /* Se usa el translade 3d para que use la GPU del pc */
     @keyframes noise {
         0% {
-            transform: translate(0, 0);
+            transform: translate3d(0, 0, 0);
         }
 
         10% {
-            transform: translate(-5%, -5%);
+            transform: translate3d(-5%, -5%, 0);
         }
 
         20% {
-            transform: translate(-10%, 5%);
+            transform: translate3d(-10%, 5%, 0);
         }
 
         30% {
-            transform: translate(5%, -10%);
+            transform: translate3d(5%, -10%, 0);
         }
 
         40% {
-            transform: translate(-5%, 15%);
+            transform: translate3d(-5%, 15%, 0);
         }
 
         50% {
-            transform: translate(-10%, 5%);
+            transform: translate3d(-10%, 5%, 0);
         }
 
         60% {
-            transform: translate(15%, 0);
+            transform: translate3d(15%, 0, 0);
         }
 
         70% {
-            transform: translate(0, 15%);
+            transform: translate3d(0, 15%, 0);
         }
 
         80% {
-            transform: translate(10%, 5%);
+            transform: translate3d(10%, 5%, 0);
         }
 
         90% {
-            transform: translate(5%, 10%);
+            transform: translate3d(5%, 10%, 0);
         }
 
         100% {
-            transform: translate(0, 0);
+            transform: translate3d(0, 0, 0);
         }
     }
 </style>

@@ -31,8 +31,8 @@ const descriptioPage = "Proyecto Académico de La Velada Del Año 2024";
         <title>{title}</title>
     </head>
     <body>
-        <!-- <BackgroundNoise /> -->
-        <SmokeBackground />
+        <BackgroundNoise />
+        <!-- <SmokeBackground /> -->
         <div class="max-w-6xl mx-auto px-2 lg:px-10 pt-20 md:pt-32">
             <slot />
         </div>
@@ -42,17 +42,25 @@ const descriptioPage = "Proyecto Académico de La Velada Del Año 2024";
     :root {
         --color-primary: #ddd;
         --color-secondary: #333;
+        --color-accent: #d5ff00;
 
-        --background-color: #222;
+        --background-color: #101010;
         --background-twitch: var(--background-twitch-ice);
 
         --color-twitch: #9146ff;
         --color-twitch-ice: #f0f0ff;
     }
 
+    @font-face {
+        font-family: Atomic;
+        src: url("/fonts/atomic.woff2") format("woff2");
+    }
+
     html {
         font-family: "Jost Variable", system-ui, sans-serif;
         background: var(--background-color);
+        /* background: var(--background-primary); */
+        color: var(--color-primary);
         scroll-behavior: smooth;
         overflow-x: hidden;
     }
