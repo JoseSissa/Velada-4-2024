@@ -1,47 +1,122 @@
-<section class="w-full flex-col place-items-center text-center text-primary mb-32 animate-fade-in animate-delay-500">
-    <h2 class="mb-6 uppercase text-5xl font-semibold">
-        <time class="date">
-            19 de Octubre 
-        </time>
+---
+import MapMarkerIcon from "@/icons/map-market.astro";
+---
+
+<section
+    class="w-full flex-col place-items-center text-center text-primary mb-32 animate-fade-in animate-delay-300"
+>
+    <header class="mb-6 uppercase text-5xl font-semibold">
+        <time class="date"> 19 de Octubre </time>
         <span aria-hidden="true" class="hidden md:inline md:mb-2 mx-1">·</span>
-        <br aria-hidden="true" class="block md:hidden" /> 
+        <br aria-hidden="true" class="block md:hidden" />
         <time id="hour"></time>
-    </h2>
-    <h3 class="flex flex-col max-w-sm mx-auto mb-8 text-2xl font-medium uppercase">
-        <span>
-            Evento de Presentación
-        </span>
-        <span>
-            Teatro Victoria (Barcelona)
-        </span>
+    </header>
+
+    <h3 class="mb-8 text-2xl font-medium uppercase">
+        <a
+            class="flex justify-center items-center"
+            href="https://maps.app.goo.gl/F1oAFhFjqnvTKtC18"
+            target="_blank"
+            rel="noopener"
+            aria-label="Ubicación del teatro en Google maps, se abrirá en una nueva pestaña"
+        >
+            <MapMarkerIcon class="mr-1 max-md:mt-1 md:mt-0.5 md:size-6" />
+            Estadio Santiago Bernabéu.
+        </a>
     </h3>
-    <a 
-        href="#" 
-        target="_blank" 
-        rel="noopener"
-        class={`inline-block
-            px-4 py-1 border-primary border-2 font-medium text-lg 
-            hover:bg-slate-100 hover:scale-125 transition
-        `}
-    >
-        ENTRADAS AGOTADAS
-    </a>
+
+    <footer class="mt-6">
+        <div class="flex flex-col items-center justify-center gap-y-2">
+            <a
+                href="#"
+                target="_blank"
+                rel="noopener"
+                class={`inline-block px-4 py-1 border-primary border-2 font-medium text-lg hover:bg-slate-100 hover:scale-125 transition`}
+            >
+                <span>COMPRAR ENTRADAS</span>
+            </a>
+            <span class="text-accent">Próximamente</span>
+        </div>
+    </footer>
 </section>
 
 <script>
-    import { END_DATE } from "@/const/const"
-    const d = new Date(END_DATE)
-    const date = d.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: 'numeric'
-    })
+    import { END_DATE } from "@/const/const";
+    const d = new Date(END_DATE);
+    const date = d.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+    });
 
     // get current timezone
-    const tzOffSet = d.getTimezoneOffset() / 60
-    const dif = tzOffSet * -1
-    const gmt = dif > 0 ? `GMT+${dif}` : `GMT${dif}`
-    const selfScript = document.getElementById("hour")
-    if(selfScript != null) {
-        selfScript.innerHTML = `${date} ${gmt}` 
+    const tzOffSet = d.getTimezoneOffset() / 60;
+    const dif = tzOffSet * -1;
+    const gmt = dif > 0 ? `GMT+${dif}` : `GMT${dif}`;
+    const selfScript = document.getElementById("hour");
+    if (selfScript != null) {
+        selfScript.innerHTML = `${date} ${gmt}`;
     }
 </script>
+
+<style is:global>
+    .button-style {
+        background: transparent;
+        border: none;
+        padding: 10px 20px;
+        display: inline-block;
+        font-size: 20px;
+        font-weight: 600;
+        width: 20rem;
+        text-transform: uppercase;
+        cursor: pointer;
+        transform: skew(-21deg);
+        color: var(--color-primary);
+        border: 2px solid var(--color-primary);
+    }
+
+    .button-style[aria-disabled="true"] {
+        background: #666;
+        color: #111;
+        pointer-events: none;
+        border-color: #666;
+    }
+
+    .button-style > span {
+        display: inline-block;
+        transform: skew(21deg);
+    }
+
+    .button-style::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 100%;
+        left: 0;
+        background: var(--color-primary);
+        opacity: 0;
+        z-index: -1;
+    }
+
+    .button-style:hover {
+        color: var(--color-secondary);
+        scale: 1.1;
+        transform: skew(-21deg);
+    }
+
+    .button-style:hover::before {
+        left: 0;
+        right: 0;
+        opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        .button-style {
+            transition: scale 150ms ease-in-out;
+        }
+
+        .button-style::before {
+            transition: all 0.5s;
+        }
+    }
+</style>
