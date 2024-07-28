@@ -49,19 +49,31 @@ const SPONSORS = [
 ---
 
 <section class="my-40">
-    <h3 class="font-atomic text-5xl text-white">Los Patrocinadores</h3>
-    <p class="mt-4 text-xl text-neutral-300">
+    <h3 class="font-atomic text-5xl text-white text-center">
+        Los Patrocinadores
+    </h3>
+    <p class="mt-4 text-xl text-neutral-300 text-center">
         La Velada puede llevarse a cabo gracias a la colaboración de ...
     </p>
 
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+    <div class="mt-12 grid grid-cols-2 md:grid-cols-3 gap-8">
         {
-            SPONSORS.map(({ id, name, url }) => {
+            SPONSORS.map(({ id, name, url }) => (
                 <a
+                    class="group flex justify-center items-center h-24 md:h-32 bg-gradient-to-b from-white/20 via-transparent to-transparent"
                     title={`Visita la página del patrocinador ${name}`}
                     href={url}
-                />;
-            })
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <img
+                        class="w-30 h-auto group-hover:scale-110 transition-transform"
+                        src={`/images/sponsors/${id}.svg`}
+                        alt={`Logo del patrocinador ${name}`}
+                        loading="lazy"
+                    />
+                </a>
+            ))
         }
     </div>
 </section>
