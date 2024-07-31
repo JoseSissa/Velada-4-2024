@@ -1,0 +1,167 @@
+---
+import { BOXERS } from "@/const/boxers";
+import { COUNTRIES } from "@/const/countries";
+
+const listOfBoxers = BOXERS.map((boxer) => {
+    const { country } = boxer;
+    const countryName = COUNTRIES[country]?.name || "";
+    return { ...boxer, countryName };
+});
+---
+
+<section class="my-40">
+    <h3 class="text-center text-5xl font-atomic text-accent">
+        ELIGE TU LUCHADOR
+    </h3>
+
+    <div class="mt-40 flex flex-col items-center justify-center gap-8">
+        <article class="relative w-full flex flex-col items-center justify-center">
+            <header class="boxer-container relative w-full flex flex-col justify-center items-center">
+                <img
+                    class="boxer-photo w-[480px] h-[800px] object-contain"
+                    alt="Fotografía de El Mariana"
+                    src="/images/boxers/el-mariana-big.webp"
+                />
+                <img
+                    class="boxer-title absolute bottom-20 w-[480px] h-auto"
+                    alt="Fotografía de El Mariana"
+                    src="/images/boxers/el-mariana-title.webp"
+                />
+                <img
+                    class="boxer-flag w-24 h-20 object-contain object-center"
+                    alt="Fotografía de El Mariana"
+                    src="/images/flags/mx.webp"
+                />
+            </header>
+            <footer class="absolute bottom-0 flex justify-between w-full text-white text-center">
+                <div class="flex flex-col gap-y-2">
+                    <h4 class="text-2xl">País</h4>
+                    <p class="text-lg font-bold">Mexico</p>
+                    <a href="#" class="mt-10 font-semibold text-accent"
+                        >Ver Combate</a
+                    >
+                </div>
+                <div class="flex flex-col gap-y-2">
+                    <h4 class="text-2xl">Peso</h4>
+                    <p class="text-lg font-bold">60 kg</p>
+                    <a href="#" class="mt-10 font-semibold text-accent"
+                        >Ver Perfil</a
+                    >
+                </div>
+            </footer>
+        </article>
+        <aside class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-8">
+            {
+                listOfBoxers.map(({ id, name, country, countryName }) => (
+                    <a
+                        class="boxer-link group relative flex justify-center items-center h-20"
+                        title={`Visita la página del boxeador ${name}`}
+                        rel="noopener noreferrer"
+                        data-id={id}
+                        data-name={name}
+                        data-country={country}
+                        data-country-name={countryName}
+                    >
+                        <img
+                            class="boxer-image -mt-20 w-full object-contain px-2"
+                            src={`/images/boxers/${id}-small.webp`}
+                            alt={`Foto en pequeño del boxeador ${name}`}
+                            loading="lazy"
+                        />
+                    </a>
+                ))
+            }
+        </aside>
+    </div>
+</section>
+
+<script>
+    const boxerLinks = document.querySelectorAll(".boxer-link")
+    const boxerTitle = document.querySelector(".boxer-title") as HTMLImageElement
+    const boxerPhoto = document.querySelector(".boxer-photo") as HTMLImageElement
+    const boxerCountry = document.querySelector(".boxer-flag") as HTMLImageElement
+
+
+    boxerLinks.forEach((link) => {
+        link.addEventListener('mouseenter', (e) => {
+            const { id, name, country, countryName } = e.currentTarget?.dataset
+
+            const boxerSrc = `/images/boxers/${id}-big.webp`
+            const titleSrc = `/images/boxers/${id}-title.webp`
+        
+            boxerPhoto.src = boxerSrc
+            boxerTitle.src = titleSrc
+            boxerCountry.src = `/images/flags/${country}.webp`
+        
+            boxerPhoto.alt = `Fotografía de ${name}`
+            boxerTitle.alt = name
+            boxerCountry.alt = `Bandera de ${countryName}`
+        })
+    })
+</script>
+
+<style>
+    .boxer-container {
+        background-image: url('/images/background/boxer-background.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 75%;
+    }
+
+    .boxer-link {
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.1) 0%,
+            transparent 40%,
+            transparent 100%
+        );
+        transition: all 0.5s ease;
+    }
+
+    .boxer-link::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        display: block;
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.2) 0%,
+            transparent 40%,
+            transparent 100%
+        );
+        opacity: 0;
+        height: 50%;
+        transition:
+            opacity 0.2s ease-in-out,
+            height 0.2s ease-in-out;
+    }
+
+    .boxer-link:hover::before {
+        opacity: 0.8;
+        height: 90%;
+        box-shadow: 0 0px 3px rgba(50, 50, 50, 0.75);
+    }
+
+    .boxer-image {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .boxer-link:hover .boxer-image {
+        transform: scale(1.1);
+    }
+
+    aside {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-auto-rows: 40px;
+
+        a {
+            grid-column: span 2;
+
+            &:nth-child(11n + 7) {
+                grid-column-start: 2;
+                grid-column-end: 4;
+            }
+        }
+    }
+</style>
