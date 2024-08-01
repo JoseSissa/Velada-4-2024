@@ -1,23 +1,39 @@
 ---
 import HeroLogo from "@/components/HeroLogo.astro";
+import AnimatedX from "@/components/AnimatedX.astro";
 ---
 
 <section class="flex flex-col place-items-center mb-32">
     <h1 class="sr-only">Presentación de la velada del año IV</h1>
     <h2 class="font-atomic text-4xl -rotate-6 text-white">twitch.tv/ibai</h2>
-    <div class="relative w-full">
-        <img
-            class="absolute inset-0 -z-10 m-auto w-[700px]"
-            src="/images/icons/drawn-x-logo.png"
-            alt="Logo dibujado a mano de la velada del año IV"
-        />
-        <div
-            class="absolute inset-0 -z-10 m-auto size-[300px] rounded-full blur-3xl bg-black opacity-70"
-        >
-        </div>
-        <HeroLogo class="w-[300px] md:w-[500px] h-auto m-auto" />
+    <div class="relative">
+		<AnimatedX />
+		<div
+			class="absolute inset-0 -z-10 m-auto w-full rounded-full bg-black opacity-70 blur-2xl md:size-[400px]"
+		>
+		</div>
+		<HeroLogo class="h-auto w-[250px] overflow-visible md:w-[500px]" />
         <HeroLogo
-            class="absolute inset-0 h-auto m-auto md:w-[500px] -z-10 text-[#D5FF00] blur w-[300px]"
+            class="absolute inset-0 w-[250px] md:w-[500px] h-auto m-auto -z-10 text-[#D5FF00] blur"
         />
-    </div>
+	</div>
 </section>
+
+<style>
+	a::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		bottom: -2px;
+		width: 100%;
+		height: 3px;
+		background-color: white;
+		transform-origin: left;
+		transform: scaleX(0);
+		transition: transform 0.2s ease-in-out;
+	}
+
+	a:hover::before {
+		transform: scaleX(1);
+	}
+</style>
