@@ -1,8 +1,8 @@
 ---
 // Supports weights 100-900
 import "@fontsource-variable/jost";
-import BackgroundNoise from "@/components/BackgroundNoise.astro";
-import SmokeBackground from "@/components/SmokeBackground.astro";
+import NoiseStatic from "@/components/backgrounds/NoiseStatic.astro";
+import LightBackground from "@/components/backgrounds/LightBackground.astro";
 
 interface Props {
     title: string;
@@ -31,8 +31,8 @@ const descriptioPage = "Proyecto Académico de La Velada Del Año 2024";
         <title>{title}</title>
     </head>
     <body>
-        <BackgroundNoise />
-        <!-- <SmokeBackground /> -->
+        <LightBackground />
+        <NoiseStatic />
         <div class="max-w-6xl mx-auto px-2 lg:px-10 pt-20 md:pt-32">
             <slot />
         </div>
@@ -42,9 +42,10 @@ const descriptioPage = "Proyecto Académico de La Velada Del Año 2024";
     :root {
         --color-primary: #ddd;
         --color-secondary: #333;
-        --color-accent: #d5ff00;
+        --color-accent: #b4cd02;
 
-        --background-color: #101010;
+        --color-accent-rgb: 213, 255, 0;
+        --background-color: #141800;
         --background-twitch: var(--background-twitch-ice);
 
         --color-twitch: #9146ff;
