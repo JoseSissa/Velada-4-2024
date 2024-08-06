@@ -48,12 +48,12 @@ const columnOfBoxers = [
             </div>
         </article>
         <div class="w-full flex justify-between">
-            <nav class="flex">
+            <nav class="flex gap-4">
                 <BoxerColumn listOfBoxers={columnOfBoxers[0]} />
-                <BoxerColumn listOfBoxers={columnOfBoxers[1]} className="mt-12" />
+                <BoxerColumn listOfBoxers={columnOfBoxers[1]} className="mt-12 rey-pista" />
             </nav>
-            <nav class="flex">
-                <BoxerColumn listOfBoxers={columnOfBoxers[2]} className="mt-12" />
+            <nav class="flex gap-4">
+                <BoxerColumn listOfBoxers={columnOfBoxers[2]} className="mt-12 rey-pista" />
                 <BoxerColumn listOfBoxers={columnOfBoxers[3]} />
             </nav>
         </div>
@@ -61,6 +61,7 @@ const columnOfBoxers = [
 </section>
 
 <script>
+    const reyPista = document.querySelectorAll(".rey-pista")
     const boxerLinks = document.querySelectorAll(".boxer-link")
     const boxerPicture = document.querySelector(".boxer-photo") as HTMLPictureElement
     const boxerCountry = document.querySelector(".boxer-flag") as HTMLImageElement
@@ -88,6 +89,21 @@ const columnOfBoxers = [
             
             boxerCountry.src = `/images/flags/${country}.webp`
             boxerCountry.alt = `Bandera de ${countryName}`
+        })
+    })
+
+    reyPista.forEach((column) => {
+        column.addEventListener('mouseenter', (event) => {
+            console.log(reyPista);
+            reyPista[0].classList.add('scale-group')
+            reyPista[1].classList.add('scale-group')
+        })
+    })
+    reyPista.forEach((column) => {
+        column.addEventListener('mouseleave', (event) => {
+            console.log(reyPista);
+            reyPista[0].classList.remove('scale-group')
+            reyPista[1].classList.remove('scale-group')
         })
     })
 </script>
