@@ -1,100 +1,92 @@
 ---
+import BoxerColumn from "@/components/BoxerColumn.astro";
 import { BOXERS } from "@/const/boxers";
 import { COUNTRIES } from "@/const/countries";
+
+console.log(BOXERS.length);
+
 
 const listOfBoxers = BOXERS.map((boxer) => {
     const { country } = boxer;
     const countryName = COUNTRIES[country]?.name || "";
     return { ...boxer, countryName };
 });
+
+const columnOfBoxers = [
+    listOfBoxers.slice(0, 6),
+    listOfBoxers.slice(6, 11),
+    listOfBoxers.slice(11, 16),
+    listOfBoxers.slice(16, 22)
+]
 ---
 
 <section class="my-40">
     <h3 class="text-center text-5xl font-atomic text-accent">
         ELIGE TU LUCHADOR
     </h3>
+    <p class="mt-4 text-xl text-center">Conoce los detalles de cada boxeador</p>
 
-    <div class="mt-40 flex flex-col items-center justify-center gap-8">
-        <article class="relative w-full flex flex-col items-center justify-center">
-            <header class="boxer-container relative w-full flex flex-col justify-center items-center">
+    <div class="mt-40 flex flex-col items-center justify-center">
+        <article class="relative md:absolute w-full flex flex-col items-center justify-center">        
+            <picture class="boxer-photo">
+                <source srcset="/images/boxers/grande/el-mariana-big.avif" type="image/avif">
                 <img
-                    class="boxer-photo w-[480px] h-[800px] object-contain"
+                    class="w-[480px] h-[800px] object-contain"
                     alt="Fotografía de El Mariana"
-                    src="/images/boxers/el-mariana-big.webp"
+                    src="/images/boxers/grande/el-mariana-big.webp"
                 />
+            </picture>
+            <div class="flex flex-col items-center">
+                <h4 class="text-6xl md:text-8xl mb-4 font-atomic lowercase text-accent boxer-title -skew-y-6 text-center">
+                    <a href="" class="boxer-name">El Mariana</a>
+                </h4>
                 <img
-                    class="boxer-title absolute bottom-20 w-[480px] h-auto"
-                    alt="Fotografía de El Mariana"
-                    src="/images/boxers/el-mariana-title.webp"
-                />
-                <img
-                    class="boxer-flag w-24 h-20 object-contain object-center"
+                    class="boxer-flag pointer-events-none aspect-[3/2] h-auto w-28 object-contain object-center"
                     alt="Fotografía de El Mariana"
                     src="/images/flags/mx.webp"
                 />
-            </header>
-            <footer class="absolute bottom-0 flex justify-between w-full text-white text-center">
-                <div class="flex flex-col gap-y-2">
-                    <h4 class="text-2xl">País</h4>
-                    <p class="text-lg font-bold">Mexico</p>
-                    <a href="#" class="mt-10 font-semibold text-accent"
-                        >Ver Combate</a
-                    >
-                </div>
-                <div class="flex flex-col gap-y-2">
-                    <h4 class="text-2xl">Peso</h4>
-                    <p class="text-lg font-bold">60 kg</p>
-                    <a href="#" class="mt-10 font-semibold text-accent"
-                        >Ver Perfil</a
-                    >
-                </div>
-            </footer>
+            </div>
         </article>
-        <aside class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-8">
-            {
-                listOfBoxers.map(({ id, name, country, countryName }) => (
-                    <a
-                        class="boxer-link group relative flex justify-center items-center h-20"
-                        title={`Visita la página del boxeador ${name}`}
-                        rel="noopener noreferrer"
-                        data-id={id}
-                        data-name={name}
-                        data-country={country}
-                        data-country-name={countryName}
-                    >
-                        <img
-                            class="boxer-image -mt-20 w-full object-contain px-2"
-                            src={`/images/boxers/${id}-small.webp`}
-                            alt={`Foto en pequeño del boxeador ${name}`}
-                            loading="lazy"
-                        />
-                    </a>
-                ))
-            }
-        </aside>
+        <div class="w-full flex justify-between">
+            <nav class="flex">
+                <BoxerColumn listOfBoxers={columnOfBoxers[0]} />
+                <BoxerColumn listOfBoxers={columnOfBoxers[1]} className="mt-12" />
+            </nav>
+            <nav class="flex">
+                <BoxerColumn listOfBoxers={columnOfBoxers[2]} className="mt-12" />
+                <BoxerColumn listOfBoxers={columnOfBoxers[3]} />
+            </nav>
+        </div>
     </div>
 </section>
 
 <script>
     const boxerLinks = document.querySelectorAll(".boxer-link")
-    const boxerTitle = document.querySelector(".boxer-title") as HTMLImageElement
-    const boxerPhoto = document.querySelector(".boxer-photo") as HTMLImageElement
+    const boxerPicture = document.querySelector(".boxer-photo") as HTMLPictureElement
     const boxerCountry = document.querySelector(".boxer-flag") as HTMLImageElement
+    const boxerName = document.querySelector(".boxer-name") as HTMLAnchorElement
 
 
     boxerLinks.forEach((link) => {
-        link.addEventListener('mouseenter', (e) => {
-            const { id, name, country, countryName } = e.currentTarget?.dataset
+        link.addEventListener('mouseenter', (event) => {
+            const currentTarget = event.currentTarget as HTMLElement
+            const { id, name, country, countryName } = currentTarget?.dataset
 
-            const boxerSrc = `/images/boxers/${id}-big.webp`
-            const titleSrc = `/images/boxers/${id}-title.webp`
+            const boxerSrc = `/images/boxers/grande/${id}-big` 
         
-            boxerPhoto.src = boxerSrc
-            boxerTitle.src = titleSrc
+            const pictureSource = boxerPicture.children[0] as HTMLSourceElement;
+            const imgPicture = boxerPicture.children[1] as HTMLImageElement;
+
+            pictureSource.srcset = `${boxerSrc}.avif`;
+            imgPicture.src = `${boxerSrc}.webp`;
+            imgPicture.alt = `Fotografía en grande de ${name}`
+
+            if(name) {
+                boxerName.textContent = name
+            }
+            
+            
             boxerCountry.src = `/images/flags/${country}.webp`
-        
-            boxerPhoto.alt = `Fotografía de ${name}`
-            boxerTitle.alt = name
             boxerCountry.alt = `Bandera de ${countryName}`
         })
     })
@@ -106,6 +98,11 @@ const listOfBoxers = BOXERS.map((boxer) => {
         background-repeat: no-repeat;
         background-position: center;
         background-size: 75%;
+    }
+
+    .boxer-photo img {
+        filter: drop-shadow(0 0 5px rgba(0, 0, 0, .5));
+        mask-image: linear-gradient(to bottom,black 70%,transparent 95%)
     }
 
     .boxer-link {
@@ -148,20 +145,5 @@ const listOfBoxers = BOXERS.map((boxer) => {
 
     .boxer-link:hover .boxer-image {
         transform: scale(1.1);
-    }
-
-    aside {
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        grid-auto-rows: 40px;
-
-        a {
-            grid-column: span 2;
-
-            &:nth-child(11n + 7) {
-                grid-column-start: 2;
-                grid-column-end: 4;
-            }
-        }
     }
 </style>

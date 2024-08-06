@@ -1,0 +1,37 @@
+---
+import type { Boxer } from "@/types/Boxer"
+const { listOfBoxers, className } = Astro.props
+
+interface Props {
+	listOfBoxers: Boxer[],
+    className?: string
+}
+---
+
+<div class={className}>
+    {
+        listOfBoxers.map(({ id, name, rotate, country }) => (
+        <a
+            class="boxer-link group w-36 h-36 mb-2 relative flex justify-center items-center"
+            title={`Visita la página del boxeador ${name}`}
+            rel="noopener noreferrer"
+            data-id={id}
+            data-name={name}
+            data-country={country}
+        >
+            <img
+                class={`boxer-image -mt-20 w-full object-contain ${rotate ? 'rotate-y-180' : ''}`}
+                src={`/images/boxers/${id}-small.webp`}
+                alt={`Foto en pequeño del boxeador ${name}`}
+                loading="lazy"
+            />
+        </a>
+        ))
+    }
+</div>
+
+<style>
+    .rotate-y-180 {
+        transform: rotateY(180deg);
+    }
+</style>
