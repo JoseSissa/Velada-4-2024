@@ -50,10 +50,10 @@ const columnOfBoxers = [
         <div class="w-full flex justify-between">
             <nav class="flex gap-4">
                 <BoxerColumn listOfBoxers={columnOfBoxers[0]} />
-                <BoxerColumn listOfBoxers={columnOfBoxers[1]} className="mt-12 rey-pista" />
+                <BoxerColumn listOfBoxers={columnOfBoxers[1]} className="mt-12" reyDeLaPista={true} />
             </nav>
             <nav class="flex gap-4">
-                <BoxerColumn listOfBoxers={columnOfBoxers[2]} className="mt-12 rey-pista" />
+                <BoxerColumn listOfBoxers={columnOfBoxers[2]} className="mt-12" reyDeLaPista={true} />
                 <BoxerColumn listOfBoxers={columnOfBoxers[3]} />
             </nav>
         </div>
@@ -61,7 +61,7 @@ const columnOfBoxers = [
 </section>
 
 <script>
-    const reyPista = document.querySelectorAll(".rey-pista")
+    const reyPista = document.querySelectorAll(".aumentar")
     const boxerLinks = document.querySelectorAll(".boxer-link")
     const boxerPicture = document.querySelector(".boxer-photo") as HTMLPictureElement
     const boxerCountry = document.querySelector(".boxer-flag") as HTMLImageElement
@@ -92,20 +92,18 @@ const columnOfBoxers = [
         })
     })
 
-    reyPista.forEach((column) => {
-        column.addEventListener('mouseenter', (event) => {
-            console.log(reyPista);
-            reyPista[0].classList.add('scale-group')
-            reyPista[1].classList.add('scale-group')
-        })
+    function addHoverReyDeLaPista () {
+        reyPista.forEach(elem => (elem.classList.add('hovered')))
+    }
+    function removeHoverReyDeLaPista () {
+        reyPista.forEach(elem => (elem.classList.remove('hovered')))
+    }
+
+    reyPista.forEach(elem => {
+        elem.addEventListener('mouseenter', addHoverReyDeLaPista)
+        elem.addEventListener('mouseleave', removeHoverReyDeLaPista)
     })
-    reyPista.forEach((column) => {
-        column.addEventListener('mouseleave', (event) => {
-            console.log(reyPista);
-            reyPista[0].classList.remove('scale-group')
-            reyPista[1].classList.remove('scale-group')
-        })
-    })
+
 </script>
 
 <style>

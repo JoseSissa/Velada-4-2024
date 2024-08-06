@@ -1,11 +1,12 @@
 ---
 import type { Boxer } from "@/types/Boxer"
-const { listOfBoxers, className } = Astro.props
-
 interface Props {
 	listOfBoxers: Boxer[],
-    className?: string
+    className?: string,
+    reyDeLaPista?: boolean
 }
+
+const { listOfBoxers, className, reyDeLaPista } = Astro.props
 ---
 
 <div class={className}>
@@ -21,7 +22,7 @@ interface Props {
         >
             <div class="boxer-link-background" />
             <img
-                class={`boxer-image -mt-20 w-full object-contain grayscale group-hover:grayscale-0 ${rotate ? 'rotate-y-180' : ''}`}
+                class={`boxer-image -mt-20 w-full object-contain grayscale group-hover:grayscale-0 ${rotate ? 'rotate-y-180' : ''} ${reyDeLaPista ? 'aumentar' : ''}`}
                 src={`/images/boxers/${id}-small.webp`}
                 alt={`Foto en pequeño del boxeador ${name}`}
                 loading="lazy"
@@ -53,5 +54,8 @@ interface Props {
         transition-timing-function: cubic-bezier(0.4,0,0.2,1);
         background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.5) 30%, rgba(0, 0, 0, 0) 95%);
         z-index: -1;
+    }
+    .hovered {
+        scale: 1.05;
     }
 </style>
