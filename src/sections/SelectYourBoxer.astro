@@ -23,19 +23,19 @@ const columnOfBoxers = [
     </h3>
     <p class="mt-4 text-xl text-center">Conoce los detalles de cada boxeador</p>
 
-    <div class="mt-40 flex flex-col items-center justify-center">
+    <div class="md:mt-40 flex flex-col items-center justify-center">
         <article
             class="relative md:absolute w-full flex flex-col items-center justify-center"
         >
-            <picture class="boxer-photo">
+            <picture class="boxer-photo max-w-[70%] md:max-w-[460px]">
                 <source srcset="/images/boxers/grande/el-mariana-big.avif" type="image/avif"/>
                 <img
-                    class="w-[480px] h-[800px] object-contain"
+                    class="w-full h-auto object-contain aspect-[285/428]"
                     alt="Fotografía de El Mariana"
                     src="/images/boxers/grande/el-mariana-big.webp"
                 />
             </picture>
-            <div class="flex flex-col items-center">
+            <div class="absolute bottom-10 md:bottom-0 flex flex-col items-center">
                 <h4 class="text-6xl md:text-8xl mb-4 font-atomic lowercase text-accent boxer-title -skew-y-6 text-center">
                     <a href="" class="boxer-name">El Mariana</a>
                 </h4>
@@ -46,7 +46,7 @@ const columnOfBoxers = [
                 />
             </div>
         </article>
-        <div class="w-full flex justify-between">
+        <div class="w-full hidden md:flex justify-between">
             <nav class="flex gap-4">
                 <BoxerColumn listOfBoxers={columnOfBoxers[0]} />
                 <BoxerColumn
