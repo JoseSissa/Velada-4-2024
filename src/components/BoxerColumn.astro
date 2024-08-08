@@ -1,61 +1,81 @@
 ---
-import type { Boxer } from "@/types/Boxer"
+import type { Boxer } from "@/types/Boxer";
 interface Props {
-	listOfBoxers: Boxer[],
-    className?: string,
-    reyDeLaPista?: boolean
+    listOfBoxers: Boxer[];
+    className?: string;
+    reyDeLaPista?: boolean;
 }
 
-const { listOfBoxers, className, reyDeLaPista } = Astro.props
+const { listOfBoxers, className, reyDeLaPista } = Astro.props;
 ---
 
 <div class={className}>
     {
-        listOfBoxers.map(({ id, name, rotate, country }) => (
-        <a
-            class="boxer-link group relative w-36 h-36 mb-2 flex justify-center items-center cursor-pointer z-0"
-            title={`Visita la página del boxeador ${name}`}
-            rel="noopener noreferrer"
-            data-id={id}
-            data-name={name}
-            data-country={country}
-        >
-            <div class="boxer-link-background" />
-            <img
-                class={`boxer-image -mt-20 w-full object-contain grayscale group-hover:grayscale-0 ${rotate ? 'rotate-y-180' : ''} ${reyDeLaPista ? 'aumentar' : ''}`}
-                src={`/images/boxers/${id}-small.webp`}
-                alt={`Foto en pequeño del boxeador ${name}`}
-                loading="lazy"
-            />
-        </a>
+        listOfBoxers.map(({ id, name, versus, rotate, country }) => (
+            <a
+                class={`boxer-link group relative w-36 h-36 mb-2 flex justify-center items-center cursor-pointer z-0 ${reyDeLaPista ? "rey-de-la-pista" : ""}`}
+                title={`Visita la página del boxeador ${name}`}
+                rel="noopener noreferrer"
+                data-id={id}
+                data-name={name}
+                data-country={country}
+                data-versus={versus}
+            >
+                <div class="boxer-link-background" />
+                <img
+                    class={`boxer-image w-full object-contain grayscale group-hover:grayscale-0 ${rotate ? "rotate-y-180" : ""}`}
+                    src={`/images/boxers/${id}-small.webp`}
+                    alt={`Foto en pequeño del boxeador ${name}`}
+                    loading="lazy"
+                />
+            </a>
         ))
     }
 </div>
 
 <style>
-    .boxer-image {
-        transition: filter 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .rotate-y-180 {
-        transform: rotateY(180deg);
-    }
-    .boxer-image:hover {
-        scale: 1.05;
-    }
     .boxer-link-background {
         position: absolute;
-        bottom: 30px;
+        bottom: 0px;
         display: block;
         height: 60%;
         width: 100%;
         opacity: 0.25;
         transition-property: opacity;
         transition-duration: 300ms;
-        transition-timing-function: cubic-bezier(0.4,0,0.2,1);
-        background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.5) 30%, rgba(0, 0, 0, 0) 95%);
-        z-index: -1;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 1) 0%,
+            rgba(255, 255, 255, 0.5) 30%,
+            rgba(0, 0, 0, 0) 95%
+        );
     }
-    .hovered {
+    .boxer-image {
+        transition: filter 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+    }
+    .boxer-image:hover {
         scale: 1.05;
     }
+    .opponent {
+        scale: 1.05;
+    }
+    .opponent::after {
+        content: "versus";
+        pointer-events: none;
+        position: absolute;
+        bottom: 0px;
+        z-index: 50;
+        font-family: Atomic, cursive;
+        font-size: 1.5rem;
+        line-height: 2rem;
+        --tw-text-opacity: 1;
+        color: rgb(239 68 68 / var(--tw-text-opacity));
+        text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        z-index: 10;
+    }
+    .rotate-y-180 {
+        transform: rotateY(180deg);
+    } 
 </style>
