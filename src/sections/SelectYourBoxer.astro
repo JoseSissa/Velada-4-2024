@@ -74,6 +74,7 @@ const columnOfBoxers = [
     const boxerCountry = document.querySelector(".boxer-flag") as HTMLImageElement;
     const boxerName = document.querySelector(".boxer-name") as HTMLAnchorElement;
     let previewTarget = undefined as unknown
+    let previewAlly = undefined as unknown
 
     const toggleBoxerDefault = () => {
         const imageBoxerDefault = boxerLinks[0].querySelector("img")
@@ -113,11 +114,16 @@ const columnOfBoxers = [
         currentTarget.classList.remove("opponent");
     }
 
+    const toggleBoxerAlly = (allies: string) => {
+        const ally = document.querySelector(`[data-id="${allies}"]`)
+        ally?.classList.toggle("ally")
+    }
+
     boxerLinks.forEach((link) => {        
         link.addEventListener("mouseenter", (event) => {            
             const currentTarget = event.currentTarget as HTMLElement;
             
-            const { id, name, versus, country, countryName } = currentTarget?.dataset;
+            const { id, name, versus, country, countryName, allies } = currentTarget?.dataset;
 
             previewTarget !== undefined 
                 ? removeAllBoxerSelected(previewTarget as HTMLElement) 
@@ -130,8 +136,19 @@ const columnOfBoxers = [
                 multipleVersus.forEach((versus) => {
                     addVersusWordOpponent(currentTarget, versus)
                 });
+                
+                if(previewAlly !== undefined) {
+                    toggleBoxerAlly(previewAlly as string)
+                }
+                toggleBoxerAlly(allies as string)
+                previewAlly = allies
+                
             } else {
                 addVersusWordOpponent(currentTarget, versus as string)
+                if(previewAlly !== undefined) {
+                    toggleBoxerAlly(previewAlly as string)
+                    previewAlly = undefined
+                }
             }
             
             // Change big image of boxer

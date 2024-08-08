@@ -11,7 +11,7 @@ const { listOfBoxers, className, reyDeLaPista } = Astro.props;
 
 <div class={className}>
     {
-        listOfBoxers.map(({ id, name, versus, rotate, country, countryName }) => (
+        listOfBoxers.map(({ id, name, versus, rotate, country, countryName, allies }) => (
             <a
                 class={`boxer-link group relative w-36 h-36 mb-2 flex justify-center items-center cursor-pointer z-0 ${reyDeLaPista ? "rey-de-la-pista" : ""}`}
                 title={`Visita la página del boxeador ${name}`}
@@ -21,6 +21,7 @@ const { listOfBoxers, className, reyDeLaPista } = Astro.props;
                 data-country={country}
                 data-country-name={countryName}
                 data-versus={versus}
+                data-allies={allies}
             >
                 <div class="boxer-link-background" />
                 <img
@@ -57,10 +58,10 @@ const { listOfBoxers, className, reyDeLaPista } = Astro.props;
         mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
     }
     .zoom-image {
-        scale: 1.5;
+        scale: 1.05;
     }
     .opponent img {
-        scale: 1.5;
+        scale: 1.05;
     }
     .opponent::after {
         content: "versus";
@@ -78,5 +79,16 @@ const { listOfBoxers, className, reyDeLaPista } = Astro.props;
     }
     .rotate-y-180 {
         transform: rotateY(180deg);
+    }
+
+    .ally {
+        & img {
+            scale: 1.05;
+        }
+        &::after {
+            content: "aliada";
+            @apply pointer-events-none absolute bottom-0 z-50 font-atomic text-2xl text-green-500;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
     }
 </style>
