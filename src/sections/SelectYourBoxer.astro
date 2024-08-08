@@ -75,6 +75,16 @@ const columnOfBoxers = [
     const boxerName = document.querySelector(".boxer-name") as HTMLAnchorElement;
     let previewTarget = undefined as unknown
 
+    const toggleBoxerDefault = () => {
+        const imageBoxerDefault = boxerLinks[0].querySelector("img")
+        const opponentDefaultId = boxerLinks[0].getAttribute("data-versus")
+        const opponentDefault = document.querySelector(`[data-id="${opponentDefaultId}"]`)
+
+        imageBoxerDefault?.classList.toggle("grayscale-0")
+        imageBoxerDefault?.classList.toggle("zoom-image")
+        opponentDefault?.classList.toggle("opponent")        
+    }
+
     const addVersusWordOpponent = (currentTarget: HTMLElement, idOpponent: string) => {
         const boxerVersus = document.querySelector(`[data-id="${idOpponent}"]`);
         boxerVersus?.classList.add("opponent");
@@ -82,15 +92,6 @@ const columnOfBoxers = [
         const imageDefault = currentTarget.querySelector("img")
         imageDefault?.classList.add("grayscale-0", "zoom-image")
         return
-    }
-
-    const removeBoxerSelectedDefault = () => {
-        const imageDefault = boxerLinks[0].querySelector("img")
-        const opponentId = boxerLinks[0].getAttribute("data-versus")
-        const opponent = Object.values(boxerLinks).find(boxer => boxer.getAttribute("data-id") == opponentId)
-
-        imageDefault?.classList.remove("grayscale-0", "zoom-image")
-        opponent?.classList.remove("opponent")
     }
 
     const removeAllBoxerSelected = (currentTarget: HTMLElement) => {
@@ -118,24 +119,22 @@ const columnOfBoxers = [
             
             const { id, name, versus, country, countryName } = currentTarget?.dataset;
 
-            if(id !== "el-mariana") {
-                removeBoxerSelectedDefault()
-            }            
-            previewTarget !== undefined ? removeAllBoxerSelected(previewTarget as HTMLElement) : ''
+            previewTarget !== undefined 
+                ? removeAllBoxerSelected(previewTarget as HTMLElement) 
+                : toggleBoxerDefault()
             previewTarget = currentTarget            
 
             // Add and remove sentence VERSUS of opponents
             if (versus?.includes(",")) {
                 const multipleVersus = versus.split(",");
-                multipleVersus.forEach((element) => {
-                    addVersusWordOpponent(currentTarget, element)
+                multipleVersus.forEach((versus) => {
+                    addVersusWordOpponent(currentTarget, versus)
                 });
             } else {
                 addVersusWordOpponent(currentTarget, versus as string)
             }
-
-
             
+            // Change big image of boxer
             const boxerSrc = `/images/boxers/grande/${id}-big`;
             const pictureSource = boxerPicture.children[0] as HTMLSourceElement;
             const imgPicture = boxerPicture.children[1] as HTMLImageElement;
@@ -159,16 +158,7 @@ const columnOfBoxers = [
         });
     });
 
-    const boxerSelectedDefault = () => {
-        const imageDefault = boxerLinks[0].querySelector("img")
-        const opponentId = boxerLinks[0].getAttribute("data-versus")
-        const opponent = Object.values(boxerLinks).find(boxer => boxer.getAttribute("data-id") == opponentId)
-
-        imageDefault?.classList.add("grayscale-0", "zoom-image")
-        opponent?.classList.add("opponent")
-        
-    }
-    boxerSelectedDefault()
+    toggleBoxerDefault()
 </script>
 
 <style>
