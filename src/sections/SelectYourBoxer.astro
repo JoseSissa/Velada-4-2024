@@ -73,36 +73,72 @@ const columnOfBoxers = [
     const boxerPicture = document.querySelector(".boxer-photo") as HTMLPictureElement;
     const boxerCountry = document.querySelector(".boxer-flag") as HTMLImageElement;
     const boxerName = document.querySelector(".boxer-name") as HTMLAnchorElement;
+    let previewTarget = undefined as unknown
 
-    const addVersusWordOpponent = (idOpponent: string) => {
+    const addVersusWordOpponent = (currentTarget: HTMLElement, idOpponent: string) => {
         const boxerVersus = document.querySelector(`[data-id="${idOpponent}"]`);
         boxerVersus?.classList.add("opponent");
-        return
-    }
-    const removeVersusWordOpponent = (idOpponent: string) => {
-        const boxerVersus = document.querySelector(`[data-id="${idOpponent}"]`);
-        boxerVersus?.classList.remove("opponent");
+
+        const imageDefault = currentTarget.querySelector("img")
+        imageDefault?.classList.add("grayscale-0", "zoom-image")
         return
     }
 
-    boxerLinks.forEach((link) => {
-        link.addEventListener("mouseenter", (event) => {
+    const removeBoxerSelectedDefault = () => {
+        const imageDefault = boxerLinks[0].querySelector("img")
+        const opponentId = boxerLinks[0].getAttribute("data-versus")
+        const opponent = Object.values(boxerLinks).find(boxer => boxer.getAttribute("data-id") == opponentId)
+
+        imageDefault?.classList.remove("grayscale-0", "zoom-image")
+        opponent?.classList.remove("opponent")
+    }
+
+    const removeAllBoxerSelected = (currentTarget: HTMLElement) => {
+        const imageDefault = currentTarget.querySelector("img")
+        imageDefault?.classList.remove("grayscale-0", "zoom-image")
+        
+        boxerLinks.forEach((boxer) => {
+            if(boxer.classList.contains("opponent")) {
+                boxer.classList.remove("opponent")
+            }
+        })
+    }
+
+    const addHoverReyDeLaPista = (e: Event) => {
+        const currentTarget = e.currentTarget as HTMLElement;
+        reyPista.forEach((elem) => {
+            elem.classList.add("opponent")
+        });
+        currentTarget.classList.remove("opponent");
+    }
+
+    boxerLinks.forEach((link) => {        
+        link.addEventListener("mouseenter", (event) => {            
             const currentTarget = event.currentTarget as HTMLElement;
+            
             const { id, name, versus, country, countryName } = currentTarget?.dataset;
 
-            const boxerSrc = `/images/boxers/grande/${id}-big`;
-            const pictureSource = boxerPicture.children[0] as HTMLSourceElement;
-            const imgPicture = boxerPicture.children[1] as HTMLImageElement;
+            if(id !== "el-mariana") {
+                removeBoxerSelectedDefault()
+            }            
+            previewTarget !== undefined ? removeAllBoxerSelected(previewTarget as HTMLElement) : ''
+            previewTarget = currentTarget            
 
             // Add and remove sentence VERSUS of opponents
             if (versus?.includes(",")) {
                 const multipleVersus = versus.split(",");
                 multipleVersus.forEach((element) => {
-                    addVersusWordOpponent(element)
+                    addVersusWordOpponent(currentTarget, element)
                 });
             } else {
-                addVersusWordOpponent(versus as string)
+                addVersusWordOpponent(currentTarget, versus as string)
             }
+
+
+            
+            const boxerSrc = `/images/boxers/grande/${id}-big`;
+            const pictureSource = boxerPicture.children[0] as HTMLSourceElement;
+            const imgPicture = boxerPicture.children[1] as HTMLImageElement;
 
             pictureSource.srcset = `${boxerSrc}.avif`;
             imgPicture.src = `${boxerSrc}.webp`;
@@ -111,45 +147,28 @@ const columnOfBoxers = [
             if (name) {
                 boxerName.textContent = name;
             }
+
             boxerCountry.src = `/images/flags/${country}.webp`;
             boxerCountry.alt = `Bandera de ${countryName}`;
         });
     });
 
-    boxerLinks.forEach((link) => {
-        link.addEventListener("mouseleave", (event) => {
-            const currentTarget = event.currentTarget as HTMLElement;
-            const { versus } = currentTarget?.dataset;
-
-            // Add and remove sentence VERSUS of opponents
-            if (versus?.includes(",")) {
-                const multipleVersus = versus.split(",");
-                multipleVersus.forEach((element) => {
-                    removeVersusWordOpponent(element)
-                });
-            } else {
-                removeVersusWordOpponent(versus as string)
-            }
-        });
-    });
-
-    function addHoverReyDeLaPista(e: Event) {
-        const currentTarget = e.currentTarget as HTMLElement;
-        reyPista.forEach((elem) => elem.classList.add("opponent"));
-        currentTarget.classList.remove("opponent");
-    }
-    function removeHoverReyDeLaPista(e: Event) {
-        reyPista.forEach((elem) => elem.classList.remove("opponent"));
-    }
-
     reyPista.forEach((elem) => {
         elem.addEventListener("mouseenter", (e) => {
             addHoverReyDeLaPista(e);
         });
-        elem.addEventListener("mouseleave", (e) => {
-            removeHoverReyDeLaPista(e);
-        });
     });
+
+    const boxerSelectedDefault = () => {
+        const imageDefault = boxerLinks[0].querySelector("img")
+        const opponentId = boxerLinks[0].getAttribute("data-versus")
+        const opponent = Object.values(boxerLinks).find(boxer => boxer.getAttribute("data-id") == opponentId)
+
+        imageDefault?.classList.add("grayscale-0", "zoom-image")
+        opponent?.classList.add("opponent")
+        
+    }
+    boxerSelectedDefault()
 </script>
 
 <style>
