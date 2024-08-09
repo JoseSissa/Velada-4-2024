@@ -1,0 +1,39 @@
+---
+import LinkHeader from "@/components/LinkHeader.astro";
+import XLogo from "@/components/icons/XLogo.astro";
+---
+
+<header class="w-full h-16 lg:h-24 mb-10">
+    <nav
+        class="max-w-6xl h-full mx-auto flex justify-between items-center text-white"
+    >
+        <div class="w-full max-w-[40%] h-full flex justify-center items-center">
+            <LinkHeader href="/" class:list={"active"}>EL EVENTO</LinkHeader>
+            <LinkHeader href="/">COMBATES</LinkHeader>
+        </div>
+
+        <div class="w-full max-w-[40%] h-full flex justify-center items-center">
+            <LinkHeader href="/">PRONÓSTICOS</LinkHeader>
+            <LinkHeader href="/">ENTRADAS</LinkHeader>
+        </div>
+    </nav>
+    <div class="w-full h-2 flex justify-center">
+        <div
+            class="h-[2px] w-full"
+            style="background:linear-gradient(to right, transparent 3%, white 35%, white 100%)"
+        >
+        </div>
+        <a href="/" class="relative">
+            <XLogo
+                class:list={"h-auto w-40 -mt-12 text-white"}
+                id="hero-logo-header"
+                noEffect
+            />
+        </a>
+        <div
+            class="h-[2px] w-full"
+            style="background:linear-gradient(to left, transparent 3%, white 35%, white 100%)"
+        >
+        </div>
+    </div>
+</header>

@@ -1,6 +1,7 @@
 ---
 // Supports weights 100-900
 import "@fontsource-variable/jost";
+import Header from "@/components/Header.astro"
 import NoiseStatic from "@/components/backgrounds/NoiseStatic.astro";
 import LightBackground from "@/components/backgrounds/LightBackground.astro";
 
@@ -31,6 +32,7 @@ const descriptioPage = "Proyecto Académico de La Velada Del Año 2024";
         <title>{title}</title>
     </head>
     <body>
+        <Header />
         <LightBackground />
         <NoiseStatic />
         <div class="max-w-6xl mx-auto px-2 lg:px-10 pt-20 md:pt-32">
