@@ -22,7 +22,7 @@ import { SPONSORS } from "@/const/sponsors";
                 >
                     <img
                         class="w-16 md:w-28 h-auto group-hover:scale-110 transition-transform"
-                        // src={`/images/sponsors/${id}.svg`}
+                        src={`/images/sponsors/${id}.svg`}
                         alt={`Logo del patrocinador ${name}`}
                         loading="lazy"
                     />
@@ -34,27 +34,34 @@ import { SPONSORS } from "@/const/sponsors";
 
 <style>
     a {
-        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.1) 0%,
+            transparent 100%
+        );
         transition: all 0.5s ease;
         z-index: 0;
     }
     a::before {
         content: "";
-		position: absolute;
-		inset: 0;
-		display: block;
-		background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2) 0%, transparent);
-		opacity: 0;
-		height: 50%;
-		transition:
-			opacity 0.2s ease-in-out,
-			height 0.2s ease-in-out;
+        position: absolute;
+        inset: 0;
+        display: block;
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.2) 0%,
+            transparent
+        );
+        opacity: 0;
+        height: 50%;
+        transition:
+            opacity 0.2s ease-in-out,
+            height 0.2s ease-in-out;
     }
     a:hover::before,
     a:focus::before {
         opacity: 1;
-		height: 90%;
+        height: 90%;
         z-index: 100;
-		/* box-shadow: 0 -4px 3px rgba(50, 50, 50, 0.75); */
     }
 </style>
