@@ -11,27 +11,31 @@ const { listOfBoxers, className, reyDeLaPista } = Astro.props;
 
 <div class={className}>
     {
-        listOfBoxers.map(({ id, name, versus, rotate, country, countryName, allies }) => (
-            <a
-                class={`boxer-link group relative w-36 h-36 mb-2 flex justify-center items-center cursor-pointer z-0 ${reyDeLaPista ? "rey-de-la-pista" : ""}`}
-                title={`Visita la página del boxeador ${name}`}
-                rel="noopener noreferrer"
-                data-id={id}
-                data-name={name}
-                data-country={country}
-                data-country-name={countryName}
-                data-versus={versus}
-                data-allies={allies}
-            >
-                <div class="boxer-link-background" />
-                <img
-                    class={`boxer-image w-full object-contain grayscale ${rotate ? "rotate-y-180" : ""}`}
-                    src={`/images/boxers/${id}-small.webp`}
-                    alt={`Foto en pequeño del boxeador ${name}`}
-                    loading="lazy"
-                />
-            </a>
-        ))
+        listOfBoxers.map(
+            ({ id, name, versus, rotate, country, countryName, allies }) => (
+                <a
+                    href={`/boxer/${id}`}
+                    class={`boxer-link group relative w-36 h-36 mb-2 flex justify-center items-center cursor-pointer z-0 ${reyDeLaPista ? "rey-de-la-pista" : ""}`}
+                    title={`Visita la página del boxeador ${name}`}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    data-id={id}
+                    data-name={name}
+                    data-country={country}
+                    data-country-name={countryName}
+                    data-versus={versus}
+                    data-allies={allies}
+                >
+                    <div class="boxer-link-background" />
+                    <img
+                        class={`boxer-image w-full object-contain grayscale ${rotate ? "rotate-y-180" : ""}`}
+                        src={`/images/boxers/${id}-small.webp`}
+                        alt={`Foto en pequeño del boxeador ${name}`}
+                        loading="lazy"
+                    />
+                </a>
+            )
+        )
     }
 </div>
 
