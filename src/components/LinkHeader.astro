@@ -1,9 +1,15 @@
 ---
-const { href } = Astro.props;
+interface Props {
+    href: string;
+    secundaryText?: string;
+    className?: string
+}
+const { href, secundaryText, className } = Astro.props;
 ---
 
-<a href={href} class:list={`${Astro.props.class} px-10 text-xl`}>
+<a href={href} class={`relative px-10 text-xl text-center ${className}`}>
     <slot />
+    <span class="absolute bottom-4 left-1/2 -translate-x-1/2 -skew-x-6 text-accent text-xs">{secundaryText}</span>
 </a>
 
 <style>
