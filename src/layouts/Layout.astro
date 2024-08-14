@@ -1,16 +1,19 @@
 ---
 // Supports weights 100-900
 import "@fontsource-variable/jost";
-import Header from "@/components/Header.astro"
+import Header from "@/sections/Header.astro"
 import NoiseStatic from "@/components/backgrounds/NoiseStatic.astro";
 import LightBackground from "@/components/backgrounds/LightBackground.astro";
+import Footer from "@/sections/Footer.astro";
+// import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
     title: string;
+    description?: string
 }
 
 const { title } = Astro.props;
-const descriptioPage = "Proyecto Académico de La Velada Del Año 2024";
+const descriptioPage = Astro.props.description ? Astro.props.description : "Proyecto Académico de La Velada Del Año 2024";
 ---
 
 <!doctype html>
@@ -30,6 +33,7 @@ const descriptioPage = "Proyecto Académico de La Velada Del Año 2024";
         <meta property="og:image" content="" />
         <meta property="og:description" content={descriptioPage} />
         <title>{title}</title>
+        <!-- <ViewTransitions /> -->
     </head>
     <body>
         <Header />
@@ -38,6 +42,7 @@ const descriptioPage = "Proyecto Académico de La Velada Del Año 2024";
         <div class="max-w-6xl mx-auto px-2 lg:px-10 pt-8 md:pt-24">
             <slot />
         </div>
+        <Footer />
     </body>
 </html>
 <style is:global>
