@@ -1,5 +1,6 @@
 ---
 import BoxerColumn from "@/components/BoxerColumn.astro";
+import PictureBoxerBig from "@/components/PictureBoxerBig.astro";
 import { BOXERS } from "@/const/boxers";
 import { COUNTRIES } from "@/const/countries";
 
@@ -15,6 +16,7 @@ const columnOfBoxers = [
     listOfBoxers.slice(11, 16),
     listOfBoxers.slice(16, 22),
 ];
+
 ---
 
 <section class="my-40">
@@ -179,13 +181,6 @@ const columnOfBoxers = [
 </script>
 
 <style>
-    .boxer-container {
-        background-image: url("/images/background/boxer-background.png");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 75%;
-    }
-
     .boxer-photo img {
         filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
         mask-image: linear-gradient(to bottom, black 70%, transparent 95%);
