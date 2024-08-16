@@ -1,0 +1,89 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { BOXERS } from "@/const/boxers";
+import PictureBoxerBig from "@/components/PictureBoxerBig.astro";
+
+export function getStaticPaths() {
+	return BOXERS.map(({ id }) => {
+		return { params: { boxerId: id } }
+	})
+}
+
+const { boxerId } = Astro.params
+const infoOfBoxer = BOXERS.find((boxerInList) => boxerInList.id === boxerId)
+if (!infoOfBoxer) return new Response(JSON.stringify("Boxer not found"), { status: 404 })
+
+const getNamesOfRivals = (rivals: string | any[]) => {
+	let textRivals = ""
+	if(rivals.length == 1) {
+		textRivals = rivals[0]?.name as string
+	} else {		
+		for (let i = 0; i < rivals.length; i++) {			
+			i === rivals.length - 1
+				? textRivals += `${rivals[i]?.name}`
+				: textRivals += `${rivals[i]?.name} / `
+		}
+	}
+	return textRivals
+}
+
+let infoBoxerRival = []
+if (infoOfBoxer.versus === "rey-de-la-pista") {
+	infoBoxerRival = BOXERS.filter(boxerInList => (boxerInList.versus == "rey-de-la-pista" && boxerInList.id != boxerId))	
+} else if(typeof infoOfBoxer.versus === "string") {
+	infoBoxerRival.push(BOXERS.find((boxerInList) => boxerInList.id === infoOfBoxer.versus))
+} else {
+	infoOfBoxer.versus.forEach(versusId => {
+		infoBoxerRival.push(BOXERS.find((boxerInList) => boxerInList.id === versusId))
+	})
+}
+
+---
+
+<Layout 
+	description={`Información del luchador ${infoOfBoxer?.name}`}
+	title={`${infoOfBoxer?.name} - Información del boxeador de La Velada IV`}
+>
+	<main>
+		<section class=" relative flex justify-between">
+			<div class="w-full">
+				{
+					infoOfBoxer?.clips?.map(({text, url}) => {
+						return (
+							<a href={url} class="block max-w-72 mb-10 font-atomic text-2xl -skew-y-6 text-accent text-center text-pretty">"{text}."</a>
+						)
+					})
+				}
+				<h4>Rival</h4>
+				<div class="text-xl text-accent font-bold">
+					{getNamesOfRivals(infoBoxerRival)}
+				</div>
+			</div>
+			<PictureBoxerBig 
+				id={infoOfBoxer?.id}
+				name={infoOfBoxer?.name}
+				country={infoOfBoxer?.country}
+				countryName={infoOfBoxer?.countryName}
+			/>
+			<div class="w-full">
+				<div class="text-center max-w-max ml-auto">
+					<h4>Edad</h4>
+					<span class="text-xl font-bold">{infoOfBoxer?.age}</span>
+				</div>
+				<div class="text-center max-w-max ml-auto">
+					<h4>Peso</h4>
+					<span class="text-xl font-bold">{infoOfBoxer?.weight} kg.</span>
+				</div>
+				<div class="text-center max-w-max ml-auto">
+					<h4>Altura</h4>
+					<span class="text-xl font-bold">{infoOfBoxer?.height} m.</span>
+				</div>
+				<div class="text-center max-w-max ml-auto">
+					<h4>Guardia</h4>
+					<span class="text-xl font-bold">{infoOfBoxer?.guard}</span>
+				</div>
+			</div>
+		</section>
+	</main>
+
+</Layout>
