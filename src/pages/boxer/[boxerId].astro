@@ -16,12 +16,33 @@ if (!infoOfBoxer) return new Response(JSON.stringify("Boxer not found"), { statu
 const getNamesOfRivals = (rivals: string | any[]) => {
 	let textRivals = ""
 	if(rivals.length == 1) {
-		textRivals = rivals[0]?.name as string
+		textRivals = 
+			`<a 
+				href="/boxer/${rivals[0].id}" 
+				class="text-xl font-bold text-accent hover:underline" 
+				title="Visita la página del boxeador ${rivals[0].name}"
+				>
+					${rivals[0].name}
+			</a>`
 	} else {		
 		for (let i = 0; i < rivals.length; i++) {			
 			i === rivals.length - 1
-				? textRivals += `${rivals[i]?.name}`
-				: textRivals += `${rivals[i]?.name} / `
+				? textRivals += 
+					`<a 
+						href="/boxer/${rivals[i].id}" 
+						class="text-xl font-bold text-accent hover:underline" 
+						title="Visita la página del boxeador ${rivals[i].name}"
+						>
+							${rivals[i].name}
+					</a>`
+				: textRivals += 
+					`<a 
+						href="/boxer/${rivals[i].id}" 
+						class="text-xl font-bold text-accent hover:underline" 
+						title="Visita la página del boxeador ${rivals[i].name}"
+						>
+							${rivals[i].name}
+					</a> / `
 		}
 	}
 	return textRivals
@@ -55,8 +76,7 @@ if (infoOfBoxer.versus === "rey-de-la-pista") {
 					})
 				}
 				<h4>Rival</h4>
-				<div class="text-xl text-accent font-bold">
-					{getNamesOfRivals(infoBoxerRival)}
+				<div class="text-xl text-accent font-bold" set:html={getNamesOfRivals(infoBoxerRival)}>
 				</div>
 			</div>
 			<PictureBoxerBig 
