@@ -1,0 +1,42 @@
+---
+interface Props {
+    id?: string;
+    name?: string;
+    country?: string;
+    countryName?: string;
+}
+
+const { id, name, country, countryName } = Astro.props
+
+---
+<article
+    class="relative w-full flex flex-col items-center justify-center -z-10"
+    transition:name="boxer-big-image"
+>
+    <picture class="boxer-photo max-w-[70%] md:max-w-[460px]">
+        <source srcset=`/images/boxers/grande/${id}-big.avif` type="image/avif"/>
+        <img
+            class="w-full h-auto object-contain aspect-[285/428]"
+            alt=`Fotografía en grande de ${name}`
+            src=`/images/boxers/grande/${id}-big.webp`
+        />
+    </picture>
+    <div class="absolute bottom-10 md:bottom-0 flex flex-col items-center">
+        <h4 class="text-6xl md:text-8xl mb-4 font-atomic lowercase text-accent boxer-title -skew-y-6 text-center">
+            <span class="boxer-name" transition:name="boxer-name">{name}</span>
+        </h4>
+        <img
+            class="boxer-flag pointer-events-none aspect-[3/2] h-auto w-28 object-contain object-center"
+            alt=`Bandera de ${countryName}`
+            src=`/images/flags/${country}.webp`
+            transition:name="boxer-flag"
+        />
+    </div>
+</article>
+
+<style>
+    .boxer-photo img {
+        filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+        mask-image: linear-gradient(to bottom, black 70%, transparent 95%);
+    }
+</style>
