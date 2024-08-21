@@ -5,7 +5,7 @@ import Header from "@/sections/Header.astro"
 import NoiseStatic from "@/components/backgrounds/NoiseStatic.astro";
 import LightBackground from "@/components/backgrounds/LightBackground.astro";
 import Footer from "@/sections/Footer.astro";
-// import { ViewTransitions } from 'astro:transitions';
+import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
     title: string;
@@ -33,7 +33,7 @@ const descriptioPage = Astro.props.description ? Astro.props.description : "Proy
         <meta property="og:image" content="" />
         <meta property="og:description" content={descriptioPage} />
         <title>{title}</title>
-        <!-- <ViewTransitions /> -->
+        <ViewTransitions />
     </head>
     <body>
         <Header />
