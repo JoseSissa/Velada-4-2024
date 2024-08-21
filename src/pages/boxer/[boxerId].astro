@@ -3,6 +3,13 @@ import Layout from "@/layouts/Layout.astro";
 import { BOXERS } from "@/const/boxers";
 import PictureBoxerBig from "@/components/PictureBoxerBig.astro";
 
+import BoxSocialMedia from "@/components/BoxSocialMedia.astro";
+import Instagram from "@/icons/instagram.astro";
+import Tiktok from "@/icons/tiktok.astro";
+import Youtube from "@/icons/youtube.astro";
+import Twitch from "@/icons/twitch.astro";
+import X from "@/icons/x.astro";
+
 export function getStaticPaths() {
 	return BOXERS.map(({ id }) => {
 		return { params: { boxerId: id } }
@@ -66,8 +73,8 @@ if (infoOfBoxer.versus === "rey-de-la-pista") {
 	title={`${infoOfBoxer?.name} - Información del boxeador de La Velada IV`}
 >
 	<main>
-		<section class=" relative flex justify-between">
-			<div class="w-full">
+		<section class="relative flex justify-between mb-10">
+			<div class="w-full max-w-[25%] text-center">
 				{
 					infoOfBoxer?.clips?.map(({text, url}) => {
 						return (
@@ -79,31 +86,54 @@ if (infoOfBoxer.versus === "rey-de-la-pista") {
 				<div class="text-xl text-accent font-bold" set:html={getNamesOfRivals(infoBoxerRival)}>
 				</div>
 			</div>
-			<PictureBoxerBig 
-				id={infoOfBoxer?.id}
-				name={infoOfBoxer?.name}
-				country={infoOfBoxer?.country}
-				countryName={infoOfBoxer?.countryName}
-			/>
-			<div class="w-full">
-				<div class="text-center max-w-max ml-auto">
+			<article
+				class="relative -top-12 w-full max-w-[50%] flex flex-col items-center justify-center -z-10"
+			>
+				<PictureBoxerBig 
+					id={infoOfBoxer?.id}
+					name={infoOfBoxer?.name}
+					country={infoOfBoxer?.country}
+					countryName={infoOfBoxer?.countryName}
+				/>
+			</article>
+			<div class="w-full max-w-[25%] text-center">
+				<div class="mb-10">
 					<h4>Edad</h4>
 					<span class="text-xl font-bold">{infoOfBoxer?.age}</span>
 				</div>
-				<div class="text-center max-w-max ml-auto">
+				<div class="mb-10">
 					<h4>Peso</h4>
 					<span class="text-xl font-bold">{infoOfBoxer?.weight} kg.</span>
 				</div>
-				<div class="text-center max-w-max ml-auto">
+				<div class="mb-10">
 					<h4>Altura</h4>
 					<span class="text-xl font-bold">{infoOfBoxer?.height} m.</span>
 				</div>
-				<div class="text-center max-w-max ml-auto">
+				<div class="mb-10">
 					<h4>Guardia</h4>
 					<span class="text-xl font-bold">{infoOfBoxer?.guard}</span>
 				</div>
 			</div>
 		</section>
+
+		<section class="flex justify-center gap-5">
+			<BoxSocialMedia href={infoOfBoxer.socials.twitch} >
+				<Twitch />
+			</BoxSocialMedia>
+			<BoxSocialMedia href={infoOfBoxer.socials.instagram} >
+				<Instagram />
+			</BoxSocialMedia>
+			<BoxSocialMedia href={infoOfBoxer.socials.twitter} >
+				<X />
+			</BoxSocialMedia>
+			<BoxSocialMedia href={infoOfBoxer.socials.youtube} >
+				<Youtube />
+			</BoxSocialMedia>
+			<BoxSocialMedia href={infoOfBoxer.socials.tiktok} >
+				<Tiktok />
+			</BoxSocialMedia>
+		</section>
+		
 	</main>
 
 </Layout>
