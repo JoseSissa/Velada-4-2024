@@ -10,6 +10,11 @@ const listOfBoxers = BOXERS.map((boxer) => {
     return { ...boxer, countryName };
 });
 
+const boxerForDefault = Astro.url.searchParams.get("boxer")
+const selectedBoxer = listOfBoxers.find(({ id }) => id === boxerForDefault) || listOfBoxers[0]
+console.log(selectedBoxer);
+
+
 const columnOfBoxers = [
     listOfBoxers.slice(0, 6),
     listOfBoxers.slice(6, 11),
@@ -29,7 +34,7 @@ const columnOfBoxers = [
         <article
             class="relative md:absolute w-full flex flex-col items-center justify-center"
         >
-            <picture class="boxer-photo max-w-[70%] md:max-w-[460px]">
+            <picture class="boxer-photo max-w-[70%] md:max-w-[460px]"  >
                 <source srcset="/images/boxers/grande/el-mariana-big.avif" type="image/avif"/>
                 <img
                     class="w-full h-auto object-contain aspect-[285/428]"
@@ -78,28 +83,25 @@ const columnOfBoxers = [
         const boxerName = document.querySelector(".boxer-name") as HTMLAnchorElement;
         let previewTarget = undefined as unknown
         let previewAlly = undefined as unknown
-    
-        const toggleBoxerDefault = () => {
-            const imageBoxerDefault = boxerLinks[0].querySelector("img")
-            const opponentDefaultId = boxerLinks[0].getAttribute("data-versus")
-            const opponentDefault = document.querySelector(`[data-id="${opponentDefaultId}"]`)
-    
-            imageBoxerDefault?.classList.toggle("grayscale-0")
-            imageBoxerDefault?.classList.toggle("zoom-image")
-            opponentDefault?.classList.toggle("opponent")        
-        }
-    
-        const addVersusWordOpponent = (currentTarget: HTMLElement, idOpponent: string) => {
+
+        const toggleVersusWordToOpponent = (idOpponent: string) => {
             const boxerVersus = document.querySelector(`[data-id="${idOpponent}"]`);
-            boxerVersus?.classList.add("opponent");
-    
-            const imageDefault = currentTarget.querySelector("img")
-            imageDefault?.classList.add("grayscale-0", "zoom-image")
-            return
+            boxerVersus?.classList.toggle("opponent");
         }
-    
-        const removeAllBoxerSelected = (currentTarget: HTMLElement) => {
-            const imageDefault = currentTarget.querySelector("img")
+
+        const addHoverBoxerSelected = (elem: HTMLElement) => {
+            const imageDefault = elem.querySelector("img")
+            imageDefault?.classList.toggle("grayscale-0")
+            imageDefault?.classList.toggle("zoom-image")
+        }
+
+        const toggleAllyWordToAllies = (idAlly: string) => {
+            const ally = document.querySelector(`[data-id="${idAlly}"]`)
+            ally?.classList.toggle("ally")
+        }
+
+        const removeAllBoxerSelected = (target: HTMLElement) => {            
+            const imageDefault = target.querySelector("img")
             imageDefault?.classList.remove("grayscale-0", "zoom-image")
             
             boxerLinks.forEach((boxer) => {
@@ -108,6 +110,60 @@ const columnOfBoxers = [
                 }
             })
         }
+
+        const changeImageBigOfBoxer = (idBoxerSelected: string, name: string) => {
+            const idBoxer = idBoxerSelected.replace(/(^"|"$)/g, '')
+            const boxerSrc = `/images/boxers/grande/${idBoxer}-big`;
+            
+            const pictureSource = boxerPicture.children[0] as HTMLSourceElement;
+            const imgPicture = boxerPicture.children[1] as HTMLImageElement;
+
+            pictureSource.srcset = `${boxerSrc}.avif`;
+            imgPicture.src = `${boxerSrc}.webp`;
+            imgPicture.alt = `Fotografía en grande de ${name}`;
+        }
+
+        const changeFlagOfBoxer = (country: string, countryName: string) => {
+            boxerCountry.src = `/images/flags/${country}.webp`;
+            boxerCountry.alt = `Bandera de ${countryName}`;
+        }
+
+        const changeNameOfBoxer = (name: string) => {
+            boxerName.textContent = name;
+        }
+    
+        const selectBoxerForDefault = () => {
+            const idBoxerForDefault = localStorage.getItem("boxerSelected") ? localStorage.getItem("boxerSelected") : "el-mariana"            
+            const boxerForDefault = document.querySelector(`[data-id=${idBoxerForDefault}]`) as HTMLElement            
+            const idOpponentForDefault = boxerForDefault?.getAttribute("data-versus")
+
+            const { name, country, countryName } = boxerForDefault.dataset
+
+            if(boxerForDefault) {
+                addHoverBoxerSelected(boxerForDefault as HTMLElement)
+            }
+
+            if(idOpponentForDefault?.includes(",")) {
+                const idAllVersus = idOpponentForDefault.split(",");
+                idAllVersus.forEach((idVersus) => {
+                    toggleVersusWordToOpponent(idVersus)
+                });
+
+                const idAllAllies = boxerForDefault?.getAttribute("data-allies")
+                toggleAllyWordToAllies(idAllAllies as string)                
+
+            } else {
+                toggleVersusWordToOpponent(idOpponentForDefault as string)
+            }
+
+            changeImageBigOfBoxer(idBoxerForDefault as string, name as string)
+            changeFlagOfBoxer(country as string, countryName as string)
+            changeNameOfBoxer(name as string)
+        }
+
+        // ----------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------       
     
         const addHoverReyDeLaPista = (e: Event) => {
             const currentTarget = e.currentTarget as HTMLElement;
@@ -117,60 +173,70 @@ const columnOfBoxers = [
             currentTarget.classList.remove("opponent");
         }
     
-        const toggleBoxerAlly = (allies: string) => {
-            const ally = document.querySelector(`[data-id="${allies}"]`)
-            ally?.classList.toggle("ally")
-        }
-    
-        boxerLinks.forEach((link) => {        
-            link.addEventListener("mouseenter", (event) => {            
+        boxerLinks.forEach((link) => {
+            link.addEventListener("mouseenter", (event) => {
                 const currentTarget = event.currentTarget as HTMLElement;
-                
                 const { id, name, versus, country, countryName, allies } = currentTarget?.dataset;
     
                 previewTarget !== undefined 
                     ? removeAllBoxerSelected(previewTarget as HTMLElement) 
-                    : toggleBoxerDefault()
+                    : selectBoxerForDefault()  //toggleBoxerDefault()
                 previewTarget = currentTarget            
     
                 // Add and remove sentence VERSUS of opponents
-                if (versus?.includes(",")) {
+                addHoverBoxerSelected(currentTarget)
+
+                if (versus?.includes(",")) {                    
                     const multipleVersus = versus.split(",");
                     multipleVersus.forEach((versus) => {
-                        addVersusWordOpponent(currentTarget, versus)
+                        toggleVersusWordToOpponent(versus)
                     });
                     
                     if(previewAlly !== undefined) {
-                        toggleBoxerAlly(previewAlly as string)
+                        toggleAllyWordToAllies(previewAlly as string)
                     }
-                    toggleBoxerAlly(allies as string)
+                    toggleAllyWordToAllies(allies as string)
                     previewAlly = allies
-                    
+                                        
                 } else {
-                    addVersusWordOpponent(currentTarget, versus as string)
+                    toggleVersusWordToOpponent(versus as string)
+
                     if(previewAlly !== undefined) {
-                        toggleBoxerAlly(previewAlly as string)
+                        toggleAllyWordToAllies(previewAlly as string)
                         previewAlly = undefined
                     }
                 }
                 
                 // Change big image of boxer
-                const boxerSrc = `/images/boxers/grande/${id}-big`;
-                const pictureSource = boxerPicture.children[0] as HTMLSourceElement;
-                const imgPicture = boxerPicture.children[1] as HTMLImageElement;
-    
-                pictureSource.srcset = `${boxerSrc}.avif`;
-                imgPicture.src = `${boxerSrc}.webp`;
-                imgPicture.alt = `Fotografía en grande de ${name}`;
-    
+                changeImageBigOfBoxer(id as string, name as string)
+                changeFlagOfBoxer(country as string, countryName as string)    
                 if (name) {
-                    boxerName.textContent = name;
+                    changeNameOfBoxer(name)
                 }
-    
-                boxerCountry.src = `/images/flags/${country}.webp`;
-                boxerCountry.alt = `Bandera de ${countryName}`;
+
             });
         });
+
+        boxerLinks.forEach((link) => {
+            link.addEventListener("click", (event) => {
+                const currentTarget = event.currentTarget as HTMLElement;
+                const { id } = currentTarget?.dataset;
+                
+                localStorage.setItem("boxerSelected", JSON.stringify(id))
+                history.replaceState({}, "", `?boxer=${id}`)
+                // ----------------------------------------------------------------------------------------       
+                
+                // console.log(location);
+                
+                // const url = new URL(location.href);
+                // console.log(url);
+                // url.searchParams.set('id', 'Test')
+                // console.log(url.searchParams);
+                // console.log(url.searchParams);
+
+                // ----------------------------------------------------------------------------------------       
+            })
+        })
     
         reyPista.forEach((elem) => {
             elem.addEventListener("mouseenter", (e) => {
@@ -178,7 +244,7 @@ const columnOfBoxers = [
             });
         });
     
-        toggleBoxerDefault()
+        selectBoxerForDefault() // toggleBoxerDefault()
     })
 </script>
 
