@@ -11,8 +11,7 @@ const listOfBoxers = BOXERS.map((boxer) => {
 });
 
 const boxerForDefault = Astro.url.searchParams.get("boxer")
-const selectedBoxer = listOfBoxers.find(({ id }) => id === boxerForDefault) || listOfBoxers[0]
-console.log(selectedBoxer);
+const showBoxerForDefault = listOfBoxers.find(({ id }) => id === boxerForDefault) || listOfBoxers[0]
 
 
 const columnOfBoxers = [
@@ -34,24 +33,12 @@ const columnOfBoxers = [
         <article
             class="relative md:absolute w-full flex flex-col items-center justify-center"
         >
-            <picture class="boxer-photo max-w-[70%] md:max-w-[460px]"  >
-                <source srcset="/images/boxers/grande/el-mariana-big.avif" type="image/avif"/>
-                <img
-                    class="w-full h-auto object-contain aspect-[285/428]"
-                    alt="Fotografía de El Mariana"
-                    src="/images/boxers/grande/el-mariana-big.webp"
-                />
-            </picture>
-            <div class="absolute bottom-10 md:bottom-0 flex flex-col items-center">
-                <h4 class="text-6xl md:text-8xl mb-4 font-atomic lowercase text-accent boxer-title -skew-y-6 text-center">
-                    <a href="" class="boxer-name">El Mariana</a>
-                </h4>
-                <img
-                    class="boxer-flag pointer-events-none aspect-[3/2] h-auto w-28 object-contain object-center"
-                    alt="Fotografía de El Mariana"
-                    src="/images/flags/mx.webp"
-                />
-            </div>
+            <PictureBoxerBig 
+                id={showBoxerForDefault?.id}
+                name={showBoxerForDefault?.name}
+                country={showBoxerForDefault?.country}
+                countryName={showBoxerForDefault?.countryName}
+            />
         </article>
         <div class="w-full hidden md:flex justify-between">
             <nav class="flex gap-4">
@@ -131,46 +118,41 @@ const columnOfBoxers = [
         const changeNameOfBoxer = (name: string) => {
             boxerName.textContent = name;
         }
-    
-        const selectBoxerForDefault = () => {
-            const idBoxerForDefault = localStorage.getItem("boxerSelected") ? localStorage.getItem("boxerSelected") : "el-mariana"            
-            const boxerForDefault = document.querySelector(`[data-id=${idBoxerForDefault}]`) as HTMLElement            
-            const idOpponentForDefault = boxerForDefault?.getAttribute("data-versus")
 
-            const { name, country, countryName } = boxerForDefault.dataset
-
-            if(boxerForDefault) {
-                addHoverBoxerSelected(boxerForDefault as HTMLElement)
-            }
-
-            if(idOpponentForDefault?.includes(",")) {
-                const idAllVersus = idOpponentForDefault.split(",");
-                idAllVersus.forEach((idVersus) => {
-                    toggleVersusWordToOpponent(idVersus)
-                });
-
-                const idAllAllies = boxerForDefault?.getAttribute("data-allies")
-                toggleAllyWordToAllies(idAllAllies as string)                
-
-            } else {
-                toggleVersusWordToOpponent(idOpponentForDefault as string)
-            }
-
-            changeImageBigOfBoxer(idBoxerForDefault as string, name as string)
-            changeFlagOfBoxer(country as string, countryName as string)
-            changeNameOfBoxer(name as string)
-        }
-
-        // ----------------------------------------------------------------------------------------
-        // ----------------------------------------------------------------------------------------
-        // ----------------------------------------------------------------------------------------       
-    
         const addHoverReyDeLaPista = (e: Event) => {
             const currentTarget = e.currentTarget as HTMLElement;
             reyPista.forEach((elem) => {
                 elem.classList.add("opponent")
             });
             currentTarget.classList.remove("opponent");
+        }
+    
+        const selectBoxerForDefault = () => {
+            const idBoxerForDefault = localStorage.getItem("boxerSelected") ? localStorage.getItem("boxerSelected") : "el-mariana"            
+            const boxerForDefault = document.querySelector(`[data-id=${idBoxerForDefault}]`) as HTMLElement            
+            const idOpponentForDefault = boxerForDefault?.getAttribute("data-versus")
+            
+            if(boxerForDefault) {
+                const { name, country, countryName } = boxerForDefault.dataset
+                addHoverBoxerSelected(boxerForDefault as HTMLElement)
+                if(idOpponentForDefault?.includes(",")) {
+                    const idAllVersus = idOpponentForDefault.split(",");
+                    idAllVersus.forEach((idVersus) => {
+                        toggleVersusWordToOpponent(idVersus)
+                    });
+    
+                    const idAllAllies = boxerForDefault?.getAttribute("data-allies")
+                    toggleAllyWordToAllies(idAllAllies as string)                
+    
+                } else {
+                    toggleVersusWordToOpponent(idOpponentForDefault as string)
+                }
+    
+                changeImageBigOfBoxer(idBoxerForDefault as string, name as string)
+                changeFlagOfBoxer(country as string, countryName as string)
+                changeNameOfBoxer(name as string)
+            }
+
         }
     
         boxerLinks.forEach((link) => {
@@ -222,19 +204,8 @@ const columnOfBoxers = [
                 const currentTarget = event.currentTarget as HTMLElement;
                 const { id } = currentTarget?.dataset;
                 
-                localStorage.setItem("boxerSelected", JSON.stringify(id))
-                history.replaceState({}, "", `?boxer=${id}`)
-                // ----------------------------------------------------------------------------------------       
-                
-                // console.log(location);
-                
-                // const url = new URL(location.href);
-                // console.log(url);
-                // url.searchParams.set('id', 'Test')
-                // console.log(url.searchParams);
-                // console.log(url.searchParams);
-
-                // ----------------------------------------------------------------------------------------       
+                localStorage.setItem("boxerSelected", JSON.stringify(id))                
+                history.replaceState({}, "", `?boxer=${id}`)      
             })
         })
     
