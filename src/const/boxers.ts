@@ -84,7 +84,7 @@ export const BOXERS: Boxer[] = addGetters([
 		rotate: true,
 		workout: {
 			videoID: "xJqhfK5oXK4",
-			thumbnail: "/img/boxers/workoutThumbnails/shelao.webp",
+			thumbnail: "/images/boxers/workoutThumbnails/shelao.webp",
 		},
 	},
 	{
@@ -118,7 +118,7 @@ export const BOXERS: Boxer[] = addGetters([
 		],
 		workout: {
 			videoID: "bVlV1HejQag",
-			thumbnail: "/img/boxers/workoutThumbnails/zeling.webp",
+			thumbnail: "/images/boxers/workoutThumbnails/zeling.webp",
 		},
 	},
 	{
@@ -256,7 +256,7 @@ export const BOXERS: Boxer[] = addGetters([
 		country: "es",
 		workout: {
 			videoID: "I8R5sQXjpKk",
-			thumbnail: "/img/boxers/workoutThumbnails/peldanyos.webp",
+			thumbnail: "/images/boxers/workoutThumbnails/peldanyos.webp",
 		},
 		socials: {
 			twitch: "https://twitch.tv/peldanyos",
@@ -471,7 +471,7 @@ export const BOXERS: Boxer[] = addGetters([
 		},
 		workout: {
 			videoID: "BlN7FgdDoHM",
-			thumbnail: "/img/boxers/workoutThumbnails/skain.webp",
+			thumbnail: "/images/boxers/workoutThumbnails/skain.webp",
 		},
 		clips: [
 			{
@@ -551,7 +551,7 @@ export const BOXERS: Boxer[] = addGetters([
 		},
 		workout: {
 			videoID: "svXhWZ1sZJE",
-			thumbnail: "/img/boxers/workoutThumbnails/plex.webp",
+			thumbnail: "/images/boxers/workoutThumbnails/plex.webp",
 		},
 		clips: [
 			{
@@ -622,7 +622,7 @@ export const BOXERS: Boxer[] = addGetters([
 		},
 		workout: {
 			videoID: "FXzCBTRWouA",
-			thumbnail: "/img/boxers/workoutThumbnails/alana.webp",
+			thumbnail: "/images/boxers/workoutThumbnails/alana.webp",
 		},
 		clips: [
 			{
