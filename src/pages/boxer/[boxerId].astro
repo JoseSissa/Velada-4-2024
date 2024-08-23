@@ -2,6 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import { BOXERS } from "@/const/boxers";
 import PictureBoxerBig from "@/components/PictureBoxerBig.astro";
+import LiteYouTube from "@/components/LiteYouTube.astro";
 
 import BoxSocialMedia from "@/components/BoxSocialMedia.astro";
 import Instagram from "@/icons/instagram.astro";
@@ -133,6 +134,21 @@ if (infoOfBoxer.versus === "rey-de-la-pista") {
 				<Tiktok />
 			</BoxSocialMedia>
 		</section>
+
+		{
+			infoOfBoxer.workout && (
+				<section class="my-44">
+					<h3 class="text-2xl text-center text-white font-semibold">ENTRENAMIENTO</h3>
+					<p class="mt-4 text-xl text-center">
+						Preparación para el combate
+					</p>
+		
+					<div class="mt-10 pt-12">
+						<LiteYouTube videoId={infoOfBoxer.workout.videoID} backgroundImage={infoOfBoxer.workout.thumbnail} />
+					</div>
+				</section>
+			)
+		}
 		
 	</main>
 
