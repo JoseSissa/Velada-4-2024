@@ -10,6 +10,8 @@ import Tiktok from "@/icons/tiktok.astro";
 import Youtube from "@/icons/youtube.astro";
 import Twitch from "@/icons/twitch.astro";
 import X from "@/icons/x.astro";
+import CombatSection from "@/components/CombatSection.astro";
+import type { Boxer } from "@/types/Boxer";
 
 export function getStaticPaths() {
 	return BOXERS.map(({ id }) => {
@@ -56,17 +58,28 @@ const getNamesOfRivals = (rivals: string | any[]) => {
 	return textRivals
 }
 
-let infoBoxerRival = []
+
+let infoBoxerRival: Array<Boxer> = []
 if (infoOfBoxer.versus === "rey-de-la-pista") {
 	infoBoxerRival = BOXERS.filter(boxerInList => (boxerInList.versus == "rey-de-la-pista" && boxerInList.id != boxerId))	
 } else if(typeof infoOfBoxer.versus === "string") {
-	infoBoxerRival.push(BOXERS.find((boxerInList) => boxerInList.id === infoOfBoxer.versus))
+	const boxer = BOXERS.find((boxerInList) => boxerInList.id === infoOfBoxer.versus)
+	if (!boxer) {
+		return new Response(JSON.stringify("Rival not found"), { status: 404 })
+	}
+	infoBoxerRival.push(boxer)
 } else {
 	infoOfBoxer.versus.forEach(versusId => {
-		infoBoxerRival.push(BOXERS.find((boxerInList) => boxerInList.id === versusId))
+		const boxer = BOXERS.find((boxerInList) => boxerInList.id === versusId)
+		if (!boxer) {
+			return new Response(JSON.stringify("Rival not found"), { status: 404 })
+		}
+		infoBoxerRival.push(boxer)
 	})
 }
-
+if (!infoBoxerRival) {
+	return new Response(JSON.stringify("Information of rival not found"), { status: 404 })
+}
 ---
 
 <Layout 
@@ -149,6 +162,8 @@ if (infoOfBoxer.versus === "rey-de-la-pista") {
 				</section>
 			)
 		}
+
+		<CombatSection id={boxerId} rival={infoBoxerRival} name={infoOfBoxer?.name} ally={infoOfBoxer?.allies} />
 		
 	</main>
 
