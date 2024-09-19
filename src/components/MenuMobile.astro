@@ -1,0 +1,83 @@
+---
+import LogoXMobile from "./icons/LogoXMobile.astro";
+import HamburguerButton from "./icons/HamburguerButton.astro";
+import CloseMenuMobile from "./icons/CloseMenuMobile.astro";
+---
+
+<div class="lg:hidden flex justify-between items-center px-4 md:px-10 py-3">
+    <a href="/">
+        <LogoXMobile class:list={"w-10"} />
+    </a>
+    <HamburguerButton />
+
+</div>
+<div class="fixed inset-0 flex flex-col items-center w-screen px-10 lg:hidden overflow-x-auto z-10 bg-[var(--background-color)]" id="menuMobile">
+    <aside class="w-full h-auto flex justify-between items-center py-5">
+        <span class="text-xl font-semibold uppercase text-primary">MENÚ</span>
+        <button class="relative w-10 h-10" id="closeMenu">
+            <CloseMenuMobile />
+            <span class="sr-only">Cerrar menú</span>
+        </button>
+    </aside>
+
+    <hr class="h-[2px] w-full border-t-0" style="background:linear-gradient(to right, transparent 0%, white 50%, transparent 100%)">
+    
+    <img src="/images/icons/lvda.webp" alt="Logo LVDA" class="w-full max-w-60 my-4 accent-drop-shadow drop-shadow-lg">
+
+    <hr class="h-[2px] w-full border-t-0" style="background:linear-gradient(to right, transparent 0%, white 50%, transparent 100%)">
+    
+    <a href="/" class="relative py-5 text-xl text-primary current-page-mob">EL EVENTO</a>
+
+    <hr class="h-[2px] w-full border-t-0" style="background:linear-gradient(to right, transparent 0%, white 50%, transparent 100%)">
+
+    <a href="/" class="relative py-5 text-xl text-primary">COMBATES</a>
+
+    <hr class="h-[2px] w-full border-t-0" style="background:linear-gradient(to right, transparent 0%, white 50%, transparent 100%)">
+
+    <a href="/" class="relative py-5 text-xl text-primary">PRONÓSTICOS</a>
+
+    <hr class="h-[2px] w-full border-t-0" style="background:linear-gradient(to right, transparent 0%, white 50%, transparent 100%)">
+
+    <a href="/" class="relative py-5 text-xl text-primary">ENTRADAS</a>
+
+    <hr class="h-[2px] w-full border-t-0" style="background:linear-gradient(to right, transparent 0%, white 50%, transparent 100%)">
+</div>
+
+<style>
+    #menuMobile {
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.3s;
+		scrollbar-gutter: stable;
+	}
+
+	#menuMobile.open {
+		opacity: 1 !important;
+		pointer-events: all;
+	}
+    .accent-drop-shadow {
+		filter: drop-shadow(0px 0px 25px rgba(var(--color-accent-rgb), 0.25));
+	}
+    .current-page-mob:before {
+		background: var(--color-accent);
+		width: 10px;
+		content: "";
+		position: absolute;
+		top: 50%;
+		left: -20px;
+		height: 10px;
+		border-radius: 100%;
+		transform: translateY(-50%);
+	}
+</style>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        const menuMobile = document.getElementById("menuMobile") as HTMLElement;
+        const closeMenu = document.getElementById("closeMenu") as HTMLElement;
+
+        closeMenu.addEventListener("click", (e) => {            
+            menuMobile.classList.toggle("open");
+        });
+    });
+</script>
