@@ -26,7 +26,7 @@ if (!infoCombat) {
 ---
 
 <section class="mt-40">
-    <div class="relative flex flex-col items-center justify-center w-full pt-20 pb-28">
+    <div class="relative flex flex-col items-center justify-center w-full py-20">
         <div class="absolute inset-0 text-[20rem] text-center text-accent font-atomic lowercase -z-10 self-center opacity-20">{infoCombat.number}</div>
         <h2 class="text-center text-4xl font-semibold uppercase text-white lg:text-6xl">
             {ordinals[infoCombat.number]} Combate
@@ -59,10 +59,10 @@ if (!infoCombat) {
                 )
             }
         </div>
-        <div class="mt-28 hover:underline">
-            <a href={`/combates/${infoCombat.id}`} class="text-2xl font-semibold text-accent">
-                Ver Combate
-            </a>
-        </div>
+    </div>
+    <div class="mt-8 mb-32 text-center hover:underline">
+        <a href={`/combates/${infoCombat.id}`} class="text-2xl font-semibold text-accent">
+            Ver Combate
+        </a>
     </div>
 </section>
