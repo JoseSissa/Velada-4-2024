@@ -1,11 +1,12 @@
 ---
 import LinkHeader from "@/components/LinkHeader.astro";
+import MenuMobile from "@/components/MenuMobile.astro";
 import XLogo from "@/components/icons/XLogo.astro";
 ---
 
 <header class="w-full h-16 lg:h-24 mb-10">
     <nav
-        class="max-w-6xl h-full mx-auto flex justify-between items-center text-white"
+        class="max-w-6xl h-full mx-auto lg:flex justify-between items-center text-white hidden"
     >
         <div class="w-full max-w-[40%] h-full flex justify-center items-center">
             <LinkHeader href="/" className={"active"}>EL EVENTO</LinkHeader>
@@ -17,15 +18,16 @@ import XLogo from "@/components/icons/XLogo.astro";
             <LinkHeader href="/" className={"select-none pointer-events-none"} secundaryText="19 DE OCTUBRE">ENTRADAS</LinkHeader>
         </div>
     </nav>
+    <MenuMobile />
     <div class="w-full h-2 flex justify-center">
         <div
             class="h-[2px] w-full"
             style="background:linear-gradient(to right, transparent 3%, white 35%, white 100%)"
         >
         </div>
-        <a href="/" class="relative">
+        <a href="/" class="relative -mx-1">
             <XLogo
-                class:list={"h-auto w-40 -mt-12 text-white"}
+                class:list={"h-auto w-28 lg:w-40 -mt-10 lg:-mt-12 text-white"}
                 id="hero-logo-header"
                 noEffect
             />
