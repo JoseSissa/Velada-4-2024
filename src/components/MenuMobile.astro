@@ -3,6 +3,16 @@ import LogoXMobile from "./icons/LogoXMobile.astro";
 import HamburguerButton from "./icons/HamburguerButton.astro";
 import CloseMenuMobile from "./icons/CloseMenuMobile.astro";
 import ContentFooter from "@/components/ContentFooter.astro"
+
+const pages = [
+	{ name: "El Evento", href: "/" },
+	{ name: "Combates", href: "/combates" },
+	{ name: "Pronósticos", href: "/pronosticos", disabled: true, soonDate: "Próximamente" },
+	{ name: "Entradas", href: "/entradas", disabled: true, soonDate: "11 de abril" },
+].map((page) => ({
+	...page,
+	active: Astro.url.pathname === page.href,
+}))
 ---
 
 <div class="lg:hidden flex justify-between items-center px-4 md:px-10 py-3">
@@ -12,7 +22,7 @@ import ContentFooter from "@/components/ContentFooter.astro"
     <HamburguerButton />
 
 </div>
-<div class="fixed inset-0 flex flex-col items-center w-screen px-10 lg:hidden overflow-x-auto z-10 bg-[var(--background-color)]" id="menuMobile">
+<div class="fixed inset-0 flex flex-col items-center w-screen px-5 lg:hidden overflow-x-auto z-10 bg-[var(--background-color)]" id="menuMobile">
     <aside class="w-full h-auto flex justify-between items-center py-5">
         <span class="text-xl font-semibold uppercase text-primary">MENÚ</span>
         <button class="relative w-10 h-10" id="closeMenu">
@@ -25,21 +35,22 @@ import ContentFooter from "@/components/ContentFooter.astro"
     
     <img src="/images/icons/lvda.webp" alt="Logo LVDA" class="w-full max-w-60 my-4 accent-drop-shadow drop-shadow-lg">
 
-    <hr class="h-[2px] w-full border-t-0" style="background:linear-gradient(to right, transparent 0%, white 50%, transparent 100%)">
-    
-    <a href="/" class="relative py-5 text-xl text-primary current-page-mob">EL EVENTO</a>
-
-    <hr class="h-[2px] w-full border-t-0" style="background:linear-gradient(to right, transparent 0%, white 50%, transparent 100%)">
-
-    <a href="/" class="relative py-5 text-xl text-primary">COMBATES</a>
-
-    <hr class="h-[2px] w-full border-t-0" style="background:linear-gradient(to right, transparent 0%, white 50%, transparent 100%)">
-
-    <a href="/" class="relative py-5 text-xl text-primary">PRONÓSTICOS</a>
-
-    <hr class="h-[2px] w-full border-t-0" style="background:linear-gradient(to right, transparent 0%, white 50%, transparent 100%)">
-
-    <a href="/" class="relative py-5 text-xl text-primary">ENTRADAS</a>
+    {
+        pages.map((page) => {
+            return (
+                <>
+                    <hr class="h-[2px] w-full border-t-0" style="background:linear-gradient(to right, transparent 0%, white 50%, transparent 100%)"/>
+                    <a href={page.href} class={`relative flex flex-col items-center py-5 text-xl text-primary uppercase ${page.active ? "current-page-mob" : ""}`}>
+                        {page.name}
+                        {
+                            page.soonDate &&
+                            <span class="text-accent capitalize">{page.soonDate}</span>
+                        }
+                    </a>
+                </>
+            )
+        })
+    }
 
     <hr class="h-[2px] w-full border-t-0" style="background:linear-gradient(to right, transparent 0%, white 50%, transparent 100%)">
 
@@ -53,7 +64,6 @@ import ContentFooter from "@/components/ContentFooter.astro"
 		opacity: 0;
 		pointer-events: none;
 		transition: opacity 0.3s;
-		scrollbar-gutter: stable;
 	}
 
 	#menuMobile.open {
@@ -80,9 +90,12 @@ import ContentFooter from "@/components/ContentFooter.astro"
     document.addEventListener("astro:page-load", () => {
         const menuMobile = document.getElementById("menuMobile") as HTMLElement;
         const closeMenu = document.getElementById("closeMenu") as HTMLElement;
+        const body = document.body;
 
         closeMenu.addEventListener("click", (e) => {            
             menuMobile.classList.toggle("open");
+            body.classList.toggle("overflow-hidden");
+            body.classList.toggle("max-h-screen");
         });
     });
 </script>

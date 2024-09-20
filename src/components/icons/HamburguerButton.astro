@@ -47,9 +47,12 @@
     document.addEventListener("astro:page-load", () => {
         const menuMobile = document.getElementById("menuMobile") as HTMLElement;
         const button = document.getElementById("hamburguer") as HTMLElement;
+        const body = document.body;
 
         button.addEventListener("click", (e) => {            
             menuMobile.classList.toggle("open");
+            body.classList.toggle("overflow-hidden");
+            body.classList.toggle("max-h-screen");
         });
     });
 </script>
