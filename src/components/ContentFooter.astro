@@ -1,0 +1,36 @@
+---
+import Instagram from "@/icons/instagramIcon.astro";
+import GithubIcon from "@/icons/github.astro";
+---
+
+<span class="text-center text-primary">
+    © 2024 La Velada del año <span
+        aria-hidden="true"
+        class="hidden md:inline">|</span
+    ><br aria-hidden="true" class="block md:hidden" /> Todos los derechos reservados
+</span>
+
+<nav>
+    <ul class="flex justify-center items-center gap-x-6">
+        <li>
+            <a
+                href="https://www.instagram.com/josesissa_/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:scale-125 hover:opacity-70 transition inline-block"
+            >
+                <Instagram />
+            </a>
+        </li>
+        <li>
+            <a
+                href="https://github.com/JoseSissa"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:scale-125 hover:opacity-70 transition inline-block"
+            >
+                <GithubIcon class:list={"w-[48px] h-[48px]"} />
+            </a>
+        </li>
+    </ul>
+</nav>
