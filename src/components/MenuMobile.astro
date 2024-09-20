@@ -2,6 +2,7 @@
 import LogoXMobile from "./icons/LogoXMobile.astro";
 import HamburguerButton from "./icons/HamburguerButton.astro";
 import CloseMenuMobile from "./icons/CloseMenuMobile.astro";
+import ContentFooter from "@/components/ContentFooter.astro"
 ---
 
 <div class="lg:hidden flex justify-between items-center px-4 md:px-10 py-3">
@@ -41,6 +42,10 @@ import CloseMenuMobile from "./icons/CloseMenuMobile.astro";
     <a href="/" class="relative py-5 text-xl text-primary">ENTRADAS</a>
 
     <hr class="h-[2px] w-full border-t-0" style="background:linear-gradient(to right, transparent 0%, white 50%, transparent 100%)">
+
+    <div class="flex flex-col w-full py-10 mt-auto text-center text-xl gap-10">
+        <ContentFooter />
+    </div>
 </div>
 
 <style>
