@@ -15,6 +15,7 @@ const { id, name, country, countryName } = Astro.props
         class="w-full h-auto object-contain aspect-[285/428]"
         alt=`Fotografía en grande de ${name}`
         src=`/images/boxers/grande/${id}-big.webp`
+        decoding="async"
     />
 </picture>
 <div class="absolute bottom-10 md:bottom-0 flex flex-col items-center">
