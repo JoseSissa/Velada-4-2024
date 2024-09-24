@@ -15,7 +15,7 @@ const { listOfBoxers, class: className = "", reyDeLaPista } = Astro.props;
             ({ id, name, versus, rotate, country, countryName, allies }) => (
                 <a
                     href={`/boxer/${id}`}
-                    class={`boxer-link group relative min-w-36 min-h-36 md:w-36 md:h-36 mb-2 flex justify-center items-center cursor-pointer z-0 ${reyDeLaPista ? "rey-de-la-pista" : ""}`}
+                    class={`boxer-link group relative md:w-24 md:h-24 lg:w-36 lg:h-36 mb-2 flex justify-center items-center cursor-pointer z-0 ${reyDeLaPista ? "rey-de-la-pista" : ""}`}
                     title={`Visita la página del boxeador ${name}`}
                     rel="noopener noreferrer"
                     data-id={id}
