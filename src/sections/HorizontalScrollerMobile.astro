@@ -1,0 +1,70 @@
+---
+import BoxerColumn from "@/components/BoxerColumn.astro";
+import HorizontalScroll from "@/components/icons/HorizontalScroll.astro";
+import type { Boxer } from "@/types/Boxer";
+
+interface Props {
+    listOfBoxers: Array<Boxer>
+}
+
+const { listOfBoxers } = Astro.props
+---
+
+<div class="flex flex-col items-center md:hidden">
+    <div class="carousel w-full max-w-[100vw]">
+        <div class="carousel-inner w-full flex gap-5 overflow-y-hidden overflow-x-scroll snap-x snap-mandatory">
+            {
+                listOfBoxers.map((boxer, i) => {
+                    return (
+                        <BoxerColumn 
+                            listOfBoxers={[boxer]} 
+                            class:list={
+                                [
+                                    `carousel-item flex-shrink-0 snap-center w-[40%]`,
+                                    i === 0 ? "ml-[30%]" : "",
+                                    i === listOfBoxers.length - 1 ? "mr-[30%]" : ""
+                                ]}
+                            />
+                    )
+                })
+            }
+        </div>
+    </div>
+    <HorizontalScroll class:list={["w-16 text-primary opacity-80"]} />
+</div>
+
+<script>
+    // -----------------------------------------------------------------------------
+    // OBSERVAR LOS ELEMENTOS DE SCROLL MOBILE
+    
+</script>
+
+<style>
+    @media (max-width: 768px) {
+		.carousel {
+			scrollbar-width: none;
+		}
+
+		.carousel::-webkit-scrollbar {
+			display: none;
+		}
+
+		.carousel-inner {
+			transition: transform 0.3s ease-in-out;
+			scrollbar-width: none;
+		}
+
+		.carousel-inner::-webkit-scrollbar {
+			display: none;
+		}
+
+		.carousel-item {
+			transition: opacity 0.3s ease-in-out;
+		}
+
+		.carousel-item.active {
+			opacity: 1;
+			scale: 1.2;
+		}
+	}
+</style>

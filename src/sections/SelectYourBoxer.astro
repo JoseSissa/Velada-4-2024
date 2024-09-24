@@ -3,6 +3,7 @@ import BoxerColumn from "@/components/BoxerColumn.astro";
 import PictureBoxerBig from "@/components/PictureBoxerBig.astro";
 import { BOXERS } from "@/const/boxers";
 import { COUNTRIES } from "@/const/countries";
+import HorizontalScrollerMobile from "@/sections/HorizontalScrollerMobile.astro";
 
 const listOfBoxers = BOXERS.map((boxer) => {
     const { country } = boxer;
@@ -45,19 +46,21 @@ const columnOfBoxers = [
                 <BoxerColumn listOfBoxers={columnOfBoxers[0]} />
                 <BoxerColumn
                     listOfBoxers={columnOfBoxers[1]}
-                    className="mt-12"
+                    class="mt-12"
                     reyDeLaPista={true}
                 />
             </nav>
             <nav class="flex gap-4">
                 <BoxerColumn
                     listOfBoxers={columnOfBoxers[2]}
-                    className="mt-12"
+                    class="mt-12"
                     reyDeLaPista={true}
                 />
                 <BoxerColumn listOfBoxers={columnOfBoxers[3]} />
             </nav>
         </div>
+
+        <HorizontalScrollerMobile listOfBoxers={listOfBoxers} />
     </div>
 </section>
 
@@ -128,8 +131,8 @@ const columnOfBoxers = [
         }
     
         const selectBoxerForDefault = () => {
-            const idBoxerForDefault = localStorage.getItem("boxerSelected") ? localStorage.getItem("boxerSelected") : "el-mariana"            
-            const boxerForDefault = document.querySelector(`[data-id=${idBoxerForDefault}]`) as HTMLElement            
+            const idBoxerForDefault = localStorage.getItem("boxerSelected") ? localStorage.getItem("boxerSelected") : "el-mariana"
+            const boxerForDefault = document.querySelector(`[data-id=${idBoxerForDefault}]`) as HTMLElement
             const idOpponentForDefault = boxerForDefault?.getAttribute("data-versus")
             
             if(boxerForDefault) {
@@ -216,6 +219,50 @@ const columnOfBoxers = [
         });
     
         selectBoxerForDefault() // toggleBoxerDefault()
+
+        if (window.innerWidth < 768) {
+            const carousel = document.querySelector(".carousel-inner");
+            const idBoxerForDefault = localStorage.getItem("boxerSelected") ? localStorage.getItem("boxerSelected") : "el-mariana"
+            const elementoToMove = carousel?.querySelector(`[data-id="${idBoxerForDefault?.replace(/(^"|"$)/g, '')}"]`);
+            
+            if(elementoToMove) {
+                // Usar scrollIntoView para desplazar hasta el elemento en el scroll horizontal
+                elementoToMove.scrollIntoView(
+                    {
+                        block: 'end',   // Alineación vertical
+                        inline: 'center'    // Alineación horizontal (centrar el elemento)
+                    }
+                );
+            }            
+            
+            // Seleccionar todos los elementos que quieres observar
+            const items = document.querySelectorAll('.carousel-item');
+            // Crear una instancia de IntersectionObserver
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const infoBoxer = entry.target.querySelector("a")
+                    const imageOfBoxer = entry.target.querySelector("img")
+                    
+                    if (entry.isIntersecting) {
+                        imageOfBoxer?.classList.add('zoom-image');
+                        imageOfBoxer?.classList.add('grayscale-0');
+                        changeImageBigOfBoxer(infoBoxer?.dataset.id as string, infoBoxer?.dataset.name as string)
+                        changeFlagOfBoxer(infoBoxer?.dataset.country as string, infoBoxer?.dataset.countryName as string)
+                        changeNameOfBoxer(infoBoxer?.dataset.name as string)                    
+                    } else {
+                        imageOfBoxer?.classList.remove('zoom-image');
+                        imageOfBoxer?.classList.remove('grayscale-0');
+                    }
+
+                });
+            }, {
+                root: document.querySelector('.carousel-inner'), // El contenedor donde se hace el scroll
+                rootMargin: '0px -10px 0px -10px', // Margen opcional alrededor del root
+                threshold: 1 // Porcentaje del elemento visible para que sea considerado "visible"
+            });
+            // Observar cada elemento
+            items.forEach(item => observer.observe(item));
+        }
     })
 </script>
 
