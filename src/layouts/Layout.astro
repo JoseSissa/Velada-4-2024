@@ -1,19 +1,21 @@
 ---
 // Supports weights 100-900
 import "@fontsource-variable/jost";
-import Header from "@/sections/Header.astro"
+import Header from "@/sections/Header.astro";
 import NoiseStatic from "@/components/backgrounds/NoiseStatic.astro";
 import LightBackground from "@/components/backgrounds/LightBackground.astro";
 import Footer from "@/sections/Footer.astro";
-import { ViewTransitions } from 'astro:transitions';
+import { ViewTransitions } from "astro:transitions";
 
 interface Props {
     title: string;
-    description?: string
+    description?: string;
 }
 
 const { title } = Astro.props;
-const descriptioPage = Astro.props.description ? Astro.props.description : "Proyecto Académico de La Velada Del Año 2024";
+const descriptioPage = Astro.props.description
+    ? Astro.props.description
+    : "Proyecto Académico de La Velada Del Año 2024";
 ---
 
 <!doctype html>
