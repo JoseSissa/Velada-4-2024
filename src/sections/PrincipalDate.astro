@@ -12,7 +12,9 @@ import MapMarkerIcon from "@/icons/map-market.astro";
         <time id="hour"></time>
     </header>
 
-    <h3 class="max-w-fit mr-auto ml-auto mb-8 text-lg md:text-2xl font-medium uppercase underline-transition">
+    <h3
+        class="max-w-fit mr-auto ml-auto mb-8 text-lg md:text-2xl font-medium uppercase underline-transition"
+    >
         <a
             class="flex justify-center md:items-center"
             href="https://maps.app.goo.gl/F1oAFhFjqnvTKtC18"
@@ -33,12 +35,27 @@ import MapMarkerIcon from "@/icons/map-market.astro";
                 rel="noopener"
                 class={`
                     inline-block px-4 py-1 border-primary border-2 skew-x-[-21deg] font-medium text-lg
-                    before:absolute before:-inset-0.5 before:origin-right before:scale-x-0 before:bg-primary
-                    hover:scale-110 hover:text-secondary hover:before:origin-left hover:before:scale-x-100
-                    ease-in motion-safe:transition-[color,transform] motion-safe:before:transition-transform motion-safe:before:duration-300 motion-safe:before:ease-in motion-safe:hover:delay-100 motion-safe:hover:ease-out motion-safe:hover:before:delay-100 motion-safe:hover:before:ease-out
+                    before:absolute 
+                    before:-inset-0.5
+                    before:origin-right 
+                    before:scale-x-0 
+                    before:bg-primary
+                    hover:scale-110 
+                    hover:text-secondary 
+                    hover:before:origin-left 
+                    hover:before:scale-x-100 ease-in 
+                    motion-safe:transition-[color,transform] 
+                    motion-safe:before:transition-transform 
+                    motion-safe:before:duration-300 
+                    motion-safe:before:ease-in 
+                    motion-safe:hover:delay-100 
+                    motion-safe:hover:ease-out 
+                    motion-safe:hover:before:delay-100 
+                    motion-safe:hover:before:ease-out
                     `}
             >
-                <span class="inline-block skew-x-[21deg]">COMPRAR ENTRADAS</span>
+                <span class="inline-block skew-x-[21deg]">COMPRAR ENTRADAS</span
+                >
             </a>
             <span class="text-accent">Próximamente</span>
         </div>
@@ -115,12 +132,14 @@ import MapMarkerIcon from "@/icons/map-market.astro";
         opacity: 1;
     }
     .underline-transition {
-        background-image:
-			linear-gradient(var(--color-accent) 0%, var(--color-accent) 100%);
-		background-size: 0 3px;
-		background-position: 100% 100%;
-		background-repeat: no-repeat;
-		transition: background-size 0.3s ease-in-out;
+        background-image: linear-gradient(
+            var(--color-accent) 0%,
+            var(--color-accent) 100%
+        );
+        background-size: 0 3px;
+        background-position: 100% 100%;
+        background-repeat: no-repeat;
+        transition: background-size 0.3s ease-in-out;
     }
     .underline-transition:hover {
         color: var(--color-accent);
@@ -136,8 +155,8 @@ import MapMarkerIcon from "@/icons/map-market.astro";
         }
     }
     @media (prefers-reduced-motion) {
-		.underline-transition {
-			transition: none;
-		}
-	}
+        .underline-transition {
+            transition: none;
+        }
+    }
 </style>
