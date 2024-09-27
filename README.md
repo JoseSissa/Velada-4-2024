@@ -55,7 +55,8 @@ Feel free to check [our documentation](https://docs.astro.build) or jump into ou
 
 # TOOLS:
 
-| Name                   | URL                     |
-| :--------------------- | :---------------------- |
-| `Fuentes             ` | https://fontsource.org/ |
-| `SVG Optimización    ` | https://svgomg.net/     |
+| Name                   | URL                                   |
+| :--------------------- | :------------------------------------ |
+| `Fuentes             ` | https://fontsource.org/               |
+| `SVG Optimización    ` | https://svgomg.net/                   |
+| `HAsh                ` | https://generate-secret.vercel.app/32 |
