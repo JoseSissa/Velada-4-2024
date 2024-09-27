@@ -13,158 +13,185 @@ import X from "@/icons/x.astro";
 import CombatSection from "@/components/CombatSection.astro";
 import type { Boxer } from "@/types/Boxer";
 
+export const prerender = true;
+
 export function getStaticPaths() {
-	return BOXERS.map(({ id }) => {
-		return { params: { boxerId: id } }
-	})
+    return BOXERS.map(({ id }) => {
+        return { params: { boxerId: id } };
+    });
 }
 
-const { boxerId } = Astro.params
-const infoOfBoxer = BOXERS.find((boxerInList) => boxerInList.id === boxerId)
-if (!infoOfBoxer) return new Response(JSON.stringify("Boxer not found"), { status: 404 })
+const { boxerId } = Astro.params;
+const infoOfBoxer = BOXERS.find((boxerInList) => boxerInList.id === boxerId);
+if (!infoOfBoxer)
+    return new Response(JSON.stringify("Boxer not found"), { status: 404 });
 
 const getNamesOfRivals = (rivals: string | any[]) => {
-	let textRivals = ""
-	if(rivals.length == 1) {
-		textRivals = 
-			`<a 
+    let textRivals = "";
+    if (rivals.length == 1) {
+        textRivals = `<a 
 				href="/boxer/${rivals[0].id}" 
 				class="text-xl font-bold text-accent hover:underline" 
 				title="Visita la página del boxeador ${rivals[0].name}"
 				>
 					${rivals[0].name}
-			</a>`
-	} else {		
-		for (let i = 0; i < rivals.length; i++) {			
-			i === rivals.length - 1
-				? textRivals += 
-					`<a 
+			</a>`;
+    } else {
+        for (let i = 0; i < rivals.length; i++) {
+            i === rivals.length - 1
+                ? (textRivals += `<a 
 						href="/boxer/${rivals[i].id}" 
 						class="text-xl font-bold text-accent hover:underline" 
 						title="Visita la página del boxeador ${rivals[i].name}"
 						>
 							${rivals[i].name}
-					</a>`
-				: textRivals += 
-					`<a 
+					</a>`)
+                : (textRivals += `<a 
 						href="/boxer/${rivals[i].id}" 
 						class="text-xl font-bold text-accent hover:underline" 
 						title="Visita la página del boxeador ${rivals[i].name}"
 						>
 							${rivals[i].name}
-					</a> / `
-		}
-	}
-	return textRivals
-}
+					</a> / `);
+        }
+    }
+    return textRivals;
+};
 
-
-let infoBoxerRival: Array<Boxer> = []
+let infoBoxerRival: Array<Boxer> = [];
 if (infoOfBoxer.versus === "rey-de-la-pista") {
-	infoBoxerRival = BOXERS.filter(boxerInList => (boxerInList.versus == "rey-de-la-pista" && boxerInList.id != boxerId))	
-} else if(typeof infoOfBoxer.versus === "string") {
-	const boxer = BOXERS.find((boxerInList) => boxerInList.id === infoOfBoxer.versus)
-	if (!boxer) {
-		return new Response(JSON.stringify("Rival not found"), { status: 404 })
-	}
-	infoBoxerRival.push(boxer)
+    infoBoxerRival = BOXERS.filter(
+        (boxerInList) =>
+            boxerInList.versus == "rey-de-la-pista" && boxerInList.id != boxerId
+    );
+} else if (typeof infoOfBoxer.versus === "string") {
+    const boxer = BOXERS.find(
+        (boxerInList) => boxerInList.id === infoOfBoxer.versus
+    );
+    if (!boxer) {
+        return new Response(JSON.stringify("Rival not found"), { status: 404 });
+    }
+    infoBoxerRival.push(boxer);
 } else {
-	infoOfBoxer.versus.forEach(versusId => {
-		const boxer = BOXERS.find((boxerInList) => boxerInList.id === versusId)
-		if (!boxer) {
-			return new Response(JSON.stringify("Rival not found"), { status: 404 })
-		}
-		infoBoxerRival.push(boxer)
-	})
+    infoOfBoxer.versus.forEach((versusId) => {
+        const boxer = BOXERS.find((boxerInList) => boxerInList.id === versusId);
+        if (!boxer) {
+            return new Response(JSON.stringify("Rival not found"), {
+                status: 404,
+            });
+        }
+        infoBoxerRival.push(boxer);
+    });
 }
 if (!infoBoxerRival) {
-	return new Response(JSON.stringify("Information of rival not found"), { status: 404 })
+    return new Response(JSON.stringify("Information of rival not found"), {
+        status: 404,
+    });
 }
 ---
 
-<Layout 
-	description={`Información del luchador ${infoOfBoxer?.name}`}
-	title={`${infoOfBoxer?.name} - Información del boxeador de La Velada IV`}
+<Layout
+    description={`Información del luchador ${infoOfBoxer?.name}`}
+    title={`${infoOfBoxer?.name} - Información del boxeador de La Velada IV`}
 >
-	<main>
-		<section class="relative flex justify-between mb-10">
-			<div class="w-full max-w-[25%] text-center">
-				{
-					infoOfBoxer?.clips?.map(({text, url}) => {
-						return (
-							<a href={url} class="block max-w-72 mb-10 font-atomic text-2xl -skew-y-6 text-accent text-center text-pretty">"{text}."</a>
-						)
-					})
-				}
-				<h4>Rival</h4>
-				<div class="text-xl text-accent font-bold" set:html={getNamesOfRivals(infoBoxerRival)}>
-				</div>
-			</div>
-			<article
-				class="relative -top-12 w-full max-w-[50%] flex flex-col items-center justify-center -z-10"
-			>
-				<PictureBoxerBig 
-					id={infoOfBoxer?.id}
-					name={infoOfBoxer?.name}
-					country={infoOfBoxer?.country}
-					countryName={infoOfBoxer?.countryName}
-				/>
-			</article>
-			<div class="w-full max-w-[25%] text-center">
-				<div class="mb-10">
-					<h4>Edad</h4>
-					<span class="text-xl font-bold">{infoOfBoxer?.age}</span>
-				</div>
-				<div class="mb-10">
-					<h4>Peso</h4>
-					<span class="text-xl font-bold">{infoOfBoxer?.weight} kg.</span>
-				</div>
-				<div class="mb-10">
-					<h4>Altura</h4>
-					<span class="text-xl font-bold">{infoOfBoxer?.height} m.</span>
-				</div>
-				<div class="mb-10">
-					<h4>Guardia</h4>
-					<span class="text-xl font-bold">{infoOfBoxer?.guard}</span>
-				</div>
-			</div>
-		</section>
+    <main>
+        <section class="relative flex justify-between mb-10">
+            <div class="w-full max-w-[25%] text-center">
+                {
+                    infoOfBoxer?.clips?.map(({ text, url }) => {
+                        return (
+                            <a
+                                href={url}
+                                class="block max-w-72 mb-10 font-atomic text-2xl -skew-y-6 text-accent text-center text-pretty"
+                            >
+                                "{text}."
+                            </a>
+                        );
+                    })
+                }
+                <h4>Rival</h4>
+                <div
+                    class="text-xl text-accent font-bold"
+                    set:html={getNamesOfRivals(infoBoxerRival)}
+                />
+            </div>
+            <article
+                class="relative -top-12 w-full max-w-[50%] flex flex-col items-center justify-center -z-10"
+            >
+                <PictureBoxerBig
+                    id={infoOfBoxer?.id}
+                    name={infoOfBoxer?.name}
+                    country={infoOfBoxer?.country}
+                    countryName={infoOfBoxer?.countryName}
+                />
+            </article>
+            <div class="w-full max-w-[25%] text-center">
+                <div class="mb-10">
+                    <h4>Edad</h4>
+                    <span class="text-xl font-bold">{infoOfBoxer?.age}</span>
+                </div>
+                <div class="mb-10">
+                    <h4>Peso</h4>
+                    <span class="text-xl font-bold"
+                        >{infoOfBoxer?.weight} kg.</span
+                    >
+                </div>
+                <div class="mb-10">
+                    <h4>Altura</h4>
+                    <span class="text-xl font-bold"
+                        >{infoOfBoxer?.height} m.</span
+                    >
+                </div>
+                <div class="mb-10">
+                    <h4>Guardia</h4>
+                    <span class="text-xl font-bold">{infoOfBoxer?.guard}</span>
+                </div>
+            </div>
+        </section>
 
-		<section class="flex justify-center gap-5">
-			<BoxSocialMedia href={infoOfBoxer.socials.twitch} >
-				<Twitch />
-			</BoxSocialMedia>
-			<BoxSocialMedia href={infoOfBoxer.socials.instagram} >
-				<Instagram />
-			</BoxSocialMedia>
-			<BoxSocialMedia href={infoOfBoxer.socials.twitter} >
-				<X />
-			</BoxSocialMedia>
-			<BoxSocialMedia href={infoOfBoxer.socials.youtube} >
-				<Youtube />
-			</BoxSocialMedia>
-			<BoxSocialMedia href={infoOfBoxer.socials.tiktok} >
-				<Tiktok />
-			</BoxSocialMedia>
-		</section>
+        <section class="flex justify-center gap-5">
+            <BoxSocialMedia href={infoOfBoxer.socials.twitch}>
+                <Twitch />
+            </BoxSocialMedia>
+            <BoxSocialMedia href={infoOfBoxer.socials.instagram}>
+                <Instagram />
+            </BoxSocialMedia>
+            <BoxSocialMedia href={infoOfBoxer.socials.twitter}>
+                <X />
+            </BoxSocialMedia>
+            <BoxSocialMedia href={infoOfBoxer.socials.youtube}>
+                <Youtube />
+            </BoxSocialMedia>
+            <BoxSocialMedia href={infoOfBoxer.socials.tiktok}>
+                <Tiktok />
+            </BoxSocialMedia>
+        </section>
 
-		{
-			infoOfBoxer.workout && (
-				<section class="my-44">
-					<h3 class="text-2xl text-center text-white font-semibold">ENTRENAMIENTO</h3>
-					<p class="mt-4 text-xl text-center">
-						Preparación para el combate
-					</p>
-		
-					<div class="mt-10 pt-12">
-						<LiteYouTube videoId={infoOfBoxer.workout.videoID} backgroundImage={infoOfBoxer.workout.thumbnail} />
-					</div>
-				</section>
-			)
-		}
+        {
+            infoOfBoxer.workout && (
+                <section class="my-44">
+                    <h3 class="text-2xl text-center text-white font-semibold">
+                        ENTRENAMIENTO
+                    </h3>
+                    <p class="mt-4 text-xl text-center">
+                        Preparación para el combate
+                    </p>
 
-		<CombatSection id={boxerId} rival={infoBoxerRival} name={infoOfBoxer?.name} ally={infoOfBoxer?.allies} />
-		
-	</main>
+                    <div class="mt-10 pt-12">
+                        <LiteYouTube
+                            videoId={infoOfBoxer.workout.videoID}
+                            backgroundImage={infoOfBoxer.workout.thumbnail}
+                        />
+                    </div>
+                </section>
+            )
+        }
 
+        <CombatSection
+            id={boxerId}
+            rival={infoBoxerRival}
+            name={infoOfBoxer?.name}
+            ally={infoOfBoxer?.allies}
+        />
+    </main>
 </Layout>
