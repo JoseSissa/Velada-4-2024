@@ -1,0 +1,18 @@
+---
+import { COMBATS, REY_DE_LA_PISTA_ID } from "@/const/combats";
+
+// const infoCombat = COMBATS.find((combat) => combat.boxers.includes(id));
+---
+
+<section>
+    <button id="logout">Cerrar sesión</button>
+</section>
+
+<script>
+    const { signIn } = await import("auth-astro/client");
+    const logout = document.getElementById("logout");
+
+    logout?.addEventListener("click", () => {
+        signIn();
+    });
+</script>

@@ -1,0 +1,16 @@
+---
+
+---
+
+<section>
+    <button id="login">Iniciar sesión</button>
+</section>
+
+<script>
+    const { signIn } = await import("auth-astro/client");
+    const login = document.getElementById("login");
+
+    login?.addEventListener("click", () => {
+        signIn();
+    });
+</script>
