@@ -12,6 +12,7 @@ import Twitch from "@/icons/twitch.astro";
 import X from "@/icons/x.astro";
 import CombatSection from "@/components/CombatSection.astro";
 import type { Boxer } from "@/types/Boxer";
+import BoxerClips from "@/components/BoxerClips.astro";
 
 export const prerender = true;
 
@@ -95,28 +96,11 @@ if (!infoBoxerRival) {
     title={`${infoOfBoxer?.name} - Información del boxeador de La Velada IV`}
 >
     <main>
-        <section class="relative flex justify-between mb-10">
-            <div class="w-full max-w-[25%] text-center">
-                {
-                    infoOfBoxer?.clips?.map(({ text, url }) => {
-                        return (
-                            <a
-                                href={url}
-                                class="block max-w-72 mb-10 font-atomic text-2xl -skew-y-6 text-accent text-center text-pretty"
-                            >
-                                "{text}."
-                            </a>
-                        );
-                    })
-                }
-                <h4>Rival</h4>
-                <div
-                    class="text-xl text-accent font-bold"
-                    set:html={getNamesOfRivals(infoBoxerRival)}
-                />
-            </div>
+        <section
+            class="relative flex flex-col lg:flex-row justify-between mb-10"
+        >
             <article
-                class="relative -top-12 w-full max-w-[50%] flex flex-col items-center justify-center -z-10"
+                class="lg:order-2 relative -top-12 w-full lg:max-w-[50%] flex flex-col items-center justify-center -z-10"
             >
                 <PictureBoxerBig
                     id={infoOfBoxer?.id}
@@ -125,7 +109,17 @@ if (!infoBoxerRival) {
                     countryName={infoOfBoxer?.countryName}
                 />
             </article>
-            <div class="w-full max-w-[25%] text-center">
+            <div class="lg:order-1 mw-full lg:max-w-[25%] text-center">
+                <BoxerClips clips={infoOfBoxer.clips} />
+
+                <div
+                    class="text-xl text-accent font-bold hidden lg:block"
+                    set:html={getNamesOfRivals(infoBoxerRival)}
+                >
+                    <h4 class="text-primary">Rival</h4>
+                </div>
+            </div>
+            <div class="lg:order-3 w-full lg:max-w-[25%] text-center">
                 <div class="mb-10">
                     <h4>Edad</h4>
                     <span class="text-xl font-bold">{infoOfBoxer?.age}</span>

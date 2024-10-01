@@ -1,0 +1,79 @@
+---
+interface clip {
+    text: string;
+    url: string;
+}
+
+interface Props {
+    clips?: Array<clip>;
+}
+
+const { clips } = Astro.props;
+---
+
+{
+    clips && (
+        <section>
+            <dialog />
+            {clips?.map(({ text, url }, index) => {
+                return (
+                    <div class:list={`${index == 0 ? "" : "hidden"}`} data-clip>
+                        <button class="block lg:max-w-72 mb-10 font-atomic text-2xl -skew-y-6 text-accent text-center text-pretty">
+                            "{text}"
+                        </button>
+                    </div>
+                );
+            })}
+            <div class="flex justify-center items-center">
+                <button data-clip-left>
+                    <img
+                        src="/images/icons/left-arrow.svg"
+                        alt="Botón izquierda"
+                    />
+                </button>
+                <p class="font-bold">
+                    CITA <span data-clip-actual>1</span> / {clips?.length}
+                </p>
+                <button data-clip-right>
+                    <img
+                        src="/images/icons/left-arrow.svg"
+                        alt="Botón derecha"
+                        class="rotate-180"
+                    />
+                </button>
+            </div>
+        </section>
+    )
+}
+
+<script>
+    const btnLeft = document.querySelector("[data-clip-left]");
+    const btnRight = document.querySelector("[data-clip-right]");
+    const listClips = document.querySelectorAll("[data-clip]");
+    const textActualClip = document.querySelector("[data-clip-actual]");
+
+    let counter = 0;
+
+    function updateCounter() {}
+
+    btnLeft?.addEventListener("click", () => {
+        listClips[counter]?.classList.add("hidden");
+        counter--;
+        if (counter < 0) {
+            counter = listClips.length - 1;
+        }
+        if (textActualClip) textActualClip.textContent = `${counter + 1}`;
+        listClips[counter]?.classList.remove("hidden");
+        updateCounter();
+    });
+    btnRight?.addEventListener("click", () => {
+        listClips[counter]?.classList.add("hidden");
+        counter++;
+        if (counter > listClips.length - 1) {
+            counter = 0;
+        }
+        if (textActualClip) textActualClip.textContent = `${counter + 1}`;
+        listClips[counter]?.classList.remove("hidden");
+        updateCounter();
+    });
+</script>

@@ -9,7 +9,7 @@ interface Props {
 const { id, name, country, countryName } = Astro.props
 
 ---
-<picture class="max-w-[70%] md:max-w-[460px] aspect-[285/428] h-auto boxer-photo" transition:name="boxer">
+<picture class="lg:max-w-[70%] md:max-w-[460px] aspect-[285/428] h-auto boxer-photo" transition:name="boxer">
     <source srcset=`/images/boxers/grande/${id}-big.avif` type="image/avif"/>
     <img
         class="w-full h-auto object-contain aspect-[285/428]"
@@ -32,6 +32,6 @@ const { id, name, country, countryName } = Astro.props
 <style>
     .boxer-photo img {
         filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
-        mask-image: linear-gradient(to bottom, black 70%, transparent 95%);
+        mask-image: linear-gradient(to bottom, black 80%, transparent 95%);
     }
 </style>
