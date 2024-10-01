@@ -110,9 +110,7 @@
 
     window.addEventListener("theme-changed", () => {
         const themePreference = window.getThemePreference();
-        console.log({ themePreference });
         currentTheme = THEME[themePreference];
-        console.log(currentTheme);
         light.color.setHex(currentTheme.light);
 
         smokeParticles.forEach((particle) => {
