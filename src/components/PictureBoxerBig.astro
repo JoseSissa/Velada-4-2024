@@ -13,11 +13,11 @@ const { id, name, country, countryName } = Astro.props;
     class="max-w-[460px] aspect-[285/428] h-auto boxer-photo"
     transition:name="boxer"
 >
-    <source srcset=`/images/boxers/grande/${id}-big.avif` type="image/avif" />
+    <source srcset=`/images/boxers/photoBig/${id}-big.avif` type="image/avif" />
     <img
         class="w-full h-auto object-contain aspect-[285/428]"
         alt=`Fotografía en grande de ${name}`
-        src=`/images/boxers/grande/${id}-big.webp`
+        src=`/images/boxers/photoBig/${id}-big.webp`
         decoding="async"
     />
 </picture>
