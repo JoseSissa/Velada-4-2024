@@ -2,11 +2,17 @@
 import type { Boxer } from "@/types/Boxer";
 interface Props {
     listOfBoxers: Boxer[];
-    class? : string;
+    class?: string;
     reyDeLaPista?: boolean;
+    loading: "lazy" | "eager";
 }
 
-const { listOfBoxers, class: className = "", reyDeLaPista } = Astro.props;
+const {
+    listOfBoxers,
+    class: className = "",
+    reyDeLaPista,
+    loading,
+} = Astro.props;
 ---
 
 <div class:list={className}>
@@ -31,7 +37,7 @@ const { listOfBoxers, class: className = "", reyDeLaPista } = Astro.props;
                         class={`boxer-image w-full object-contain grayscale ${rotate ? "rotate-y-180" : ""}`}
                         src={`/images/boxers/${id}-small.webp`}
                         alt={`Foto en pequeño del boxeador ${name}`}
-                        loading="lazy"
+                        loading={loading}
                     />
                 </a>
             )
