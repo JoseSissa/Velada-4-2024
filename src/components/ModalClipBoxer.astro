@@ -1,0 +1,49 @@
+<dialog id="modal" class="w-full md:w-fit backdrop:bg-black/50 bg-transparent">
+    <div class="relative w-full md:w-[740px]">
+        <iframe
+            id="iframeYT"
+            class="w-full aspect-video rounded-lg"
+            src=""
+            title="Clips de la presentación de La Velada"
+            allow="autoplay"></iframe>
+        <button
+            type="button"
+            class="fixed top-8 right-8 p-4 bg-black rounded-lg text-xl text-ice hover:bg-accent hover:text-black hover:scale-110 transition-transform"
+            data-close-modal
+        >
+            <svg
+                class="size-5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 14"
+            >
+                <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
+            </svg>
+        </button>
+    </div>
+</dialog>
+
+<script>
+    const modal = document.getElementById("modal") as HTMLDialogElement;
+    const iframeYT = document.getElementById("iframeYT");
+    const buttonOpenModal = document.querySelectorAll("[data-show-modal]");
+    const buttonCloseModal = document.querySelector("[data-close-modal]");
+
+    buttonOpenModal.forEach((button) => {
+        button.addEventListener("click", (e) => {
+            const currentTarget = e.currentTarget as HTMLElement;
+            const { url } = currentTarget.dataset;
+            if (url) iframeYT?.setAttribute("src", `${url}&autoplay=1`);
+            modal.showModal();
+        });
+    });
+
+    buttonCloseModal?.addEventListener("click", () => modal.close());
+    modal.addEventListener("click", (e) => e.target == modal && modal.close());
+</script>

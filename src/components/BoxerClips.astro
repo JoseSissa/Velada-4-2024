@@ -1,4 +1,6 @@
 ---
+import ModalClipBoxer from "./ModalClipBoxer.astro";
+
 interface clip {
     text: string;
     url: string;
@@ -14,24 +16,36 @@ const { clips } = Astro.props;
 {
     clips && (
         <section>
-            <dialog />
+            <ModalClipBoxer />
             {clips?.map(({ text, url }, index) => {
                 return (
-                    <div class:list={`${index == 0 ? "" : "hidden"}`} data-clip>
-                        <button class="block lg:max-w-72 mb-10 font-atomic text-2xl -skew-y-6 text-accent text-center text-pretty">
+                    <div
+                        class:list={`max-w-96 lg:max-w-72 ml-auto mr-auto ${index == 0 ? "" : "hidden"} lg:block mb-10 group`}
+                        data-clip
+                    >
+                        <button
+                            data-url={url}
+                            data-show-modal
+                            class="block mb-2 font-atomic text-2xl -skew-y-6 text-accent text-center text-pretty group-hover:scale-110 transition-transform"
+                        >
                             "{text}"
                         </button>
+                        <footer>
+                            <span class="text-xs text-ice font-bold underline lg:no-underline lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
+                                Ver clip
+                            </span>
+                        </footer>
                     </div>
                 );
             })}
-            <div class="flex justify-center items-center">
+            <div class="flex justify-center items-center lg:hidden">
                 <button data-clip-left>
                     <img
                         src="/images/icons/left-arrow.svg"
                         alt="Botón izquierda"
                     />
                 </button>
-                <p class="font-bold">
+                <p class="font-bold text-ice">
                     CITA <span data-clip-actual>1</span> / {clips?.length}
                 </p>
                 <button data-clip-right>
@@ -47,33 +61,35 @@ const { clips } = Astro.props;
 }
 
 <script>
-    const btnLeft = document.querySelector("[data-clip-left]");
-    const btnRight = document.querySelector("[data-clip-right]");
-    const listClips = document.querySelectorAll("[data-clip]");
-    const textActualClip = document.querySelector("[data-clip-actual]");
+    document.addEventListener("astro:page-load", () => {
+        const btnLeft = document.querySelector("[data-clip-left]");
+        const btnRight = document.querySelector("[data-clip-right]");
+        const listClips = document.querySelectorAll("[data-clip]");
+        const textActualClip = document.querySelector("[data-clip-actual]");
 
-    let counter = 0;
+        let counter = 0;
 
-    function updateCounter() {}
+        function updateCounter() {}
 
-    btnLeft?.addEventListener("click", () => {
-        listClips[counter]?.classList.add("hidden");
-        counter--;
-        if (counter < 0) {
-            counter = listClips.length - 1;
-        }
-        if (textActualClip) textActualClip.textContent = `${counter + 1}`;
-        listClips[counter]?.classList.remove("hidden");
-        updateCounter();
-    });
-    btnRight?.addEventListener("click", () => {
-        listClips[counter]?.classList.add("hidden");
-        counter++;
-        if (counter > listClips.length - 1) {
-            counter = 0;
-        }
-        if (textActualClip) textActualClip.textContent = `${counter + 1}`;
-        listClips[counter]?.classList.remove("hidden");
-        updateCounter();
+        btnLeft?.addEventListener("click", () => {
+            listClips[counter]?.classList.add("hidden");
+            counter--;
+            if (counter < 0) {
+                counter = listClips.length - 1;
+            }
+            if (textActualClip) textActualClip.textContent = `${counter + 1}`;
+            listClips[counter]?.classList.remove("hidden");
+            updateCounter();
+        });
+        btnRight?.addEventListener("click", () => {
+            listClips[counter]?.classList.add("hidden");
+            counter++;
+            if (counter > listClips.length - 1) {
+                counter = 0;
+            }
+            if (textActualClip) textActualClip.textContent = `${counter + 1}`;
+            listClips[counter]?.classList.remove("hidden");
+            updateCounter();
+        });
     });
 </script>
