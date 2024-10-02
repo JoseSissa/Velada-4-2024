@@ -43,11 +43,12 @@ const columnOfBoxers = [
         </article>
         <div class="w-full hidden md:flex justify-between">
             <nav class="flex gap-4">
-                <BoxerColumn listOfBoxers={columnOfBoxers[0]} />
+                <BoxerColumn listOfBoxers={columnOfBoxers[0]} loading="lazy" />
                 <BoxerColumn
                     listOfBoxers={columnOfBoxers[1]}
                     class="mt-12"
                     reyDeLaPista={true}
+                    loading="lazy"
                 />
             </nav>
             <nav class="flex gap-4">
@@ -55,8 +56,9 @@ const columnOfBoxers = [
                     listOfBoxers={columnOfBoxers[2]}
                     class="mt-12"
                     reyDeLaPista={true}
+                    loading="lazy"
                 />
-                <BoxerColumn listOfBoxers={columnOfBoxers[3]} />
+                <BoxerColumn listOfBoxers={columnOfBoxers[3]} loading="lazy" />
             </nav>
         </div>
 
