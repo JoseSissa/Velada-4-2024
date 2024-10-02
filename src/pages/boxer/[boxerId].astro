@@ -97,7 +97,7 @@ if (!infoBoxerRival) {
 >
     <main>
         <section
-            class="relative flex flex-col lg:flex-row justify-between mb-10"
+            class="relative flex flex-col lg:flex-row justify-between mb-10 lg:mb-40"
         >
             <article
                 class="lg:order-2 relative -top-12 w-full lg:max-w-[50%] flex flex-col items-center justify-center -z-10"
@@ -119,46 +119,65 @@ if (!infoBoxerRival) {
                     <h4 class="text-primary">Rival</h4>
                 </div>
             </div>
-            <div class="lg:order-3 w-full lg:max-w-[25%] text-center">
-                <div class="mb-10">
-                    <h4>Edad</h4>
-                    <span class="text-xl font-bold">{infoOfBoxer?.age}</span>
+            <div
+                class="max-w-[400px] ml-auto mr-auto lg:max-w-[25%] lg:order-3 w-full text-center"
+            >
+                <div
+                    class="flex justify-between items-center mb-3 lg:block lg:mb-10 text-xl"
+                >
+                    <h4 class="font-atomic text-accent">Edad</h4>
+                    <span class="font-bold lg:text-3xl text-ice"
+                        >{infoOfBoxer?.age}</span
+                    >
                 </div>
-                <div class="mb-10">
-                    <h4>Peso</h4>
-                    <span class="text-xl font-bold"
+                <div
+                    class="flex justify-between items-center mb-3 lg:block lg:mb-10 text-xl"
+                >
+                    <h4 class="font-atomic text-accent">Peso</h4>
+                    <span class="font-bold lg:text-3xl text-ice"
                         >{infoOfBoxer?.weight} kg.</span
                     >
                 </div>
-                <div class="mb-10">
-                    <h4>Altura</h4>
-                    <span class="text-xl font-bold"
+                <div
+                    class="flex justify-between items-center mb-3 lg:block lg:mb-10 text-xl"
+                >
+                    <h4 class="font-atomic text-accent">Altura</h4>
+                    <span class="font-bold lg:text-3xl text-ice"
                         >{infoOfBoxer?.height} m.</span
                     >
                 </div>
-                <div class="mb-10">
-                    <h4>Guardia</h4>
-                    <span class="text-xl font-bold">{infoOfBoxer?.guard}</span>
+                <div
+                    class="flex justify-between items-center mb-3 lg:block lg:mb-10 text-xl"
+                >
+                    <h4 class="font-atomic text-accent">Guardia</h4>
+                    <span class="font-bold lg:text-3xl text-ice"
+                        >{infoOfBoxer?.guard}</span
+                    >
                 </div>
             </div>
         </section>
 
-        <section class="flex justify-center gap-5">
-            <BoxSocialMedia href={infoOfBoxer.socials.twitch}>
-                <Twitch />
-            </BoxSocialMedia>
-            <BoxSocialMedia href={infoOfBoxer.socials.instagram}>
-                <Instagram />
-            </BoxSocialMedia>
-            <BoxSocialMedia href={infoOfBoxer.socials.twitter}>
-                <X />
-            </BoxSocialMedia>
-            <BoxSocialMedia href={infoOfBoxer.socials.youtube}>
-                <Youtube />
-            </BoxSocialMedia>
-            <BoxSocialMedia href={infoOfBoxer.socials.tiktok}>
-                <Tiktok />
-            </BoxSocialMedia>
+        <section class="max-w-[400px] md:max-w-full ml-auto mr-auto">
+            <h3 class="mb-10 text-2xl text-center text-ice font-bold">
+                REDES SOCIALES
+            </h3>
+            <div class="flex flex-col md:flex-row justify-center gap-5">
+                <BoxSocialMedia href={infoOfBoxer.socials.twitch}>
+                    <Twitch />
+                </BoxSocialMedia>
+                <BoxSocialMedia href={infoOfBoxer.socials.instagram}>
+                    <Instagram />
+                </BoxSocialMedia>
+                <BoxSocialMedia href={infoOfBoxer.socials.twitter}>
+                    <X />
+                </BoxSocialMedia>
+                <BoxSocialMedia href={infoOfBoxer.socials.youtube}>
+                    <Youtube />
+                </BoxSocialMedia>
+                <BoxSocialMedia href={infoOfBoxer.socials.tiktok}>
+                    <Tiktok />
+                </BoxSocialMedia>
+            </div>
         </section>
 
         {

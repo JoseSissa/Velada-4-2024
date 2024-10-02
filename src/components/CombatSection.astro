@@ -34,25 +34,25 @@ if (!infoCombat) {
         <div class="text-center lowercase">
             {
                 rival.length == 1 && (
-                    <span class="text-5xl font-atomic lowercase text-white"> {name} </span>
-                    <span class="text-5xl font-atomic lowercase text-accent lg:text-6xl"> vs </span>
-                    <span class="text-5xl font-atomic lowercase text-white"> {rival[0]?.name} </span>
+                    <span class="text-5xl font-atomic lowercase text-accent"> {name} </span>
+                    <span class="text-5xl font-atomic lowercase text-ice lg:text-6xl"> vs </span>
+                    <span class="text-5xl font-atomic lowercase text-accent"> {rival[0]?.name} </span>
                 )
             }
             {
                 rival.length == 2 && ally && (
-                    <span class="text-5xl font-atomic lowercase text-white"> {name} <span class="text-5xl font-atomic lowercase text-accent lg:text-6xl">x</span> {ally[0]} </span>
-                    <span class="text-5xl font-atomic lowercase text-accent lg:text-6xl"> vs </span>
-                    <span class="text-5xl font-atomic lowercase text-white"> {rival[0]?.name} <span class="text-5xl font-atomic lowercase text-accent lg:text-6xl">x</span> {rival[1]?.name} </span>
+                    <span class="text-5xl font-atomic lowercase text-accent"> {name} <span class="text-5xl font-atomic lowercase text-ice lg:text-6xl">x</span> {ally[0]} </span>
+                    <span class="text-5xl font-atomic lowercase text-ice lg:text-6xl"> vs </span>
+                    <span class="text-5xl font-atomic lowercase text-accent"> {rival[0]?.name} <span class="text-5xl font-atomic lowercase text-ice lg:text-6xl">x</span> {rival[1]?.name} </span>
                 )
             }
             {
                 rival.length > 2 && (
                     <>
-                        <span class="text-5xl font-atomic lowercase text-white"> {name} </span>
-                        <span class="text-5xl font-atomic lowercase text-accent lg:text-6xl"> vs </span>
+                        <span class="text-5xl font-atomic lowercase text-accent"> {name} </span>
+                        <span class="text-5xl font-atomic lowercase text-ice lg:text-6xl"> vs </span>
                         {
-                            rival.map((boxer, index) => <span class="text-5xl font-atomic lowercase text-white"> {boxer.name} </span> <span class="text-5xl font-atomic lowercase text-accent lg:text-6xl"> vs </span>)
+                            rival.map((boxer, index) => <span class="text-5xl font-atomic lowercase text-accent"> {boxer.name} </span> <span class="text-5xl font-atomic lowercase text-accent lg:text-6xl"> vs </span>)
                         }
                     </>
                     

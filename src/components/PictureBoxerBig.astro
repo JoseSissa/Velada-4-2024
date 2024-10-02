@@ -6,11 +6,14 @@ interface Props {
     countryName?: string;
 }
 
-const { id, name, country, countryName } = Astro.props
-
+const { id, name, country, countryName } = Astro.props;
 ---
-<picture class="lg:max-w-[70%] md:max-w-[460px] aspect-[285/428] h-auto boxer-photo" transition:name="boxer">
-    <source srcset=`/images/boxers/grande/${id}-big.avif` type="image/avif"/>
+
+<picture
+    class="max-w-[460px] aspect-[285/428] h-auto boxer-photo"
+    transition:name="boxer"
+>
+    <source srcset=`/images/boxers/grande/${id}-big.avif` type="image/avif" />
     <img
         class="w-full h-auto object-contain aspect-[285/428]"
         alt=`Fotografía en grande de ${name}`
@@ -18,8 +21,10 @@ const { id, name, country, countryName } = Astro.props
         decoding="async"
     />
 </picture>
-<div class="absolute bottom-8 md:-bottom-28 lg:-bottom-60 2xl:bottom-0 flex flex-col items-center">
-    <h4 class="text-6xl md:text-8xl mb-4 font-atomic lowercase text-accent boxer-title -skew-y-6 text-center">
+<div class="absolute bottom-8 2xl:bottom-0 flex flex-col items-center">
+    <h4
+        class="text-6xl md:text-8xl mb-4 font-atomic lowercase text-accent boxer-title -skew-y-6 text-center"
+    >
         <span class="boxer-name">{name}</span>
     </h4>
     <img
@@ -32,6 +37,6 @@ const { id, name, country, countryName } = Astro.props
 <style>
     .boxer-photo img {
         filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
-        mask-image: linear-gradient(to bottom, black 80%, transparent 95%);
+        mask-image: linear-gradient(to bottom, black 90%, transparent 95%);
     }
 </style>
