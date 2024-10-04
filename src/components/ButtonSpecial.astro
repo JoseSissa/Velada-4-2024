@@ -1,0 +1,47 @@
+---
+interface Props {
+    type: string
+    url?: string
+    text: string
+    id?: string
+}
+
+const { type, url, text, id } = Astro.props;
+const classButton = `
+        inline-block px-4 py-1 border-primary border-2 skew-x-[-21deg] font-medium text-lg
+        before:absolute 
+        before:-inset-0.5
+        before:origin-right 
+        before:scale-x-0 
+        before:bg-primary
+        hover:scale-110 
+        hover:text-secondary 
+        hover:before:origin-left 
+        hover:before:scale-x-100 ease-in 
+        motion-safe:transition-[color,transform] 
+        motion-safe:before:transition-transform 
+        motion-safe:before:duration-300 
+        motion-safe:before:ease-in 
+        motion-safe:hover:delay-100 
+        motion-safe:hover:ease-out 
+        motion-safe:hover:before:delay-100 
+        motion-safe:hover:before:ease-out`
+
+const classSpan = `inline-block skew-x-[21deg]`
+---
+
+{
+    type === "a" ? (
+        <a href={url} class={classButton} id={id} target="_blank" rel="noopener">
+            <span class={classSpan}>
+                {text}
+            </span>
+        </a>
+    ) : (
+        <button class={classButton} id={id}>
+            <span class={classSpan}>
+                {text}
+            </span>
+        </button>
+    )
+}
