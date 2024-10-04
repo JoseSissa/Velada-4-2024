@@ -1,11 +1,109 @@
 ---
-import { COMBATS, REY_DE_LA_PISTA_ID } from "@/const/combats";
+import { Image } from "astro:assets";
+import { db, Votes, eq } from "astro:db"
 
-// const infoCombat = COMBATS.find((combat) => combat.boxers.includes(id));
+import { COMBATS, REY_DE_LA_PISTA_ID } from "@/const/combats";
+import ButtonSpecial from "../ButtonSpecial.astro";
+import { generateUserId } from "@/lib/users";
+import type { User } from "@auth/core/types";
+
+
+interface Props {
+    user : User;
+}
+
+const { user } = Astro.props;
+const userId = generateUserId(user);
+
+const votes = await db
+    .select({ combatId: Votes.combatId, voteId: Votes.voteId })
+    .from(Votes)
+    .where(eq(Votes.userId, userId));
+    
+const userVotes: Record<string, string> = {}
+votes.forEach(vote => {
+    userVotes[vote.combatId] = vote.voteId
+})
+
+console.log(userVotes);
+
 ---
 
 <section>
-    <button id="logout">Cerrar sesión</button>
+    <h1 class="font-atomic text-5xl text-ice">¡Haz tu pronóstico!</h1>
+    <p>Vota tus ganadores para cada combate haciendo clic encima de cada uno</p>
+    <div>
+        <span>{user.name}</span>
+        <ButtonSpecial type="button" text="CERRAR SESIÓN" id="logout" />
+    </div>
+
+    <ul>
+        {
+            COMBATS.map(({ id, number, boxers, titleSize, teams }) => {
+                if (id === REY_DE_LA_PISTA_ID) return;
+                let urlBoxer1, urlBoxer2, nameBoxer1, nameBoxer2;
+                if (teams) {
+                    urlBoxer1 = `/images/boxers/votes/vote-${number}-${teams[0]}.webp`;
+                    urlBoxer2 = `/images/boxers/votes/vote-${number}-${teams[1]}.webp`;
+                    nameBoxer1 = `${boxers[0]} y ${boxers[1]}`;
+                    nameBoxer2 = `${boxers[2]} y ${boxers[3]}`;
+                } else {
+                    urlBoxer1 = `/images/boxers/votes/vote-${number}-${boxers[0]}.webp`;
+                    urlBoxer2 = `/images/boxers/votes/vote-${number}-${boxers[1]}.webp`;
+                    nameBoxer1 = boxers[0];
+                    nameBoxer2 = boxers[1];
+                }
+                return (
+                    <li class="flex justify- items-center mb-10">
+                        <button
+                            data-button-vote
+                            data-combat-id={id}
+                            data-boxer-id={boxers[0]}
+                            class:list={[
+                                "relative hover:scale-110 transition-transform group grayscale hover:grayscale-0 hover:saturate-150",
+                                userVotes[id] == boxers[0] ? "boxer-Voted" : "",
+                            ]}
+                        >
+                            <img class="" src={urlBoxer1} alt="" />
+                            <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-ice font-atomic text-3xl opacity-0 group-hover:opacity-100 boxer-Voted_text-one">
+                                ¡Voto para <br />{" "}
+                                <span class="text-accent">{nameBoxer1}</span>!
+                            </span>
+                            <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-green-500 font-atomic text-3xl opacity-0 boxer-Voted_text-two">
+                                ¡Votado!
+                            </span>
+                        </button>
+                        <div>
+                            <Image
+                                src={`/images/combates/title-${id}.webp`}
+                                alt="haa"
+                                width={titleSize[0]}
+                                height={titleSize[1]}
+                            />
+                        </div>
+                        <button
+                            data-button-vote
+                            data-combat-id={id}
+                            data-boxer-id={boxers[1]}
+                            class:list={[
+                                "relative hover:scale-110 transition-transform group grayscale hover:grayscale-0 hover:saturate-150",
+                                userVotes[id] == boxers[1] ? "boxer-Voted" : "",
+                            ]}
+                        >
+                            <img src={urlBoxer2} alt="" />
+                            <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-ice font-atomic text-3xl opacity-0 group-hover:opacity-100 boxer-Voted_text-one">
+                                ¡Voto para <br />{" "}
+                                <span class="text-accent">{nameBoxer2}</span>!
+                            </span>
+                            <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-green-500 font-atomic text-3xl opacity-0 boxer-Voted_text-two">
+                                ¡Votado!
+                            </span>
+                        </button>
+                    </li>
+                );
+            })
+        }
+    </ul>
 </section>
 
 <script>
@@ -15,4 +113,47 @@ import { COMBATS, REY_DE_LA_PISTA_ID } from "@/const/combats";
     logout?.addEventListener("click", () => {
         signIn();
     });
+
+    const voteTeam = document.querySelectorAll("[data-button-vote]") as NodeListOf<HTMLButtonElement>;
+    voteTeam.forEach((button) => {
+        const { combatId, boxerId } = button.dataset;
+
+        button.addEventListener("click", (e) => {
+            const target = e.currentTarget as HTMLElement;
+            
+            if(!target.classList.contains("boxer-Voted")) {
+                target.parentElement?.querySelector(".boxer-Voted")?.classList.remove("boxer-Voted"),
+                target.classList.add("boxer-Voted")
+            }
+                
+            
+            fetch(`/api/votes/${combatId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ voteId: boxerId })
+            })
+            .then((response) => {
+                console.log(response.ok, response.status);
+            })
+        })
+    });
 </script>
+
+<style>
+    button img {
+        filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+        mask-image: linear-gradient(to bottom, black 90%, transparent 95%);
+    }
+
+    .boxer-Voted {
+        @apply grayscale-0 saturate-150 scale-110 pointer-events-none;
+        .boxer-Voted_text-one {
+            @apply opacity-0;
+        }
+        .boxer-Voted_text-two {
+            @apply opacity-100;
+        }
+    }
+</style>
