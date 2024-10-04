@@ -1,4 +1,5 @@
 ---
+import ButtonSpecial from "@/components/ButtonSpecial.astro";
 import MapMarkerIcon from "@/icons/map-market.astro";
 ---
 
@@ -29,34 +30,7 @@ import MapMarkerIcon from "@/icons/map-market.astro";
 
     <footer class="mt-6">
         <div class="flex flex-col items-center justify-center gap-y-2">
-            <a
-                href="#"
-                target="_blank"
-                rel="noopener"
-                class={`
-                    inline-block px-4 py-1 border-primary border-2 skew-x-[-21deg] font-medium text-lg
-                    before:absolute 
-                    before:-inset-0.5
-                    before:origin-right 
-                    before:scale-x-0 
-                    before:bg-primary
-                    hover:scale-110 
-                    hover:text-secondary 
-                    hover:before:origin-left 
-                    hover:before:scale-x-100 ease-in 
-                    motion-safe:transition-[color,transform] 
-                    motion-safe:before:transition-transform 
-                    motion-safe:before:duration-300 
-                    motion-safe:before:ease-in 
-                    motion-safe:hover:delay-100 
-                    motion-safe:hover:ease-out 
-                    motion-safe:hover:before:delay-100 
-                    motion-safe:hover:before:ease-out
-                    `}
-            >
-                <span class="inline-block skew-x-[21deg]">COMPRAR ENTRADAS</span
-                >
-            </a>
+            <ButtonSpecial type="a" url="#" text="COMPRAR ENTRADAS" />
             <span class="text-accent">Próximamente</span>
         </div>
     </footer>
