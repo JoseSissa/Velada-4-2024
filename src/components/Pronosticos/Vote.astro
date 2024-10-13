@@ -24,9 +24,6 @@ const userVotes: Record<string, string> = {}
 votes.forEach(vote => {
     userVotes[vote.combatId] = vote.voteId
 })
-
-console.log(userVotes);
-
 ---
 
 <section>
@@ -107,11 +104,11 @@ console.log(userVotes);
 </section>
 
 <script>
-    const { signIn } = await import("auth-astro/client");
+    const { signOut } = await import("auth-astro/client");
     const logout = document.getElementById("logout");
 
     logout?.addEventListener("click", () => {
-        signIn();
+        signOut();
     });
 
     const voteTeam = document.querySelectorAll("[data-button-vote]") as NodeListOf<HTMLButtonElement>;
