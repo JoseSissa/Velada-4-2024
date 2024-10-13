@@ -117,10 +117,20 @@ votes.forEach(vote => {
 
         button.addEventListener("click", (e) => {
             const target = e.currentTarget as HTMLElement;
-            
+            let previousVote: HTMLElement | null;
+
+            if (target) {
+                previousVote = target.parentElement ? target.parentElement.querySelector(".boxer-Voted") : null;
+                previousVote?.classList.remove("boxer-Voted");
+            }
+
             if(!target.classList.contains("boxer-Voted")) {
-                target.parentElement?.querySelector(".boxer-Voted")?.classList.remove("boxer-Voted"),
                 target.classList.add("boxer-Voted")
+            }
+
+            const rollbackUI = () => {
+                target.classList.remove("boxer-Voted");
+                previousVote?.classList.add("boxer-Voted");
             }
                 
             
@@ -132,7 +142,10 @@ votes.forEach(vote => {
                 body: JSON.stringify({ voteId: boxerId })
             })
             .then((response) => {
-                console.log(response.ok, response.status);
+                if(!response.ok) rollbackUI()
+            })
+            .catch(() => { //Here when there is an error with conection
+                rollbackUI()
             })
         })
     });
