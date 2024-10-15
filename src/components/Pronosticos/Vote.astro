@@ -134,7 +134,7 @@ votes.forEach(vote => {
 
                 window.toast({
                     title: "Error, no se pudo guardar el voto",
-                    location: "bottom-center",
+                    location: "bottom-center", 
                     dismissible: false,
                     type: "error",
                     icon: true,
@@ -158,6 +158,8 @@ votes.forEach(vote => {
                     type: "success",
                     icon: true,
                 })
+                const nextCombat = button.parentElement?.nextElementSibling as HTMLElement;
+                if (nextCombat) nextCombat.scrollIntoView({ behavior: "smooth" });
             })
             .catch(() => { //Here when there is an error with conection
                 rollbackUI()
