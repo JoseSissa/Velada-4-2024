@@ -42,13 +42,13 @@ votes.forEach(vote => {
                 if (teams) {
                     urlBoxer1 = `/images/boxers/votes/vote-${number}-${teams[0]}.webp`;
                     urlBoxer2 = `/images/boxers/votes/vote-${number}-${teams[1]}.webp`;
-                    nameBoxer1 = `${boxers[0]} y ${boxers[1]}`;
-                    nameBoxer2 = `${boxers[2]} y ${boxers[3]}`;
+                    nameBoxer1 = `${boxers[0].replace('-', ' ')} y <br /> ${boxers[1].replace('-', ' ')}`;
+                    nameBoxer2 = `${boxers[2].replace('-', ' ')} y <br />${boxers[3].replace('-', ' ')}`;
                 } else {
                     urlBoxer1 = `/images/boxers/votes/vote-${number}-${boxers[0]}.webp`;
                     urlBoxer2 = `/images/boxers/votes/vote-${number}-${boxers[1]}.webp`;
-                    nameBoxer1 = boxers[0];
-                    nameBoxer2 = boxers[1];
+                    nameBoxer1 = boxers[0].replace('-', ' ');
+                    nameBoxer2 = boxers[1].replace('-', ' ');
                 }
                 return (
                     <li class="flex justify- items-center mb-10">
@@ -63,8 +63,8 @@ votes.forEach(vote => {
                         >
                             <img class="" src={urlBoxer1} alt="" />
                             <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-ice font-atomic text-3xl opacity-0 group-hover:opacity-100 boxer-Voted_text-one">
-                                ¡Voto para <br />{" "}
-                                <span class="text-accent">{nameBoxer1}</span>!
+                                ¡Voto a <br />{" "}
+                                <span class="text-accent text-nowrap" set:html={nameBoxer1}></span>!
                             </span>
                             <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-green-500 font-atomic text-3xl opacity-0 boxer-Voted_text-two">
                                 ¡Votado!
@@ -89,8 +89,8 @@ votes.forEach(vote => {
                         >
                             <img src={urlBoxer2} alt="" />
                             <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-ice font-atomic text-3xl opacity-0 group-hover:opacity-100 boxer-Voted_text-one">
-                                ¡Voto para <br />{" "}
-                                <span class="text-accent">{nameBoxer2}</span>!
+                                ¡Voto a <br />{" "}
+                                <span class="text-accent" set:html={nameBoxer2}></span>!
                             </span>
                             <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-green-500 font-atomic text-3xl opacity-0 boxer-Voted_text-two">
                                 ¡Votado!
