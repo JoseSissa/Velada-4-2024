@@ -4,3 +4,9 @@
 interface Window {
     getThemePreference(): "dark" | "light";
 }
+
+declare global {
+    interface Window {
+        toast: Function
+    }
+}

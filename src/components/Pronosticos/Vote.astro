@@ -131,6 +131,14 @@ votes.forEach(vote => {
             const rollbackUI = () => {
                 target.classList.remove("boxer-Voted");
                 previousVote?.classList.add("boxer-Voted");
+
+                window.toast({
+                    title: "Error, no se pudo guardar el voto",
+                    location: "bottom-center",
+                    dismissible: false,
+                    type: "error",
+                    icon: true,
+                })
             }
                 
             
@@ -143,6 +151,13 @@ votes.forEach(vote => {
             })
             .then((response) => {
                 if(!response.ok) rollbackUI()
+                window.toast({
+                    title: "¡Voto registrado!",
+                    location: "bottom-center",
+                    dismissible: false,
+                    type: "success",
+                    icon: true,
+                })
             })
             .catch(() => { //Here when there is an error with conection
                 rollbackUI()
