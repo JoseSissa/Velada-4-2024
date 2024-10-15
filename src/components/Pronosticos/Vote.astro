@@ -24,6 +24,12 @@ const userVotes: Record<string, string> = {}
 votes.forEach(vote => {
     userVotes[vote.combatId] = vote.voteId
 })
+
+const teamsS = COMBATS
+		.flatMap(({ teams, boxers }) => teams ?? boxers)
+		.map(id => ({ id }))
+        console.log(teamsS);
+        
 ---
 
 <section>
@@ -37,25 +43,31 @@ votes.forEach(vote => {
     <ul>
         {
             COMBATS.map(({ id, number, boxers, titleSize, teams }) => {
+                
+                
                 if (id === REY_DE_LA_PISTA_ID) return;
-                let urlBoxer1, urlBoxer2, nameBoxer1, nameBoxer2;
+                let urlBoxer1, urlBoxer2, nameBoxer1, nameBoxer2, dataBoxerId_1, dataBoxerId_2;
                 if (teams) {
                     urlBoxer1 = `/images/boxers/votes/vote-${number}-${teams[0]}.webp`;
                     urlBoxer2 = `/images/boxers/votes/vote-${number}-${teams[1]}.webp`;
                     nameBoxer1 = `${boxers[0].replace('-', ' ')} y <br /> ${boxers[1].replace('-', ' ')}`;
                     nameBoxer2 = `${boxers[2].replace('-', ' ')} y <br />${boxers[3].replace('-', ' ')}`;
+                    dataBoxerId_1 = `${boxers[0]}-${boxers[1]}`;
+                    dataBoxerId_2 = `${boxers[2]}-${boxers[3]}`;
                 } else {
                     urlBoxer1 = `/images/boxers/votes/vote-${number}-${boxers[0]}.webp`;
                     urlBoxer2 = `/images/boxers/votes/vote-${number}-${boxers[1]}.webp`;
                     nameBoxer1 = boxers[0].replace('-', ' ');
                     nameBoxer2 = boxers[1].replace('-', ' ');
+                    dataBoxerId_1 = `${boxers[0]}`;
+                    dataBoxerId_2 = `${boxers[2]}`;
                 }
                 return (
                     <li class="flex justify- items-center mb-10">
                         <button
                             data-button-vote
                             data-combat-id={id}
-                            data-boxer-id={boxers[0]}
+                            data-boxer-id={dataBoxerId_1}
                             class:list={[
                                 "relative hover:scale-110 transition-transform group grayscale hover:grayscale-0 hover:saturate-150",
                                 userVotes[id] == boxers[0] ? "boxer-Voted" : "",
@@ -81,7 +93,7 @@ votes.forEach(vote => {
                         <button
                             data-button-vote
                             data-combat-id={id}
-                            data-boxer-id={boxers[1]}
+                            data-boxer-id={dataBoxerId_2}
                             class:list={[
                                 "relative hover:scale-110 transition-transform group grayscale hover:grayscale-0 hover:saturate-150",
                                 userVotes[id] == boxers[1] ? "boxer-Voted" : "",
@@ -140,6 +152,8 @@ votes.forEach(vote => {
                     icon: true,
                 })
             }
+
+            console.log(boxerId);
                 
             
             fetch(`/api/votes/${combatId}`, {
