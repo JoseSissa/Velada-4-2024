@@ -114,7 +114,7 @@ votes.forEach(vote => {
     const voteTeam = document.querySelectorAll("[data-button-vote]") as NodeListOf<HTMLButtonElement>;
     voteTeam.forEach((button) => {
         const { combatId, boxerId } = button.dataset;
-
+        
         button.addEventListener("click", (e) => {
             const target = e.currentTarget as HTMLElement;
             let previousVote: HTMLElement | null;

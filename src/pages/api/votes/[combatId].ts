@@ -70,9 +70,7 @@ export const POST: APIRoute = async ({ params, request }) => {
     } catch (error) {
         console.error(error);
         return response("Error Inserting Vote", { status: 500 });
-    }
-
-    
+    }    
 
     return response("OK end RES", { status: 200 });
 };
