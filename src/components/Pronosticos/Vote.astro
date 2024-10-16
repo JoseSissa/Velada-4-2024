@@ -23,13 +23,7 @@ const votes = await db
 const userVotes: Record<string, string> = {}
 votes.forEach(vote => {
     userVotes[vote.combatId] = vote.voteId
-})
-
-const teamsS = COMBATS
-		.flatMap(({ teams, boxers }) => teams ?? boxers)
-		.map(id => ({ id }))
-        console.log(teamsS);
-        
+})        
 ---
 
 <section>
@@ -42,10 +36,50 @@ const teamsS = COMBATS
 
     <ul>
         {
-            COMBATS.map(({ id, number, boxers, titleSize, teams }) => {
+            COMBATS.map(({ id, number, boxers, titleSize, teams }, i) => {
                 
                 
-                if (id === REY_DE_LA_PISTA_ID) return;
+                if (id === REY_DE_LA_PISTA_ID) {                    
+                    return (
+                        <li class="flex flex-col justify-center items-center mb-10">
+                            <div>
+                                <Image
+                                    src={`/images/combates/title-${id}.webp`}
+                                    alt="Fotografía del poster del combate Rey de la pista"
+                                    loading="lazy"
+                                    class:list={"w-52"}
+                                    width={titleSize[0]}
+                                    height={titleSize[1]}
+                                />
+                            </div>
+                            <ul class="grid grid-cols-5 gap-x-4">
+                                {
+                                    boxers.map((boxerId) => {
+                                        return (
+                                            <button
+                                                data-button-vote
+                                                data-combat-id={id}
+                                                data-boxer-id={boxerId}
+                                                class:list={[
+                                                    "relative hover:scale-110 transition-transform group grayscale hover:grayscale-0 hover:saturate-150",
+                                                    userVotes[id] == boxers[1] ? "boxer-Voted" : "",
+                                                ]}
+                                            >
+                                                <img src={`/images/boxers/photoSmall/${boxerId}-small.webp`} alt="Foto en pequeño de un boxeador del rey de la pista" />
+                                                <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-ice font-atomic text-3xl opacity-0 group-hover:opacity-100 boxer-Voted_text-one">
+                                                    <span class="text-accent" set:html={boxerId}></span>
+                                                </span>
+                                                <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-green-500 font-atomic text-3xl opacity-0 boxer-Voted_text-two">
+                                                    ¡Votado!
+                                                </span>
+                                            </button>
+                                        )
+                                    })
+                                }
+                            </ul>
+                        </li>
+                    )
+                }
                 let urlBoxer1, urlBoxer2, nameBoxer1, nameBoxer2, dataBoxerId_1, dataBoxerId_2;
                 if (teams) {
                     urlBoxer1 = `/images/boxers/votes/vote-${number}-${teams[0]}.webp`;
@@ -60,7 +94,7 @@ const teamsS = COMBATS
                     nameBoxer1 = boxers[0].replace('-', ' ');
                     nameBoxer2 = boxers[1].replace('-', ' ');
                     dataBoxerId_1 = `${boxers[0]}`;
-                    dataBoxerId_2 = `${boxers[2]}`;
+                    dataBoxerId_2 = `${boxers[1]}`;
                 }
                 return (
                     <li class="flex justify- items-center mb-10">
@@ -84,10 +118,11 @@ const teamsS = COMBATS
                         </button>
                         <div>
                             <Image
-                                src={`/images/combates/title-${id}.webp`}
-                                alt="haa"
                                 width={titleSize[0]}
                                 height={titleSize[1]}
+                                loading={i < 2 ? "eager" : "lazy"}
+                                src={`/images/combates/title-${id}.webp`}
+                                alt="Fotografía del poster del combate"
                             />
                         </div>
                         <button
@@ -117,69 +152,73 @@ const teamsS = COMBATS
 
 <script>
     const { signOut } = await import("auth-astro/client");
-    const logout = document.getElementById("logout");
 
-    logout?.addEventListener("click", () => {
-        signOut();
-    });
-
-    const voteTeam = document.querySelectorAll("[data-button-vote]") as NodeListOf<HTMLButtonElement>;
-    voteTeam.forEach((button) => {
-        const { combatId, boxerId } = button.dataset;
-        
-        button.addEventListener("click", (e) => {
-            const target = e.currentTarget as HTMLElement;
-            let previousVote: HTMLElement | null;
-
-            if (target) {
-                previousVote = target.parentElement ? target.parentElement.querySelector(".boxer-Voted") : null;
-                previousVote?.classList.remove("boxer-Voted");
-            }
-
-            if(!target.classList.contains("boxer-Voted")) {
-                target.classList.add("boxer-Voted")
-            }
-
-            const rollbackUI = () => {
-                target.classList.remove("boxer-Voted");
-                previousVote?.classList.add("boxer-Voted");
-
-                window.toast({
-                    title: "Error, no se pudo guardar el voto",
-                    location: "bottom-center", 
-                    dismissible: false,
-                    type: "error",
-                    icon: true,
-                })
-            }
-
-            console.log(boxerId);
-                
+    document.addEventListener("astro:page-load", () => {        
+        const logout = document.getElementById("logout");
+    
+        logout?.addEventListener("click", () => {
+            signOut();
+        });
+    
+        const voteTeam = document.querySelectorAll("[data-button-vote]") as NodeListOf<HTMLButtonElement>;
+        voteTeam.forEach((button) => {
+            const { combatId, boxerId } = button.dataset;
             
-            fetch(`/api/votes/${combatId}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ voteId: boxerId })
+            button.addEventListener("click", (e) => {                
+                const target = e.currentTarget as HTMLElement;
+                let previousVote: HTMLElement | null;
+    
+                console.log('Hola');
+                if (target) {
+                    console.log('Hola', target);                    
+                    previousVote = target.parentElement ? target.parentElement.querySelector(".boxer-Voted") : null;
+                    previousVote?.classList.remove("boxer-Voted");
+                    console.log(previousVote);                    
+                }
+    
+                if(!target.classList.contains("boxer-Voted")) {
+                    target.classList.add("boxer-Voted")
+                }
+    
+                const rollbackUI = () => {
+                    target.classList.remove("boxer-Voted");
+                    previousVote?.classList.add("boxer-Voted");
+    
+                    window.toast({
+                        title: "Error, no se pudo guardar el voto",
+                        location: "bottom-center", 
+                        dismissible: false,
+                        type: "error",
+                        icon: true,
+                    })
+                }                
+                
+                // fetch(`/api/votes/${combatId}`, {
+                //     method: "POST",
+                //     headers: {
+                //         "Content-Type": "application/json",
+                //     },
+                //     body: JSON.stringify({ voteId: boxerId })
+                // })
+                // .then((response) => {
+                //     if(!response.ok) rollbackUI()
+                //     window.toast({
+                //         title: "¡Voto registrado!",
+                //         location: "bottom-center",
+                //         dismissible: false,
+                //         type: "success",
+                //         icon: true,
+                //     })
+                //     const nextCombat = button.parentElement?.nextElementSibling as HTMLElement;
+                //     if (nextCombat) nextCombat.scrollIntoView({ behavior: "smooth" });
+                // })
+                // .catch(() => { //Here when there is an error with conection
+                //     rollbackUI()
+                // })
             })
-            .then((response) => {
-                if(!response.ok) rollbackUI()
-                window.toast({
-                    title: "¡Voto registrado!",
-                    location: "bottom-center",
-                    dismissible: false,
-                    type: "success",
-                    icon: true,
-                })
-                const nextCombat = button.parentElement?.nextElementSibling as HTMLElement;
-                if (nextCombat) nextCombat.scrollIntoView({ behavior: "smooth" });
-            })
-            .catch(() => { //Here when there is an error with conection
-                rollbackUI()
-            })
-        })
-    });
+        });
+    })
+
 </script>
 
 <style>
@@ -189,7 +228,7 @@ const teamsS = COMBATS
     }
 
     .boxer-Voted {
-        @apply grayscale-0 saturate-150 scale-110 pointer-events-none;
+        @apply grayscale-0 saturate-150 scale-110;
         .boxer-Voted_text-one {
             @apply opacity-0;
         }
