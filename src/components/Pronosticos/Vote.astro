@@ -19,11 +19,11 @@ const votes = await db
     .select({ combatId: Votes.combatId, voteId: Votes.voteId })
     .from(Votes)
     .where(eq(Votes.userId, userId));
-    
+
 const userVotes: Record<string, string> = {}
 votes.forEach(vote => {
     userVotes[vote.combatId] = vote.voteId
-})        
+})
 ---
 
 <section>
@@ -62,7 +62,7 @@ votes.forEach(vote => {
                                                 data-boxer-id={boxerId}
                                                 class:list={[
                                                     "relative hover:scale-110 transition-transform group grayscale hover:grayscale-0 hover:saturate-150",
-                                                    userVotes[id] == boxers[1] ? "boxer-Voted" : "",
+                                                    userVotes[id] == boxerId ? "boxer-Voted" : "",
                                                 ]}
                                             >
                                                 <img src={`/images/boxers/photoSmall/${boxerId}-small.webp`} alt="Foto en pequeño de un boxeador del rey de la pista" />
@@ -151,31 +151,27 @@ votes.forEach(vote => {
 </section>
 
 <script>
-    const { signOut } = await import("auth-astro/client");
-
-    document.addEventListener("astro:page-load", () => {        
+    
+    document.addEventListener("astro:page-load", async () => {        
+        const { signOut } = await import("auth-astro/client");
         const logout = document.getElementById("logout");
     
         logout?.addEventListener("click", () => {
             signOut();
         });
     
-        const voteTeam = document.querySelectorAll("[data-button-vote]") as NodeListOf<HTMLButtonElement>;
+        const voteTeam = document.querySelectorAll("[data-button-vote]") as NodeListOf<HTMLButtonElement>;            
         voteTeam.forEach((button) => {
             const { combatId, boxerId } = button.dataset;
             
-            button.addEventListener("click", (e) => {                
+            button.addEventListener("click", (e) => {                           
                 const target = e.currentTarget as HTMLElement;
                 let previousVote: HTMLElement | null;
     
-                console.log('Hola');
                 if (target) {
-                    console.log('Hola', target);                    
                     previousVote = target.parentElement ? target.parentElement.querySelector(".boxer-Voted") : null;
                     previousVote?.classList.remove("boxer-Voted");
-                    console.log(previousVote);                    
-                }
-    
+                }    
                 if(!target.classList.contains("boxer-Voted")) {
                     target.classList.add("boxer-Voted")
                 }
@@ -191,30 +187,30 @@ votes.forEach(vote => {
                         type: "error",
                         icon: true,
                     })
-                }                
+                }
                 
-                // fetch(`/api/votes/${combatId}`, {
-                //     method: "POST",
-                //     headers: {
-                //         "Content-Type": "application/json",
-                //     },
-                //     body: JSON.stringify({ voteId: boxerId })
-                // })
-                // .then((response) => {
-                //     if(!response.ok) rollbackUI()
-                //     window.toast({
-                //         title: "¡Voto registrado!",
-                //         location: "bottom-center",
-                //         dismissible: false,
-                //         type: "success",
-                //         icon: true,
-                //     })
-                //     const nextCombat = button.parentElement?.nextElementSibling as HTMLElement;
-                //     if (nextCombat) nextCombat.scrollIntoView({ behavior: "smooth" });
-                // })
-                // .catch(() => { //Here when there is an error with conection
-                //     rollbackUI()
-                // })
+                fetch(`/api/votes/${combatId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ voteId: boxerId })
+                })
+                .then((response) => {
+                    if(!response.ok) rollbackUI()
+                    window.toast({
+                        title: "¡Voto registrado!",
+                        location: "bottom-center",
+                        dismissible: false,
+                        type: "success",
+                        icon: true,
+                    })
+                    const nextCombat = button.parentElement?.nextElementSibling as HTMLElement;
+                    if (nextCombat) nextCombat.scrollIntoView({ behavior: "smooth" });
+                })
+                .catch(() => { //Here when there is an error with conection
+                    rollbackUI()
+                })
             })
         });
     })

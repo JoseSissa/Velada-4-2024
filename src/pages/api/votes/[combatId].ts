@@ -25,7 +25,7 @@ const response = (
 
 
 // POST --> /api/vote/combatId
-export const POST: APIRoute = async ({ params, request }) => {
+export const POST: APIRoute = async ({ params, request }) => {    
     // Verificamos si la sesión existe y si el usuario tiene un email
     const session = await getSession(request);
     if (!session || session?.user?.email == null) {
@@ -43,10 +43,11 @@ export const POST: APIRoute = async ({ params, request }) => {
     if (!combatData) response("Combat not found", { status: 404 });
 
 
-    const { success, output } = safeParse(VoteSchema, await request.json());
+    // Obtenemos el voto del usuario
+    const { success, output } = safeParse(VoteSchema, await request.json());    
     if (!success) response("Bad Request", { status: 400 });
     const { voteId } = output;
-
+    
 
     const userId = generateUserId(session.user);
     const voteTime = NOW;
@@ -54,7 +55,6 @@ export const POST: APIRoute = async ({ params, request }) => {
 
     const newId = `${userId}-${combatId}`;
     const vote = { id: newId, combatId, userId, voteId, voteTime };
-
 
     // Insertar información en la base de datos
     try {
