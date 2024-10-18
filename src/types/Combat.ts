@@ -4,4 +4,5 @@ export interface Combat {
     number: number;
     titleSize: [number, number];
     teams?: string[];
+    videoPresentation: string;
 }
