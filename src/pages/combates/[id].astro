@@ -1,0 +1,56 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { COMBATS } from "@/const/combats";
+import { BOXERS } from "@/const/boxers";
+
+const { id } = Astro.params;
+const combatData = COMBATS.find((combat) => combat.id === id);
+if (!combatData) return new Response(JSON.stringify("Combat not found"), { status: 404 });
+
+const boxersData = combatData.boxers.map((boxerId) => {
+	return BOXERS.find((boxer) => boxer.id === boxerId);
+})
+
+console.log(combatData)
+console.log(boxersData)
+---
+
+<Layout
+	title={`Combate número ${combatData.number} de La Velada IV`}
+	description={`Combate entre ${combatData.boxers[0]} y ${combatData.boxers[1]}`}
+>
+    <div class="fixed top-0 left-0 h-screen w-full aspect-video -z-10">
+        <video class="w-full h-full object-cover aspect-video" autoplay muted loop>
+            <source src={combatData.videoPresentation} type="video/mp4" />
+        </video>
+    </div>
+    <main class="relative z-0">
+        <div class="h-[80vh] w-full flex items-center justify-center">
+            <img src={`/images/combates/title-${id}.webp`} alt={`Poster del combate entre ${combatData.boxers[0]} y ${combatData.boxers[1]}`}>
+        </div>
+        <div>
+            <h3 class="mb-10 text-2xl text-center text-ice font-bold">CARACTERÍSTICAS</h3>
+            <p>Datos relevantes de cada contrincante</p>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>hola</td>
+                        <td>-</td>
+                        <td>mundo</td>
+                    </tr>
+                    <tr>
+                        <td>hola</td>
+                        <td>-</td>
+                        <td>mundo</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</Layout>
+
+<style>
+    video {
+        mask-image: linear-gradient(to bottom, black 70%, transparent);
+    }
+</style>
