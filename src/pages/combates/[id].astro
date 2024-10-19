@@ -2,6 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import { COMBATS } from "@/const/combats";
 import { BOXERS } from "@/const/boxers";
+import { type Boxer } from "@/types/Boxer";
 
 const { id } = Astro.params;
 const combatData = COMBATS.find((combat) => combat.id === id);
@@ -11,8 +12,45 @@ const boxersData = combatData.boxers.map((boxerId) => {
 	return BOXERS.find((boxer) => boxer.id === boxerId);
 })
 
+console.log('------------------------');
+console.log('------------------------');
+
 console.log(combatData)
 console.log(boxersData)
+
+const renderOnTable: Object = {
+    name: {
+        label: "",
+        concat: undefined
+    },
+    country : {
+        label: "País",
+        concat: undefined
+    },
+    weight: {
+        label: "Peso",
+        concat: "kg"
+    },
+    height: {
+        label: "Altura",
+        concat: "m"
+    },
+    guard: {
+        label: "Guardia",
+        concat: undefined
+    },
+    reach: {
+        label: "Alcance",
+        concat: "cm"
+    },
+    age: {
+        label: "Edad",
+        concat: "años"
+    }
+}
+
+const middleIndex = boxersData.length / 2
+// console.log(Object.entries(renderOnTable))
 ---
 
 <Layout
@@ -33,16 +71,30 @@ console.log(boxersData)
             <p>Datos relevantes de cada contrincante</p>
             <table>
                 <tbody>
-                    <tr>
-                        <td>hola</td>
-                        <td>-</td>
-                        <td>mundo</td>
-                    </tr>
-                    <tr>
-                        <td>hola</td>
-                        <td>-</td>
-                        <td>mundo</td>
-                    </tr>
+                    {
+                        Object.entries(renderOnTable).map(([key, { label, concat }]) => {
+                            return (
+                                <tr>
+                                    {
+                                        boxersData.map((boxer, i) => {
+                                            if (boxer == null) return null;
+                                            return (
+                                                <>
+                                                    <td>
+                                                        {boxer[key as keyof (typeof boxersData)[0]]}
+                                                        {concat}
+                                                    </td>
+                                                    {
+                                                        i === middleIndex - 1 && <td class="text-primary">{label}</td>
+                                                    }
+                                                </>
+                                            )
+                                        })
+                                    }
+                                </tr>
+                            )
+                        })
+                    }
                 </tbody>
             </table>
         </div>
