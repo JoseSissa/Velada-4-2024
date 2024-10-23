@@ -12,12 +12,6 @@ const boxersData = combatData.boxers.map((boxerId) => {
 	return BOXERS.find((boxer) => boxer.id === boxerId);
 })
 
-console.log('------------------------');
-console.log('------------------------');
-
-console.log(combatData)
-console.log(boxersData)
-
 const renderOnTable: Object = {
     name: {
         label: "",
@@ -50,7 +44,6 @@ const renderOnTable: Object = {
 }
 
 const middleIndex = boxersData.length / 2
-// console.log(Object.entries(renderOnTable))
 ---
 
 <Layout
@@ -68,22 +61,37 @@ const middleIndex = boxersData.length / 2
         </div>
         <div>
             <h3 class="mb-10 text-2xl text-center text-ice font-bold">CARACTERÍSTICAS</h3>
-            <p>Datos relevantes de cada contrincante</p>
-            <table>
+            <p class="mt-4 text-xl text-neutral-300 text-wrap text-center">Datos relevantes de cada contrincante</p>
+            <table class="w-full mt-10 text-center text-white lg:text-lg">
                 <tbody>
                     {
-                        Object.entries(renderOnTable).map(([key, { label, concat }]) => {
+                        Object.entries(renderOnTable).map(([key, { label, concat }]) => {                            
                             return (
-                                <tr>
+                                <tr class="mb-10 bg-gradient-to-b from-white/20 via-transparent to-transparent p-4">
                                     {
                                         boxersData.map((boxer, i) => {
                                             if (boxer == null) return null;
                                             return (
-                                                <>
-                                                    <td>
-                                                        {boxer[key as keyof (typeof boxersData)[0]]}
-                                                        {concat}
-                                                    </td>
+                                                <>  
+                                                    {key == "name" && (
+                                                        <td class="py-3">
+                                                            <a href={`/boxer/${boxer.id}`}>
+                                                                <img src={`/images/boxers/photoSmall/${boxer.id}-small.webp`} alt={`Foto de ${boxer.name}`} class="h-32 w-auto mx-auto" />
+                                                                <span class="font-atomic text-2xl text-accent">{boxer.name}</span>
+                                                            </a>
+                                                        </td>
+                                                    )}
+                                                    {key == "country" && (
+                                                        <td class="py-3">
+                                                            <img src={`/images/flags/${boxer.country}.webp`} alt={`Bandera de ${boxer.country}`} class="h-8 w-auto mx-auto" />
+                                                        </td>
+                                                    )}
+                                                    {key != "name" && key != "country" && (
+                                                        <td class="py-3 font-semibold">
+                                                            {boxer[key as keyof (typeof boxersData)[0]]}
+                                                            {concat}
+                                                        </td>
+                                                    )}
                                                     {
                                                         i === middleIndex - 1 && <td class="text-primary">{label}</td>
                                                     }
