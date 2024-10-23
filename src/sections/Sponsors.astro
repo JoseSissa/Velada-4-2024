@@ -12,7 +12,7 @@ import { SPONSORS } from "@/const/sponsors";
 
     <div class="mt-12 grid grid-cols-3 gap-2 md:gap-8">
         {
-            SPONSORS.map(({ id, name, url }) => (
+            SPONSORS.map(({ id, name, url, image }) => (
                 <a
                     class="group relative flex justify-center items-center h-24 md:h-32"
                     title={`Visita la página del patrocinador ${name}`}
@@ -21,7 +21,12 @@ import { SPONSORS } from "@/const/sponsors";
                     rel="noopener noreferrer"
                 >
                     <img
-                        class="w-16 md:w-28 h-auto group-hover:scale-110 transition-transform"
+                        width={image.width}
+                        height={image.height}
+                        class:list={[
+                            "px-4 h-auto group-hover:scale-110 transition-transform",
+                            image.width > 200 ? "lg:px-4" : "lg:px-0",
+                        ]}
                         src={`/images/sponsors/${id}.svg`}
                         alt={`Logo del patrocinador ${name}`}
                         loading="lazy"
