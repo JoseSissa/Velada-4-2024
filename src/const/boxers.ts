@@ -42,7 +42,7 @@ export const BOXERS: Boxer[] = addGetters([
 		},
 		workout: {
 			videoID: "A_EDoq70XqY",
-			thumbnail: "/boxers/workoutThumbnails/el-mariana.webp",
+			thumbnail: "/images/boxers/workoutThumbnails/el-mariana.webp",
 			name: "ElMariana",
 		},
 		clips: [
