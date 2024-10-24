@@ -13,6 +13,7 @@ import X from "@/icons/x.astro";
 import CombatSection from "@/components/CombatSection.astro";
 import type { Boxer } from "@/types/Boxer";
 import BoxerClips from "@/components/BoxerClips.astro";
+import Sponsors from "@/sections/Sponsors.astro";
 
 export const prerender = true;
 
@@ -30,30 +31,35 @@ if (!infoOfBoxer)
 const getNamesOfRivals = (rivals: string | any[]) => {
     let textRivals = "";
     if (rivals.length == 1) {
-        textRivals = `<a 
+        textRivals = 
+            `<a 
 				href="/boxer/${rivals[0].id}" 
-				class="text-xl font-bold text-accent hover:underline" 
+				class="group relative inline-block md:w-24 md:h-24 lg:w-36 lg:h-36 text-xl font-bold text-accent font-atomic" 
 				title="Visita la página del boxeador ${rivals[0].name}"
 				>
+                    <div class="boxer-link-background"></div>
+                    <img src="/images/boxers/photoSmall/${rivals[0].id}-small.webp" alt="Foto de ${rivals[0].name}" class="boxer-image w-full object-contain grayscale group-hover:grayscale-0 group-hover:scale-105  boxer-image" />
 					${rivals[0].name}
 			</a>`;
     } else {
         for (let i = 0; i < rivals.length; i++) {
             i === rivals.length - 1
-                ? (textRivals += `<a 
-						href="/boxer/${rivals[i].id}" 
-						class="text-xl font-bold text-accent hover:underline" 
-						title="Visita la página del boxeador ${rivals[i].name}"
-						>
-							${rivals[i].name}
-					</a>`)
-                : (textRivals += `<a 
-						href="/boxer/${rivals[i].id}" 
-						class="text-xl font-bold text-accent hover:underline" 
-						title="Visita la página del boxeador ${rivals[i].name}"
-						>
-							${rivals[i].name}
-					</a> / `);
+                ?   (textRivals += 
+                        `<a 
+                            href="/boxer/${rivals[i].id}" 
+                            class="text-xl font-bold text-accent hover:underline" 
+                            title="Visita la página del boxeador ${rivals[i].name}"
+                            >
+                                ${rivals[i].name}
+                        </a>`)
+                :   (textRivals += `
+                        <a 
+                            href="/boxer/${rivals[i].id}" 
+                            class="text-xl font-bold text-accent hover:underline" 
+                            title="Visita la página del boxeador ${rivals[i].name}"
+                            >
+                                ${rivals[i].name}
+                        </a> / `);
         }
     }
     return textRivals;
@@ -61,11 +67,12 @@ const getNamesOfRivals = (rivals: string | any[]) => {
 
 let infoBoxerRival: Array<Boxer> = [];
 if (infoOfBoxer.versus === "rey-de-la-pista") {
-    infoBoxerRival = BOXERS.filter(
-        (boxerInList) =>
-            boxerInList.versus == "rey-de-la-pista" && boxerInList.id != boxerId
+    // Rival for Rey de la Pista
+    infoBoxerRival = BOXERS.filter((boxerInList) =>
+        boxerInList.versus == "rey-de-la-pista" && boxerInList.id != boxerId
     );
 } else if (typeof infoOfBoxer.versus === "string") {
+    // Rival for a boxer
     const boxer = BOXERS.find(
         (boxerInList) => boxerInList.id === infoOfBoxer.versus
     );
@@ -74,6 +81,7 @@ if (infoOfBoxer.versus === "rey-de-la-pista") {
     }
     infoBoxerRival.push(boxer);
 } else {
+    // Rival for multiple boxers
     infoOfBoxer.versus.forEach((versusId) => {
         const boxer = BOXERS.find((boxerInList) => boxerInList.id === versusId);
         if (!boxer) {
@@ -113,7 +121,7 @@ if (!infoBoxerRival) {
                 <BoxerClips clips={infoOfBoxer.clips} />
 
                 <div
-                    class="text-xl text-accent font-bold hidden lg:block"
+                    class="text-base text-accent font-bold hidden lg:block"
                     set:html={getNamesOfRivals(infoBoxerRival)}
                 >
                     <h4 class="text-primary">Rival</h4>
@@ -206,5 +214,7 @@ if (!infoBoxerRival) {
             name={infoOfBoxer?.name}
             ally={infoOfBoxer?.allies}
         />
+
+        <Sponsors />
     </main>
 </Layout>
