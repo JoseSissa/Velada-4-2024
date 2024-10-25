@@ -23,14 +23,13 @@ const infoCombat = COMBATS.find(combat => combat.boxers.includes(id))
 if (!infoCombat) {
 	return new Response(JSON.stringify("Combat not found"), { status: 404 })
 }
-console.log(infoCombat)
 ---
 
 <section class="mt-40">
-    <div class="relative flex flex-col items-center justify-center w-full py-20">
+    <div class="relative flex flex-col items-center justify-center w-full py-20 md:py-40">
 
         <div class="absolute inset-0 grid place-items-center -z-10 opacity-20">
-            <img src={`/images/combates/title-${infoCombat.id}.webp`} alt="Título del combate" class="w-full max-w-[90%] mx-auto" />
+            <img src={`/images/combates/title-${infoCombat.id}.webp`} alt="Título del combate" class="w-full max-w-[70%] mx-auto" />
         </div>
 
         <h2 class="text-center text-4xl font-semibold uppercase text-white lg:text-6xl">
