@@ -92,7 +92,7 @@ export const BOXERS: Boxer[] = addGetters([
 		rotate: true,
 		workout: {
 			videoID: "2CEk7rufxno",
-			thumbnail: "/boxers/workoutThumbnails/shelao.webp",
+			thumbnail: "/images/boxers/workoutThumbnails/shelao.webp",
 			name: "Shelao",
 		},
 	},
@@ -129,7 +129,7 @@ export const BOXERS: Boxer[] = addGetters([
 		],
 		workout: {
 			videoID: "bVlV1HejQag",
-			thumbnail: "/boxers/workoutThumbnails/zeling.webp",
+			thumbnail: "/images/boxers/workoutThumbnails/zeling.webp",
 			name: "Zeling",
 		},
 	},
@@ -238,7 +238,7 @@ export const BOXERS: Boxer[] = addGetters([
 		rotate: true,
 		workout: {
 			videoID: "7yrsrPQv_TM",
-			thumbnail: "/boxers/workoutThumbnails/la-cobra.webp",
+			thumbnail: "/images/boxers/workoutThumbnails/la-cobra.webp",
 			name: "La Cobra",
 		},
 	},
@@ -284,7 +284,7 @@ export const BOXERS: Boxer[] = addGetters([
 		country: "es",
 		workout: {
 			videoID: "I8R5sQXjpKk",
-			thumbnail: "/boxers/workoutThumbnails/peldanyos.webp",
+			thumbnail: "/images/boxers/workoutThumbnails/peldanyos.webp",
 			name: "Peldanyos",
 		},
 		socials: {
@@ -415,7 +415,7 @@ export const BOXERS: Boxer[] = addGetters([
 		},
 		workout: {
 			videoID: "m7BEJLwX7dM",
-			thumbnail: "/boxers/workoutThumbnails/unicornio.webp",
+			thumbnail: "/images/boxers/workoutThumbnails/unicornio.webp",
 			name: "Unicornio",
 		},
 		clips: [
@@ -507,7 +507,7 @@ export const BOXERS: Boxer[] = addGetters([
 		},
 		workout: {
 			videoID: "PUNBQ1_rbuo",
-			thumbnail: "/boxers/workoutThumbnails/skain.webp",
+			thumbnail: "/images/boxers/workoutThumbnails/skain.webp",
 			name: "Skain",
 		},
 		clips: [
@@ -592,7 +592,7 @@ export const BOXERS: Boxer[] = addGetters([
 		},
 		workout: {
 			videoID: "svXhWZ1sZJE",
-			thumbnail: "/boxers/workoutThumbnails/plex.webp",
+			thumbnail: "/images/boxers/workoutThumbnails/plex.webp",
 			name: "YoSoyPlex",
 		},
 		clips: [
@@ -668,7 +668,7 @@ export const BOXERS: Boxer[] = addGetters([
 		},
 		workout: {
 			videoID: "FXzCBTRWouA",
-			thumbnail: "/boxers/workoutThumbnails/alana.webp",
+			thumbnail: "/images/boxers/workoutThumbnails/alana.webp",
 			name: "Alana",
 		},
 		clips: [
@@ -793,7 +793,7 @@ export const BOXERS: Boxer[] = addGetters([
 		workout: {
 			name: "Guanyar",
 			videoID: "ju-B__1NDMM",
-			thumbnail: "/boxers/workoutThumbnails/guanyar.webp",
+			thumbnail: "/images/boxers/workoutThumbnails/guanyar.webp",
 		},
 	},
 ] as const)
