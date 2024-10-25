@@ -1,0 +1,32 @@
+---
+const { rival } = Astro.props
+
+let textRivals = ""
+if(rival.length == 1) {
+    textRivals = 
+        `<a 
+            href="/boxer/${rival[0].id}" 
+            class="group relative inline-block md:w-24 md:h-24 lg:w-36 lg:h-36 text-xl font-bold text-accent font-atomic" 
+            title="Visita la página del boxeador ${rival[0].name}"
+            >
+                <div class="boxer-link-background"></div>
+                <img src="/images/boxers/photoSmall/${rival[0].id}-small.webp" alt="Foto de ${rival[0].name}" class="boxer-image w-full object-contain grayscale group-hover:grayscale-0 group-hover:scale-105 boxer-image" />
+                ${rival[0].name}
+        </a>`;
+} else {
+    const size = rival.length > 2 ? "md:w-20 md:h-20 lg:w-16 lg:h-16 text-xs" : "md:w-24 md:h-24 lg:w-36 lg:h-36 text-xl"
+    for (let i = 0; i < rival.length; i++) {
+        textRivals += 
+            `<a 
+                href="/boxer/${rival[i].id}" 
+                class="group relative inline-block ${size} font-bold text-accent font-atomic"
+                title="Visita la página del boxeador ${rival[i].name}"
+                >
+                    <div class="boxer-link-background"></div>
+                    <img src="/images/boxers/photoSmall/${rival[i].id}-small.webp" alt="Foto de ${rival[i].name}" class="boxer-image w-full object-contain grayscale group-hover:grayscale-0 group-hover:scale-105 boxer-image" />
+                    ${rival[i].name}
+            </a>`
+    }
+}
+---
+<div class:list={[ rival.length == 2 && "flex gap-2", rival.length > 2 && "grid grid-cols-3 gap-8" ]} set:html={textRivals}></div>
