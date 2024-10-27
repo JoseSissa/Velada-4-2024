@@ -1,0 +1,17 @@
+---
+interface Props {
+    textInfo: string
+    dataInfo: string | number
+    unit?: string
+}
+
+const { textInfo, dataInfo, unit } = Astro.props;
+---
+<div class="flex justify-between items-center mb-3 lg:block lg:mb-10 text-xl">
+    <h4 class="font-atomic text-accent">
+        {textInfo}
+    </h4>
+    <span class="font-bold lg:text-3xl text-ice">
+        {dataInfo} {unit}
+    </span>
+</div>

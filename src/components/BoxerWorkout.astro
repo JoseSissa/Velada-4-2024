@@ -1,0 +1,26 @@
+---
+import LiteYouTube from "@/components/LiteYouTube.astro";
+
+interface Props {
+    videoId: string;
+    thumbnail: string;
+}
+
+const { videoId, thumbnail } = Astro.props;
+---
+
+<section class="mt-32 lg:my-44">
+    <h3 class="text-2xl text-center text-white font-semibold">
+        ENTRENAMIENTO
+    </h3>
+    <p class="mt-4 text-xl text-center">
+        Preparación para el combate
+    </p>
+
+    <div class="mt-10 pt-12">
+        <LiteYouTube
+            videoId={videoId}
+            backgroundImage={thumbnail}
+        />
+    </div>
+</section>

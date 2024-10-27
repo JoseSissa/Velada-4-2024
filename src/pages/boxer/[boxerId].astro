@@ -2,7 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import { BOXERS } from "@/const/boxers";
 import PictureBoxerBig from "@/components/PictureBoxerBig.astro";
-import LiteYouTube from "@/components/LiteYouTube.astro";
+
 
 import BoxSocialMedia from "@/components/BoxSocialMedia.astro";
 import Instagram from "@/icons/instagram.astro";
@@ -15,6 +15,8 @@ import type { Boxer } from "@/types/Boxer";
 import BoxerClips from "@/components/BoxerClips.astro";
 import Sponsors from "@/sections/Sponsors.astro";
 import BoxerRival from "@/components/BoxerRival.astro";
+import BoxerWorkout from "@/components/BoxerWorkout.astro";
+import BoxerDataInfo from "@/components/BoxerDataInfo.astro";
 
 export const prerender = true;
 
@@ -85,38 +87,10 @@ if (!infoBoxerRival) {
             </article>
 
             <div class="max-w-[400px] lg:max-w-[25%] order-3 lg:order-3 w-full mx-auto my-20 text-center">
-                <div
-                    class="flex justify-between items-center mb-3 lg:block lg:mb-10 text-xl"
-                >
-                    <h4 class="font-atomic text-accent">Edad</h4>
-                    <span class="font-bold lg:text-3xl text-ice"
-                        >{infoOfBoxer?.age}</span
-                    >
-                </div>
-                <div
-                    class="flex justify-between items-center mb-3 lg:block lg:mb-10 text-xl"
-                >
-                    <h4 class="font-atomic text-accent">Peso</h4>
-                    <span class="font-bold lg:text-3xl text-ice"
-                        >{infoOfBoxer?.weight} kg.</span
-                    >
-                </div>
-                <div
-                    class="flex justify-between items-center mb-3 lg:block lg:mb-10 text-xl"
-                >
-                    <h4 class="font-atomic text-accent">Altura</h4>
-                    <span class="font-bold lg:text-3xl text-ice"
-                        >{infoOfBoxer?.height} m.</span
-                    >
-                </div>
-                <div
-                    class="flex justify-between items-center mb-3 lg:block lg:mb-10 text-xl"
-                >
-                    <h4 class="font-atomic text-accent">Guardia</h4>
-                    <span class="font-bold lg:text-3xl text-ice"
-                        >{infoOfBoxer?.guard}</span
-                    >
-                </div>
+                <BoxerDataInfo textInfo="Edad" dataInfo={infoOfBoxer?.age} />
+                {infoOfBoxer.weight && (<BoxerDataInfo textInfo="Peso" dataInfo={infoOfBoxer.weight} unit="kg." />)}
+                {infoOfBoxer.height && (<BoxerDataInfo textInfo="Altura" dataInfo={infoOfBoxer.height} unit="m." />)}
+                {infoOfBoxer.guard && (<BoxerDataInfo textInfo="Guardia" dataInfo={infoOfBoxer.guard} />)}
 
                 <div class="block lg:hidden mt-20 text-base text-accent font-bold">
                     <h4 class="text-primary mb-5">Rival</h4>
@@ -160,21 +134,10 @@ if (!infoBoxerRival) {
 
         {
             infoOfBoxer.workout && (
-                <section class="mt-32 lg:my-44">
-                    <h3 class="text-2xl text-center text-white font-semibold">
-                        ENTRENAMIENTO
-                    </h3>
-                    <p class="mt-4 text-xl text-center">
-                        Preparación para el combate
-                    </p>
-
-                    <div class="mt-10 pt-12">
-                        <LiteYouTube
-                            videoId={infoOfBoxer.workout.videoID}
-                            backgroundImage={infoOfBoxer.workout.thumbnail}
-                        />
-                    </div>
-                </section>
+                <BoxerWorkout 
+                    videoId={infoOfBoxer.workout.videoID}
+                    thumbnail={infoOfBoxer.workout.thumbnail}
+                />
             )
         }
 
