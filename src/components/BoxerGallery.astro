@@ -1,0 +1,119 @@
+---
+interface Props {
+    id: string
+}
+
+const { id } = Astro.props;
+const IMAGES_OF_GALLERY = 5
+---
+
+<section class="grid grid-cols-4 gap-3">
+    <dialog id="modal-gallery" class="w-full md:w-fit backdrop:bg-black/50 bg-transparent" data-num-photo="" data-id-photo="">
+        <div class="relative w-full md:w-[740px]">
+            <button data-left class="absolute left-0 top-1/2 -translate-y-1/2">
+                <img src="/images/icons/left-arrow.svg" alt="arrow left" class="">
+            </button>
+
+            <img class="w-full" src="" alt="Foto" id="imgModal" />
+
+            <button data-right class="absolute right-0 top-1/2 -translate-y-1/2">
+                <img src="/images/icons/left-arrow.svg" alt="arrow right" class="rotate-180">
+            </button>
+        </div>
+
+        <button
+            type="button"
+            class="fixed top-8 right-8 p-4 bg-black rounded-lg text-xl text-ice hover:bg-accent hover:text-black hover:scale-110 transition-transform"
+            data-close-gallery
+        >
+            <svg
+                class="size-5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 14"
+            >
+                <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
+            </svg>
+        </button>
+    </dialog>
+    {
+        Array.from({ length: IMAGES_OF_GALLERY }).map((_, index) => (
+            <button 
+                class={`${index == 0 && 'row-span-2 col-span-2' }`} 
+                data-show-gallery 
+                data-id={id}
+                data-num-gallery={index + 1}
+            >
+                <img
+                    class="w-full h-full object-cover"
+                    src={`/images/boxers/gallery/${id}/${index + 1}.webp`}
+                    alt={`Foto de ${id}`}
+                />
+            </button>
+        ))
+    }
+</section>
+
+<script>
+    const modalGallery = document.getElementById("modal-gallery") as HTMLDialogElement;
+    const imgModal = document.getElementById("imgModal");
+    const buttonOpenModal = document.querySelectorAll("[data-show-gallery]");
+    const buttonCloseModal = document.querySelector("[data-close-gallery]");
+    let cont: number = 0;
+
+    buttonOpenModal.forEach((buttonImg) => {
+        cont++;
+        buttonImg.addEventListener("click", (e) => {
+            const currentTarget = e.currentTarget as HTMLElement;            
+            const { id, numGallery } = currentTarget.dataset;
+
+            if(id) {
+                imgModal?.setAttribute("src", `/images/boxers/gallery/${id}/${numGallery}.webp`)
+                modalGallery?.setAttribute("data-num-photo", `${numGallery}`);
+                modalGallery?.setAttribute("data-id-photo", id);
+                modalGallery.showModal();
+            }            
+        })
+    })
+
+    buttonCloseModal?.addEventListener("click", () => modalGallery.close());
+    modalGallery.addEventListener("click", (e) => e.target == modalGallery && modalGallery.close());
+
+
+
+    const buttonLeft = document.querySelector("[data-left]");
+    const buttonRight = document.querySelector("[data-right]");
+    
+
+    buttonLeft?.addEventListener("click", (e) => {
+        const { numPhoto, idPhoto } = modalGallery.dataset 
+        if(!numPhoto || !idPhoto) return;       
+        
+        if(numPhoto == '1') {
+            imgModal?.setAttribute("src", `/images/boxers/gallery/${idPhoto}/${cont}.webp`)
+            modalGallery?.setAttribute("data-num-photo", `${cont}`);
+        } else {
+            imgModal?.setAttribute("src", `/images/boxers/gallery/${idPhoto}/${Number(numPhoto) - 1}.webp`)
+            modalGallery?.setAttribute("data-num-photo", `${Number(numPhoto) - 1}`);
+        }
+    });
+
+    buttonRight?.addEventListener("click", (e) => {
+        const { numPhoto, idPhoto } = modalGallery.dataset
+        if(!numPhoto || !idPhoto) return;
+        
+        if(numPhoto == `${cont}`) {
+            imgModal?.setAttribute("src", `/images/boxers/gallery/${idPhoto}/1.webp`)
+            modalGallery?.setAttribute("data-num-photo", `1`);
+        } else {
+            imgModal?.setAttribute("src", `/images/boxers/gallery/${idPhoto}/${Number(numPhoto) + 1}.webp`)
+            modalGallery?.setAttribute("data-num-photo", `${Number(numPhoto) + 1}`);
+        }
+    });
+</script>

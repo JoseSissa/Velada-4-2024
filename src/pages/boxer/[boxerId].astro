@@ -17,6 +17,7 @@ import Sponsors from "@/sections/Sponsors.astro";
 import BoxerRival from "@/components/BoxerRival.astro";
 import BoxerWorkout from "@/components/BoxerWorkout.astro";
 import BoxerDataInfo from "@/components/BoxerDataInfo.astro";
+import BoxerGallery from "@/components/BoxerGallery.astro";
 
 export const prerender = true;
 
@@ -138,6 +139,12 @@ if (!infoBoxerRival) {
                     videoId={infoOfBoxer.workout.videoID}
                     thumbnail={infoOfBoxer.workout.thumbnail}
                 />
+            )
+        }
+
+        {
+            infoOfBoxer.gallery && (
+                <BoxerGallery id={infoOfBoxer.id} />
             )
         }
 
