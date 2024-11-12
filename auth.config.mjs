@@ -10,8 +10,8 @@ export default defineConfig({
             clientSecret: import.meta.env.TWITCH_CLIENT_SECRET,
         }),
         GitHub({
-            clientId: import.meta.env.GITHUB_CLIENT_ID_DEV,
-            clientSecret: import.meta.env.GITHUB_CLIENT_SECRET_DEV,
+            clientId: import.meta.env.GITHUB_CLIENT_ID,
+            clientSecret: import.meta.env.GITHUB_CLIENT_SECRET,
         }),
     ],
 });

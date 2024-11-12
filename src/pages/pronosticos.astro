@@ -12,6 +12,8 @@ const session = await getSession(Astro.request);
     title="¡Vota por tus boxeadores favoritos!"
 >
     <main>
-        {session === null ? <Intro /> : <Vote user={session.user} />}
+        {
+            session && session.user ? <Vote user={session.user} /> : <Intro />
+        }
     </main>
 </Layout>
