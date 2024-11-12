@@ -1,6 +1,5 @@
 import { createHash } from "node:crypto";
 import { object, safeParse, string } from "valibot";
-import { db, Votes, NOW } from "astro:db";
 
 import type { APIRoute } from "astro";
 import { getSession } from "auth-astro/server";
@@ -46,27 +45,27 @@ export const POST: APIRoute = async ({ params, request }) => {
     // Obtenemos el voto del usuario
     const { success, output } = safeParse(VoteSchema, await request.json());    
     if (!success) response("Bad Request", { status: 400 });
-    const { voteId } = output;
+    // const { voteId } = output;
     
 
     const userId = generateUserId(session.user);
-    const voteTime = NOW;
+    // const voteTime = NOW;
 
 
     const newId = `${userId}-${combatId}`;
-    const vote = { id: newId, combatId, userId, voteId, voteTime };
+    // const vote = { id: newId, combatId, userId, voteId, voteTime };
 
     // Insertar información en la base de datos
     try {
-        await db.insert(Votes).values(vote).onConflictDoUpdate({ 
-            target: Votes.id,
-            set: {
-                combatId,
-                userId,
-                voteId,
-                voteTime
-            }
-        })
+        // await db.insert(Votes).values(vote).onConflictDoUpdate({ 
+        //     target: Votes.id,
+        //     set: {
+        //         combatId,
+        //         userId,
+        //         voteId,
+        //         voteTime
+        //     }
+        // })
     } catch (error) {
         console.error(error);
         return response("Error Inserting Vote", { status: 500 });

@@ -1,29 +1,28 @@
 ---
 import { Image } from "astro:assets";
-import { db, Votes, eq } from "astro:db"
 
 import { COMBATS, REY_DE_LA_PISTA_ID } from "@/const/combats";
 import ButtonSpecial from "../ButtonSpecial.astro";
 import { generateUserId } from "@/lib/users";
 import type { User } from "@auth/core/types";
 
-
 interface Props {
-    user : User;
+    user: User;
 }
 
 const { user } = Astro.props;
 const userId = generateUserId(user);
 
-const votes = await db
-    .select({ combatId: Votes.combatId, voteId: Votes.voteId })
-    .from(Votes)
-    .where(eq(Votes.userId, userId));
+// const votes = []
+// const votes = await db
+//     .select({ combatId: Votes.combatId, voteId: Votes.voteId })
+//     .from(Votes)
+//     .where(eq(Votes.userId, userId));
 
-const userVotes: Record<string, string> = {}
-votes.forEach(vote => {
-    userVotes[vote.combatId] = vote.voteId
-})
+const userVotes: Record<string, string> = {};
+// votes.forEach(vote => {
+//     userVotes[vote.combatId] = vote.voteId
+// })
 ---
 
 <section>
@@ -37,9 +36,7 @@ votes.forEach(vote => {
     <ul>
         {
             COMBATS.map(({ id, number, boxers, titleSize, teams }, i) => {
-                
-                
-                if (id === REY_DE_LA_PISTA_ID) {                    
+                if (id === REY_DE_LA_PISTA_ID) {
                     return (
                         <li class="flex flex-col justify-center items-center mb-10">
                             <div>
@@ -53,46 +50,57 @@ votes.forEach(vote => {
                                 />
                             </div>
                             <ul class="grid grid-cols-5 gap-x-4">
-                                {
-                                    boxers.map((boxerId) => {
-                                        return (
-                                            <button
-                                                data-button-vote
-                                                data-combat-id={id}
-                                                data-boxer-id={boxerId}
-                                                class:list={[
-                                                    "relative hover:scale-110 transition-transform group grayscale hover:grayscale-0 hover:saturate-150",
-                                                    userVotes[id] == boxerId ? "boxer-Voted" : "",
-                                                ]}
-                                            >
-                                                <img src={`/images/boxers/photoSmall/${boxerId}-small.webp`} alt="Foto en pequeño de un boxeador del rey de la pista" />
-                                                <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-ice font-atomic text-3xl opacity-0 group-hover:opacity-100 boxer-Voted_text-one">
-                                                    <span class="text-accent" set:html={boxerId}></span>
-                                                </span>
-                                                <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-green-500 font-atomic text-3xl opacity-0 boxer-Voted_text-two">
-                                                    ¡Votado!
-                                                </span>
-                                            </button>
-                                        )
-                                    })
-                                }
+                                {boxers.map((boxerId) => {
+                                    return (
+                                        <button
+                                            data-button-vote
+                                            data-combat-id={id}
+                                            data-boxer-id={boxerId}
+                                            class:list={[
+                                                "relative hover:scale-110 transition-transform group grayscale hover:grayscale-0 hover:saturate-150",
+                                                userVotes[id] == boxerId
+                                                    ? "boxer-Voted"
+                                                    : "",
+                                            ]}
+                                        >
+                                            <img
+                                                src={`/images/boxers/photoSmall/${boxerId}-small.webp`}
+                                                alt="Foto en pequeño de un boxeador del rey de la pista"
+                                            />
+                                            <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-ice font-atomic text-3xl opacity-0 group-hover:opacity-100 boxer-Voted_text-one">
+                                                <span
+                                                    class="text-accent"
+                                                    set:html={boxerId}
+                                                />
+                                            </span>
+                                            <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-green-500 font-atomic text-3xl opacity-0 boxer-Voted_text-two">
+                                                ¡Votado!
+                                            </span>
+                                        </button>
+                                    );
+                                })}
                             </ul>
                         </li>
-                    )
+                    );
                 }
-                let urlBoxer1, urlBoxer2, nameBoxer1, nameBoxer2, dataBoxerId_1, dataBoxerId_2;
+                let urlBoxer1,
+                    urlBoxer2,
+                    nameBoxer1,
+                    nameBoxer2,
+                    dataBoxerId_1,
+                    dataBoxerId_2;
                 if (teams) {
                     urlBoxer1 = `/images/boxers/votes/vote-${number}-${teams[0]}.webp`;
                     urlBoxer2 = `/images/boxers/votes/vote-${number}-${teams[1]}.webp`;
-                    nameBoxer1 = `${boxers[0].replace('-', ' ')} y <br /> ${boxers[1].replace('-', ' ')}`;
-                    nameBoxer2 = `${boxers[2].replace('-', ' ')} y <br />${boxers[3].replace('-', ' ')}`;
+                    nameBoxer1 = `${boxers[0].replace("-", " ")} y <br /> ${boxers[1].replace("-", " ")}`;
+                    nameBoxer2 = `${boxers[2].replace("-", " ")} y <br />${boxers[3].replace("-", " ")}`;
                     dataBoxerId_1 = `${boxers[0]}-${boxers[1]}`;
                     dataBoxerId_2 = `${boxers[2]}-${boxers[3]}`;
                 } else {
                     urlBoxer1 = `/images/boxers/votes/vote-${number}-${boxers[0]}.webp`;
                     urlBoxer2 = `/images/boxers/votes/vote-${number}-${boxers[1]}.webp`;
-                    nameBoxer1 = boxers[0].replace('-', ' ');
-                    nameBoxer2 = boxers[1].replace('-', ' ');
+                    nameBoxer1 = boxers[0].replace("-", " ");
+                    nameBoxer2 = boxers[1].replace("-", " ");
                     dataBoxerId_1 = `${boxers[0]}`;
                     dataBoxerId_2 = `${boxers[1]}`;
                 }
@@ -110,7 +118,11 @@ votes.forEach(vote => {
                             <img class="" src={urlBoxer1} alt="" />
                             <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-ice font-atomic text-3xl opacity-0 group-hover:opacity-100 boxer-Voted_text-one">
                                 ¡Voto a <br />{" "}
-                                <span class="text-accent text-nowrap" set:html={nameBoxer1}></span>!
+                                <span
+                                    class="text-accent text-nowrap"
+                                    set:html={nameBoxer1}
+                                />
+                                !
                             </span>
                             <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-green-500 font-atomic text-3xl opacity-0 boxer-Voted_text-two">
                                 ¡Votado!
@@ -137,7 +149,11 @@ votes.forEach(vote => {
                             <img src={urlBoxer2} alt="" />
                             <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-ice font-atomic text-3xl opacity-0 group-hover:opacity-100 boxer-Voted_text-one">
                                 ¡Voto a <br />{" "}
-                                <span class="text-accent" set:html={nameBoxer2}></span>!
+                                <span
+                                    class="text-accent"
+                                    set:html={nameBoxer2}
+                                />
+                                !
                             </span>
                             <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-green-500 font-atomic text-3xl opacity-0 boxer-Voted_text-two">
                                 ¡Votado!
@@ -151,70 +167,75 @@ votes.forEach(vote => {
 </section>
 
 <script>
-    
-    document.addEventListener("astro:page-load", async () => {        
+    document.addEventListener("astro:page-load", async () => {
         const { signOut } = await import("auth-astro/client");
         const logout = document.getElementById("logout");
-    
+
         logout?.addEventListener("click", () => {
             signOut();
         });
-    
-        const voteTeam = document.querySelectorAll("[data-button-vote]") as NodeListOf<HTMLButtonElement>;            
+
+        const voteTeam = document.querySelectorAll(
+            "[data-button-vote]",
+        ) as NodeListOf<HTMLButtonElement>;
         voteTeam.forEach((button) => {
             const { combatId, boxerId } = button.dataset;
-            
-            button.addEventListener("click", (e) => {                           
+
+            button.addEventListener("click", (e) => {
                 const target = e.currentTarget as HTMLElement;
                 let previousVote: HTMLElement | null;
-    
+
                 if (target) {
-                    previousVote = target.parentElement ? target.parentElement.querySelector(".boxer-Voted") : null;
+                    previousVote = target.parentElement
+                        ? target.parentElement.querySelector(".boxer-Voted")
+                        : null;
                     previousVote?.classList.remove("boxer-Voted");
-                }    
-                if(!target.classList.contains("boxer-Voted")) {
-                    target.classList.add("boxer-Voted")
                 }
-    
+                if (!target.classList.contains("boxer-Voted")) {
+                    target.classList.add("boxer-Voted");
+                }
+
                 const rollbackUI = () => {
                     target.classList.remove("boxer-Voted");
                     previousVote?.classList.add("boxer-Voted");
-    
+
                     window.toast({
                         title: "Error, no se pudo guardar el voto",
-                        location: "bottom-center", 
+                        location: "bottom-center",
                         dismissible: false,
                         type: "error",
                         icon: true,
-                    })
-                }
-                
+                    });
+                };
+
                 fetch(`/api/votes/${combatId}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ voteId: boxerId })
+                    body: JSON.stringify({ voteId: boxerId }),
                 })
-                .then((response) => {
-                    if(!response.ok) rollbackUI()
-                    window.toast({
-                        title: "¡Voto registrado!",
-                        location: "bottom-center",
-                        dismissible: false,
-                        type: "success",
-                        icon: true,
+                    .then((response) => {
+                        if (!response.ok) rollbackUI();
+                        window.toast({
+                            title: "¡Voto registrado!",
+                            location: "bottom-center",
+                            dismissible: false,
+                            type: "success",
+                            icon: true,
+                        });
+                        const nextCombat = button.parentElement
+                            ?.nextElementSibling as HTMLElement;
+                        if (nextCombat)
+                            nextCombat.scrollIntoView({ behavior: "smooth" });
                     })
-                    const nextCombat = button.parentElement?.nextElementSibling as HTMLElement;
-                    if (nextCombat) nextCombat.scrollIntoView({ behavior: "smooth" });
-                })
-                .catch(() => { //Here when there is an error with conection
-                    rollbackUI()
-                })
-            })
+                    .catch(() => {
+                        //Here when there is an error with conection
+                        rollbackUI();
+                    });
+            });
         });
-    })
-
+    });
 </script>
 
 <style>
