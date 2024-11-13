@@ -1,12 +1,40 @@
 ---
 import ButtonSpecial from "../ButtonSpecial.astro";
-
-
+import Sponsors from "@/sections/Sponsors.astro";
 ---
 
-<section>
-    <ButtonSpecial type="button" id="login" text="INICIAR SESIÓN" />
+<section
+    class="flex flex-col md:flex-row justify-between items-center text-center"
+>
+    <div class="max-w-md md:max-w-full px-4 md:px-20">
+        <h1
+            class="mb-10 font-atomic lowercase text-accent title -skew-y-6 text-wrap text-center text-4xl"
+        >
+            ¡Haz tus pronósticos!
+        </h1>
+        <p class="mt-4 mb-10 text-xl text-neutral-300 text-wrap text-center">
+            Haz tu predicción de <strong
+                >quién ganará cada combate de La Velada IV.</strong
+            > Comparte tu pronóstico en redes sociales e invita a tus amigos a participar.
+        </p>
+        <div class="text-center">
+            <ButtonSpecial
+                type="button"
+                id="login"
+                text="¡INICIA SESIÓN PARA PARTICIPAR!"
+            />
+        </div>
+        <small>Para participar, necesitas una cuenta de Twitch o Github</small>
+    </div>
+    <div>
+        <img
+            class="mask-image"
+            src="/images/pronosticos/pronostico-background.webp"
+            alt="Imagen representaviva de los pronósticos de la velada IV"
+        />
+    </div>
 </section>
+<Sponsors />
 
 <script>
     const { signIn } = await import("auth-astro/client");
@@ -16,3 +44,9 @@ import ButtonSpecial from "../ButtonSpecial.astro";
         signIn();
     });
 </script>
+
+<style>
+    .mask-image {
+        mask-image: linear-gradient(black 90%, transparent 100%);
+    }
+</style>

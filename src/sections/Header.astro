@@ -24,7 +24,7 @@ import XLogo from "@/components/icons/XLogo.astro";
         <div class="w-full max-w-[40%] h-full flex justify-center items-center">
             <LinkHeader
                 href="/pronosticos"
-                class:list={["select-none pointer-events-none", Astro.url.pathname === "/pronosticos" && "active"]}
+                class:list={[Astro.url.pathname === "/pronosticos" && "active"]}
                 >PRONÓSTICOS</LinkHeader
             >
             <LinkHeader
