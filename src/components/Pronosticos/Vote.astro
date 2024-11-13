@@ -103,20 +103,25 @@ const userVotes: Record<string, string> = {};
                     dataBoxerId_1 = `${boxers[0]}-${boxers[1]}`;
                     dataBoxerId_2 = `${boxers[2]}-${boxers[3]}`;
                 } else {
+                    // Invert the boxer's photo
                     if (
                         boxers[0] == "agustin-51" ||
                         boxers[0] == "el-mariana"
                     ) {
                         urlBoxer1 = `/images/boxers/votes/vote-${number}-${boxers[1]}.webp`;
                         urlBoxer2 = `/images/boxers/votes/vote-${number}-${boxers[0]}.webp`;
+                        nameBoxer1 = boxers[1].replace("-", " ");
+                        nameBoxer2 = boxers[0].replace("-", " ");
+                        dataBoxerId_1 = `${boxers[1]}`;
+                        dataBoxerId_2 = `${boxers[0]}`;
                     } else {
                         urlBoxer1 = `/images/boxers/votes/vote-${number}-${boxers[0]}.webp`;
                         urlBoxer2 = `/images/boxers/votes/vote-${number}-${boxers[1]}.webp`;
+                        nameBoxer1 = boxers[0].replace("-", " ");
+                        nameBoxer2 = boxers[1].replace("-", " ");
+                        dataBoxerId_1 = `${boxers[0]}`;
+                        dataBoxerId_2 = `${boxers[1]}`;
                     }
-                    nameBoxer1 = boxers[0].replace("-", " ");
-                    nameBoxer2 = boxers[1].replace("-", " ");
-                    dataBoxerId_1 = `${boxers[0]}`;
-                    dataBoxerId_2 = `${boxers[1]}`;
                 }
                 return (
                     <li class="relative flex justify- items-center mb-10">
