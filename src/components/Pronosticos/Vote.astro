@@ -2,9 +2,6 @@
 import { Image } from "astro:assets";
 
 import { COMBATS, REY_DE_LA_PISTA_ID } from "@/const/combats";
-import { BOXERS } from "@/const/boxers";
-import ButtonSpecial from "../ButtonSpecial.astro";
-import { generateUserId } from "@/lib/users";
 import type { User } from "@auth/core/types";
 
 interface Props {
@@ -12,15 +9,6 @@ interface Props {
 }
 
 const { user } = Astro.props;
-
-const userId = generateUserId(user);
-
-// const votes = []
-// const votes = await db
-//     .select({ combatId: Votes.combatId, voteId: Votes.voteId })
-//     .from(Votes)
-//     .where(eq(Votes.userId, userId));
-
 const userVotes: Record<string, string> = {};
 // votes.forEach(vote => {
 //     userVotes[vote.combatId] = vote.voteId
@@ -206,6 +194,24 @@ const userVotes: Record<string, string> = {};
 
 <script>
     document.addEventListener("astro:page-load", async () => {
+        fetch(`/api/votes/getVotes`)
+            .then((res) => res.json())
+            .then((res) => {
+                const votes = res.rows.map(
+                    (vote: [string, string, string, string]) => vote[3],
+                );
+                console.log(votes);
+                const voteTeam = document.querySelectorAll(
+                    "[data-button-vote]",
+                ) as NodeListOf<HTMLButtonElement>;
+                voteTeam.forEach((boxer) => {
+                    const { boxerId } = boxer.dataset;
+                    votes.includes(boxerId) &&
+                        boxer.classList.add("boxer-Voted");
+                });
+            })
+            .catch((err) => console.error(err));
+
         const { signOut } = await import("auth-astro/client");
         const logout = document.getElementById("logout");
 
@@ -237,13 +243,13 @@ const userVotes: Record<string, string> = {};
                     target.classList.remove("boxer-Voted");
                     previousVote?.classList.add("boxer-Voted");
 
-                    window.toast({
-                        title: "Error, no se pudo guardar el voto",
-                        location: "bottom-center",
-                        dismissible: false,
-                        type: "error",
-                        icon: true,
-                    });
+                    // window.toast({
+                    //     title: "Error, no se pudo guardar el voto",
+                    //     location: "bottom-center",
+                    //     dismissible: false,
+                    //     type: "error",
+                    //     icon: true,
+                    // });
                 };
 
                 fetch(`/api/votes/${combatId}`, {
@@ -255,20 +261,21 @@ const userVotes: Record<string, string> = {};
                 })
                     .then((response) => {
                         if (!response.ok) rollbackUI();
-                        window.toast({
-                            title: "¡Voto registrado!",
-                            location: "bottom-center",
-                            dismissible: false,
-                            type: "success",
-                            icon: true,
-                        });
+                        // window.toast({
+                        //     title: "¡Voto registrado!",
+                        //     location: "bottom-center",
+                        //     dismissible: false,
+                        //     type: "success",
+                        //     icon: true,
+                        // });
                         const nextCombat = button.parentElement
                             ?.nextElementSibling as HTMLElement;
                         if (nextCombat)
                             nextCombat.scrollIntoView({ behavior: "smooth" });
                     })
-                    .catch(() => {
+                    .catch((e) => {
                         //Here when there is an error with conection
+                        console.error(`Request POST Failer: ${e}`);
                         rollbackUI();
                     });
             });
