@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 
 import { COMBATS, REY_DE_LA_PISTA_ID } from "@/const/combats";
+import { BOXERS } from "@/const/boxers";
 import ButtonSpecial from "../ButtonSpecial.astro";
 import { generateUserId } from "@/lib/users";
 import type { User } from "@auth/core/types";
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const { user } = Astro.props;
+
 const userId = generateUserId(user);
 
 // const votes = []
@@ -26,11 +28,27 @@ const userVotes: Record<string, string> = {};
 ---
 
 <section>
-    <h1 class="font-atomic text-5xl text-ice">¡Haz tu pronóstico!</h1>
-    <p>Vota tus ganadores para cada combate haciendo clic encima de cada uno</p>
-    <div>
-        <span>{user.name}</span>
-        <ButtonSpecial type="button" text="CERRAR SESIÓN" id="logout" />
+    <div class="text-center">
+        <h1 class="font-atomic text-5xl text-accent">¡Haz tu pronóstico!</h1>
+        <p class="my-5 text-xl text-neutral-300 text-wrap text-center">
+            Vota tus ganadores para cada combate haciendo clic encima de cada
+            uno
+        </p>
+        <div class="flex justify-center items-center gap-4">
+            <img
+                src={user.image}
+                alt="Imagen de perfil"
+                class="w-12 h-12 rounded-full"
+            />
+            <div class="flex flex-col">
+                <span class="-mb-1 text-lg font-bold">{user.name}</span>
+                <button
+                    class="text-sm font-light text-accent hover:underline"
+                    id="logout"
+                    type="button">Cerrar sesión</button
+                >
+            </div>
+        </div>
     </div>
 
     <ul>
@@ -73,7 +91,7 @@ const userVotes: Record<string, string> = {};
                                                     set:html={boxerId}
                                                 />
                                             </span>
-                                            <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-green-500 font-atomic text-3xl opacity-0 boxer-Voted_text-two">
+                                            <span class="absolute bottom-0 md:bottom-10 left-1/2 -translate-x-1/2 text-green-500 font-atomic text-base md:text-3xl opacity-0 boxer-Voted_text-two">
                                                 ¡Votado!
                                             </span>
                                         </button>
@@ -97,15 +115,23 @@ const userVotes: Record<string, string> = {};
                     dataBoxerId_1 = `${boxers[0]}-${boxers[1]}`;
                     dataBoxerId_2 = `${boxers[2]}-${boxers[3]}`;
                 } else {
-                    urlBoxer1 = `/images/boxers/votes/vote-${number}-${boxers[0]}.webp`;
-                    urlBoxer2 = `/images/boxers/votes/vote-${number}-${boxers[1]}.webp`;
+                    if (
+                        boxers[0] == "agustin-51" ||
+                        boxers[0] == "el-mariana"
+                    ) {
+                        urlBoxer1 = `/images/boxers/votes/vote-${number}-${boxers[1]}.webp`;
+                        urlBoxer2 = `/images/boxers/votes/vote-${number}-${boxers[0]}.webp`;
+                    } else {
+                        urlBoxer1 = `/images/boxers/votes/vote-${number}-${boxers[0]}.webp`;
+                        urlBoxer2 = `/images/boxers/votes/vote-${number}-${boxers[1]}.webp`;
+                    }
                     nameBoxer1 = boxers[0].replace("-", " ");
                     nameBoxer2 = boxers[1].replace("-", " ");
                     dataBoxerId_1 = `${boxers[0]}`;
                     dataBoxerId_2 = `${boxers[1]}`;
                 }
                 return (
-                    <li class="flex justify- items-center mb-10">
+                    <li class="relative flex justify- items-center mb-10">
                         <button
                             data-button-vote
                             data-combat-id={id}
@@ -115,7 +141,10 @@ const userVotes: Record<string, string> = {};
                                 userVotes[id] == boxers[0] ? "boxer-Voted" : "",
                             ]}
                         >
-                            <img class="" src={urlBoxer1} alt="" />
+                            <img
+                                src={urlBoxer1}
+                                alt={`Foto de ${nameBoxer1}`}
+                            />
                             <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-ice font-atomic text-3xl opacity-0 group-hover:opacity-100 boxer-Voted_text-one">
                                 ¡Voto a <br />{" "}
                                 <span
@@ -128,8 +157,14 @@ const userVotes: Record<string, string> = {};
                                 ¡Votado!
                             </span>
                         </button>
-                        <div>
+                        <div
+                            class="
+                                absolute bottom-0 w-[70%] left-1/2 -translate-x-1/2
+                                md:relative md:w-full md:translate-x-0 md:left-0
+                                z-10"
+                        >
                             <Image
+                                class="md:absolute md:min-w-[200%] lg:min-w-[150%] md:left-1/2 md:-translate-x-1/2 pointer-events-none"
                                 width={titleSize[0]}
                                 height={titleSize[1]}
                                 loading={i < 2 ? "eager" : "lazy"}
@@ -146,7 +181,10 @@ const userVotes: Record<string, string> = {};
                                 userVotes[id] == boxers[1] ? "boxer-Voted" : "",
                             ]}
                         >
-                            <img src={urlBoxer2} alt="" />
+                            <img
+                                src={urlBoxer2}
+                                alt={`Foto de ${nameBoxer2}`}
+                            />
                             <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-ice font-atomic text-3xl opacity-0 group-hover:opacity-100 boxer-Voted_text-one">
                                 ¡Voto a <br />{" "}
                                 <span
