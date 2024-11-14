@@ -1,0 +1,36 @@
+---
+interface Props {
+    id: string;
+    dataBoxerId: string;
+    userVotes: Record<string, string>;
+    boxers: string;
+    urlBoxer: string;
+    nameBoxer: string;
+}
+
+const { id, dataBoxerId, userVotes, boxers, urlBoxer, nameBoxer } = Astro.props;
+---
+
+<button
+    data-button-vote
+    data-combat-id={id}
+    data-boxer-id={dataBoxerId}
+    class:list={[
+        "relative hover:scale-110 transition-transform group grayscale hover:grayscale-0 hover:saturate-150",
+        userVotes[id] == boxers ? "boxer-Voted" : "",
+    ]}
+>
+    <img src={urlBoxer} alt={`Foto de ${nameBoxer}`} />
+    <span
+        class="absolute bottom-10 left-1/2 -translate-x-1/2 text-ice font-atomic text-3xl opacity-0 group-hover:opacity-100 boxer-Voted_text-one"
+    >
+        ¡Voto a <br />{" "}
+        <span class="text-accent text-nowrap" set:html={nameBoxer} />
+        !
+    </span>
+    <span
+        class="absolute bottom-10 left-1/2 -translate-x-1/2 text-green-500 font-atomic text-3xl opacity-0 boxer-Voted_text-two"
+    >
+        ¡Votado!
+    </span>
+</button>

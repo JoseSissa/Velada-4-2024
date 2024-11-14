@@ -3,6 +3,8 @@ import { Image } from "astro:assets";
 
 import { COMBATS, REY_DE_LA_PISTA_ID } from "@/const/combats";
 import type { User } from "@auth/core/types";
+import ReyDeLaPista from "@/components/Pronosticos/ReyDeLaPista.astro";
+import IndividualBoxer from "@/components/Pronosticos/IndividualBoxer.astro";
 
 interface Props {
     user: User;
@@ -10,9 +12,6 @@ interface Props {
 
 const { user } = Astro.props;
 const userVotes: Record<string, string> = {};
-// votes.forEach(vote => {
-//     userVotes[vote.combatId] = vote.voteId
-// })
 ---
 
 <section>
@@ -44,51 +43,15 @@ const userVotes: Record<string, string> = {};
             COMBATS.map(({ id, number, boxers, titleSize, teams }, i) => {
                 if (id === REY_DE_LA_PISTA_ID) {
                     return (
-                        <li class="flex flex-col justify-center items-center mb-10">
-                            <div>
-                                <Image
-                                    src={`/images/combates/title-${id}.webp`}
-                                    alt="Fotografía del poster del combate Rey de la pista"
-                                    loading="lazy"
-                                    class:list={"w-52"}
-                                    width={titleSize[0]}
-                                    height={titleSize[1]}
-                                />
-                            </div>
-                            <ul class="grid grid-cols-5 gap-x-4">
-                                {boxers.map((boxerId) => {
-                                    return (
-                                        <button
-                                            data-button-vote
-                                            data-combat-id={id}
-                                            data-boxer-id={boxerId}
-                                            class:list={[
-                                                "relative hover:scale-110 transition-transform group grayscale hover:grayscale-0 hover:saturate-150",
-                                                userVotes[id] == boxerId
-                                                    ? "boxer-Voted"
-                                                    : "",
-                                            ]}
-                                        >
-                                            <img
-                                                src={`/images/boxers/photoSmall/${boxerId}-small.webp`}
-                                                alt="Foto en pequeño de un boxeador del rey de la pista"
-                                            />
-                                            <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-ice font-atomic text-3xl opacity-0 group-hover:opacity-100 boxer-Voted_text-one">
-                                                <span
-                                                    class="text-accent"
-                                                    set:html={boxerId}
-                                                />
-                                            </span>
-                                            <span class="absolute bottom-0 md:bottom-10 left-1/2 -translate-x-1/2 text-green-500 font-atomic text-base md:text-3xl opacity-0 boxer-Voted_text-two">
-                                                ¡Votado!
-                                            </span>
-                                        </button>
-                                    );
-                                })}
-                            </ul>
-                        </li>
+                        <ReyDeLaPista
+                            id={id}
+                            titleSize={titleSize}
+                            boxers={boxers}
+                            userVotes={userVotes}
+                        />
                     );
                 }
+                // TODO: Refactor this code
                 let urlBoxer1,
                     urlBoxer2,
                     nameBoxer1,
@@ -125,31 +88,14 @@ const userVotes: Record<string, string> = {};
                 }
                 return (
                     <li class="relative flex justify- items-center mb-10">
-                        <button
-                            data-button-vote
-                            data-combat-id={id}
-                            data-boxer-id={dataBoxerId_1}
-                            class:list={[
-                                "relative hover:scale-110 transition-transform group grayscale hover:grayscale-0 hover:saturate-150",
-                                userVotes[id] == boxers[0] ? "boxer-Voted" : "",
-                            ]}
-                        >
-                            <img
-                                src={urlBoxer1}
-                                alt={`Foto de ${nameBoxer1}`}
-                            />
-                            <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-ice font-atomic text-3xl opacity-0 group-hover:opacity-100 boxer-Voted_text-one">
-                                ¡Voto a <br />{" "}
-                                <span
-                                    class="text-accent text-nowrap"
-                                    set:html={nameBoxer1}
-                                />
-                                !
-                            </span>
-                            <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-green-500 font-atomic text-3xl opacity-0 boxer-Voted_text-two">
-                                ¡Votado!
-                            </span>
-                        </button>
+                        <IndividualBoxer
+                            id={id}
+                            dataBoxerId={dataBoxerId_1}
+                            userVotes={userVotes}
+                            boxers={boxers[0]}
+                            urlBoxer={urlBoxer1}
+                            nameBoxer={nameBoxer1}
+                        />
                         <div
                             class="
                                 absolute bottom-0 w-[70%] left-1/2 -translate-x-1/2
@@ -165,31 +111,14 @@ const userVotes: Record<string, string> = {};
                                 alt="Fotografía del poster del combate"
                             />
                         </div>
-                        <button
-                            data-button-vote
-                            data-combat-id={id}
-                            data-boxer-id={dataBoxerId_2}
-                            class:list={[
-                                "relative hover:scale-110 transition-transform group grayscale hover:grayscale-0 hover:saturate-150",
-                                userVotes[id] == boxers[1] ? "boxer-Voted" : "",
-                            ]}
-                        >
-                            <img
-                                src={urlBoxer2}
-                                alt={`Foto de ${nameBoxer2}`}
-                            />
-                            <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-ice font-atomic text-3xl opacity-0 group-hover:opacity-100 boxer-Voted_text-one">
-                                ¡Voto a <br />{" "}
-                                <span
-                                    class="text-accent"
-                                    set:html={nameBoxer2}
-                                />
-                                !
-                            </span>
-                            <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-green-500 font-atomic text-3xl opacity-0 boxer-Voted_text-two">
-                                ¡Votado!
-                            </span>
-                        </button>
+                        <IndividualBoxer
+                            id={id}
+                            dataBoxerId={dataBoxerId_2}
+                            userVotes={userVotes}
+                            boxers={boxers[1]}
+                            urlBoxer={urlBoxer2}
+                            nameBoxer={nameBoxer2}
+                        />
                     </li>
                 );
             })
@@ -247,14 +176,13 @@ const userVotes: Record<string, string> = {};
                 const rollbackUI = () => {
                     target.classList.remove("boxer-Voted");
                     previousVote?.classList.add("boxer-Voted");
-
-                    // window.toast({
-                    //     title: "Error, no se pudo guardar el voto",
-                    //     location: "bottom-center",
-                    //     dismissible: false,
-                    //     type: "error",
-                    //     icon: true,
-                    // });
+                    window.toast({
+                        title: "Error, no se pudo guardar el voto",
+                        location: "bottom-center",
+                        dismissible: false,
+                        type: "error",
+                        icon: true,
+                    });
                 };
 
                 fetch(`/api/votes/${combatId}`, {
@@ -266,13 +194,13 @@ const userVotes: Record<string, string> = {};
                 })
                     .then((response) => {
                         if (!response.ok) rollbackUI();
-                        // window.toast({
-                        //     title: "¡Voto registrado!",
-                        //     location: "bottom-center",
-                        //     dismissible: false,
-                        //     type: "success",
-                        //     icon: true,
-                        // });
+                        window.toast({
+                            title: "¡Voto registrado!",
+                            location: "bottom-center",
+                            dismissible: false,
+                            type: "success",
+                            icon: true,
+                        });
                         const nextCombat = button.parentElement
                             ?.nextElementSibling as HTMLElement;
                         if (nextCombat)
@@ -288,13 +216,14 @@ const userVotes: Record<string, string> = {};
     });
 </script>
 
-<style>
+<style is:global>
     button img {
         filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
         mask-image: linear-gradient(to bottom, black 80%, transparent 95%);
     }
 
     .boxer-Voted {
+        pointer-events: none;
         @apply grayscale-0 saturate-150 scale-110;
         .boxer-Voted_text-one {
             @apply opacity-0;

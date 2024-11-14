@@ -1,0 +1,53 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+    id: string;
+    titleSize: number[];
+    boxers: string[];
+    userVotes: Record<string, string>;
+}
+
+const { id, titleSize, boxers, userVotes } = Astro.props;
+---
+
+<li class="flex flex-col justify-center items-center mb-10">
+    <div>
+        <Image
+            src={`/images/combates/title-${id}.webp`}
+            alt="Fotografía del poster del combate Rey de la pista"
+            loading="lazy"
+            class:list={"w-52"}
+            width={titleSize[0]}
+            height={titleSize[1]}
+        />
+    </div>
+    <ul class="grid grid-cols-5 gap-x-4">
+        {
+            boxers.map((boxerId) => {
+                return (
+                    <button
+                        data-button-vote
+                        data-combat-id={id}
+                        data-boxer-id={boxerId}
+                        class:list={[
+                            "relative hover:scale-110 transition-transform group grayscale hover:grayscale-0 hover:saturate-150",
+                            userVotes[id] == boxerId ? "boxer-Voted" : "",
+                        ]}
+                    >
+                        <img
+                            src={`/images/boxers/photoSmall/${boxerId}-small.webp`}
+                            alt="Foto en pequeño de un boxeador del rey de la pista"
+                        />
+                        <span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-ice font-atomic text-3xl opacity-0 group-hover:opacity-100 boxer-Voted_text-one">
+                            <span class="text-accent" set:html={boxerId} />
+                        </span>
+                        <span class="absolute bottom-0 md:bottom-10 left-1/2 -translate-x-1/2 text-green-500 font-atomic text-base md:text-3xl opacity-0 boxer-Voted_text-two">
+                            ¡Votado!
+                        </span>
+                    </button>
+                );
+            })
+        }
+    </ul>
+</li>
